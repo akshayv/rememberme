@@ -55,7 +55,6 @@ namespace F9S1.RememberMe
         public bool AddTask(List<string> newTask)
         {
             newTask[0] = CheckIfDuplicate(newTask[0]);
-            newTask.Add(Boolean.FalseString);
             taskList.Add(new Task(newTask));
             return true;
         }

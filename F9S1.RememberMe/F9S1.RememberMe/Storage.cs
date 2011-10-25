@@ -21,7 +21,9 @@ namespace F9S1.RememberMe
             if (!File.Exists(labelFileName))
             {
                 StreamWriter labelStream = new StreamWriter(labelFileName);
-                labelStream.Write(Utility.DEFAULT_LABEL);
+                labelStream.WriteLine(Utility.DEFAULT_LABEL);
+                labelStream.WriteLine("#work");
+                labelStream.WriteLine("#home");
                 labelStream.Close();
             }
         }

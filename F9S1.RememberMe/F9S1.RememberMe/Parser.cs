@@ -59,20 +59,16 @@ namespace F9S1.RememberMe
         }
         public List<string> AddParse(string input, List<string> labels)
         {
-            List<string> parsedInput = new List<string>(), inputLabels = new List<string>(), betaParse = new List<string>(input.Split(new Char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)); ;
+            List<string> parsedInput = new List<string>(), inputLabels = new List<string>(), betaParse = new List<string>(input.Split(new Char[] { ' ', ';' }, StringSplitOptions.RemoveEmptyEntries)); ;
             string commandName, taskDetails, taskTime, betaInput = new string(input.ToCharArray());
             DateTime deadline;
             bool hasStars = betaInput.Contains("**");
             betaInput = betaInput.Replace("**", "");
 
             commandName = "add";
-            if (input.Contains(';'))
-            {
-                ColonParse(input, labels);
-            }
             if (betaParse[0].Trim().ToLower().Equals("add"))
             {
-                string[] temp = betaInput.Split(new Char[] { ' ' }, 2, StringSplitOptions.RemoveEmptyEntries);
+                string[] temp = betaInput.Split(new Char[] { ' ' , ';'}, 2, StringSplitOptions.RemoveEmptyEntries);
                 if (temp.Length < 2)
                 {
                     parsedInput.Add(Utility.ERROR);
@@ -83,6 +79,11 @@ namespace F9S1.RememberMe
                     betaInput = temp[1];
             }
 
+            if (input.Contains(';'))
+            {
+                return ColonParse(betaInput, labels);
+            }
+            
             if (!(betaInput.Contains('#')))
                 inputLabels.Add(Utility.DEFAULT_LABEL);
             else
@@ -149,7 +150,7 @@ namespace F9S1.RememberMe
 
         public List<string> LabelParse(string input, List<string> labels)
         {
-            char[] splitter = new char[] { ' ' };
+            char[] splitter = new char[] { ' ' , ';'};
             List<string> parsedInput = new List<string>(), betaParse = new List<string>(input.Split(splitter, StringSplitOptions.RemoveEmptyEntries));
             if (betaParse.Count < 3 || (betaParse[1] != "add" && betaParse[1] != "delete"))
             {
@@ -165,7 +166,7 @@ namespace F9S1.RememberMe
 
         public List<string> CommandParse(string input)
         {
-            char[] splitter = new char[] { ' ' };
+            char[] splitter = new char[] { ' ' , ';'};
             List<string> parsedInput = new List<string>(input.Split(splitter, 2, StringSplitOptions.RemoveEmptyEntries));
             parsedInput[0] = parsedInput[0].ToLower();
             return parsedInput;
@@ -173,7 +174,13 @@ namespace F9S1.RememberMe
 
         public List<string> ColonParse(string input, List<string> labels)
         {
-            return new List<string>();
+            List<string> parsedInput = new List<string>(input.Split(';'));
+            parsedInput[0] = parsedInput[0].Trim();
+            parsedInput[1] = ToDate(parsedInput[1].Trim()).ToString();
+            parsedInput[2] = parsedInput[2].Trim().ToLower();
+            parsedInput[3] = (parsedInput[3].Trim().ToLower() == "high").ToString();
+            parsedInput.Insert(0, "add");
+            return parsedInput;
         }
 
         public List<string> InputParse(string input, List<string> labels)

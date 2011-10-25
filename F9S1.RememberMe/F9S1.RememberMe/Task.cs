@@ -89,7 +89,7 @@ namespace F9S1.RememberMe
             Deadline = values[1];
             Labels = values[2];
             IsStarred = Boolean.Parse(values[3]);
-            IsArchived = Boolean.Parse(values[4]);
+            IsArchived = false;
         }
 
         public Task(string line)
@@ -99,7 +99,7 @@ namespace F9S1.RememberMe
             Deadline = values[1];
             Labels = values[2];
             IsStarred = Boolean.Parse(values[3]);
-            IsArchived = Boolean.Parse(values[4]);
+            IsArchived = false;
         }
         
         public override int GetHashCode()
