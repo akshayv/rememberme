@@ -404,7 +404,7 @@ namespace F9S1.RememberMe
         }
 
 
-        private void textBox1_PreviewKeyDown(object sender, KeyEventArgs e)
+        private void inputBox_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Up)
             {

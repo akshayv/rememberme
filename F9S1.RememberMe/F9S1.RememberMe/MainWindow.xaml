@@ -8,6 +8,6 @@
         </Grid.Background>
         <ListBox Margin="12,12,12,126" Name="outputBox" Foreground="#FFE10000" FontFamily="Courier New"></ListBox>
         <Label Margin="12,213,12,12" Name="displayBox" Foreground="#FFEB1919" FontWeight="Bold" />
-        <TextBox Margin="12,157,12,65" Name="inputBox" KeyDown="inputBox_KeyDown" Foreground="#FF19580E" TextChanged="inputBox_TextChanged" />
+        <TextBox Margin="12,157,12,65" Name="inputBox" KeyDown="inputBox_KeyDown" Foreground="#FF19580E" TextChanged="inputBox_TextChanged" PreviewKeyDown="inputBox_PreviewKeyDown" />
     </Grid>
 </Window>

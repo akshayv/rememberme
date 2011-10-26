@@ -124,7 +124,8 @@ namespace F9S1.RememberMe
                 int length = betaInput.Length;
                 taskTime = betaInput.Substring(_at + 1, ((_hash - _at > 0) ? _hash - _at - 1: length - _at - 1));
                 taskInterval = GetRepeat(taskTime).ToString();
-                taskTime.Replace(taskTime.Substring(taskTime.IndexOf('%')).Split(' ', ';')[0], "");
+                if (taskTime.Contains('%'))
+                    taskTime.Replace(taskTime.Substring(taskTime.IndexOf('%')).Split(' ', ';')[0], "");
                 deadline = ToDate(taskTime);
                 if (deadline.Equals(Utility.DEFAULT_ERROR_DATE))
                 {

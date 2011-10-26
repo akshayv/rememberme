@@ -105,20 +105,24 @@ namespace F9S1.RememberMe
                 Deadline = DateTime.Parse(values[1]);
             Labels = values[2];
             IsStarred = Boolean.Parse(values[3]);
-            Interval = TimeSpan.Parse(values[4]);
             IsArchived = false;
-
+            Interval = TimeSpan.Parse(values[4]);
+            
         }
 
         public Task(string line)
         {
             List<string> values = FromString(line);
             Details = values[0];
-            Deadline = DateTime.Parse(values[1]);
+            if (values[1] == Utility.DEFAULT_NO_TIME)
+                Deadline = Utility.DEFAULT_UNDEFINED_DATE;
+            else
+                Deadline = DateTime.Parse(values[1]);
             Labels = values[2];
             IsStarred = Boolean.Parse(values[3]);
-            Interval = TimeSpan.Parse(values[4]);
-            IsArchived = false;
+            IsArchived = Boolean.Parse(values[4]);
+            Interval = TimeSpan.Parse(values[5]);
+            
         }
         
         public override int GetHashCode()
