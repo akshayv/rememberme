@@ -58,6 +58,7 @@ namespace F9S1.RememberMe
             taskData.TaskList = taskList;
             store.WriteTasks(taskData.GetList());
         }
+
         public List<string> UserDispatch(string input)
         {
             if (input.Trim().Length > 3)

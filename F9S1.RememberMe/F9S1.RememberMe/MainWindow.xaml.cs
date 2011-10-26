@@ -123,7 +123,7 @@ namespace F9S1.RememberMe
         {
             TimeSpan difference = new TimeSpan(time[0], time[1], time[2], 0);
             DateTime updatedDate = DateTime.Now.Add(difference);
-            taskList[i].Deadline = updatedDate.ToString();
+            taskList[i].Deadline = updatedDate;
         }
         public void setAlarm()
         {
@@ -134,11 +134,11 @@ namespace F9S1.RememberMe
             for (int i = 0; i < taskInfo.Count; i++)
             {
                 isLabelNotArchive = !taskInfo[i].IsArchived;
-                isDeadlineReached = taskInfo[i].Deadline.CompareTo(DateTime.Now.ToString()) < 0;
+                isDeadlineReached = taskInfo[i].Deadline.CompareTo(DateTime.Now) < 0;
                 if (isLabelNotArchive && isDeadlineReached)
                 {
                     int[] time = new int[3];
-                    Alarm showAlarm = new Alarm(taskInfo[i].Details, DateTime.Parse(taskInfo[i].Deadline));
+                    Alarm showAlarm = new Alarm(taskInfo[i].Details, taskInfo[i].Deadline);
                     maximiseWindow();
                     showAlarm.ShowDialog();
                     time = showAlarm.getTimeArray();

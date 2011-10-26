@@ -133,7 +133,7 @@ namespace F9S1.RememberMe
             }
             if (editInput[1] != null && editInput[1] != "")
             {
-                taskList[taskList.Count - 1].Deadline = editInput[1];
+                taskList[taskList.Count - 1].Deadline = DateTime.Parse(editInput[1]);
             }
             if (editInput[2] != null && editInput[2] != "")
             {
@@ -232,7 +232,7 @@ namespace F9S1.RememberMe
             try
             {
                 DateTime.Parse(keyword).ToString();
-                if (check.Deadline.Contains(DateTime.Parse(keyword).ToString()))
+                if (check.Deadline.ToString().Contains(DateTime.Parse(keyword).ToString()))
                 {
                     hitcount++;
                 }

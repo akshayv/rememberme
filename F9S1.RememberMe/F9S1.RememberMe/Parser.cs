@@ -192,10 +192,10 @@ namespace F9S1.RememberMe
                     interval = new TimeSpan(int.Parse(next), 0, 0, 0);
                 }
                 else
-                    interval = new TimeSpan(0, 0, 0);
+                    interval = Utility.NO_INTERVAL;
             }
             else
-                interval = new TimeSpan(0, 0, 0);
+                interval = Utility.NO_INTERVAL;
             return interval;
         }
 

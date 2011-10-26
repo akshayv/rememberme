@@ -24,20 +24,18 @@ namespace F9S1.RememberMe
         }
 
         private DateTime deadline;  //After now
-        public string Deadline    //Property
+        public DateTime Deadline    //Property
         {
             get
             {
-                if (deadline == Utility.DEFAULT_UNDEFINED_DATE)
-                    return "";
-                return deadline.ToString();
+                return deadline;
             }
             set
             {
-                if (value == null || value == Utility.DEFAULT_NO_TIME || value == "")
+                if (value == null)
                     deadline = Utility.DEFAULT_UNDEFINED_DATE;
                 else
-                    deadline = DateTime.Parse(value);          
+                    deadline = value ;          
             }
         }
 
@@ -101,7 +99,10 @@ namespace F9S1.RememberMe
         public Task(List<string> values)
         {
             Details = values[0];
-            Deadline = values[1];
+            if (values[1] == Utility.DEFAULT_NO_TIME)
+                Deadline = Utility.DEFAULT_UNDEFINED_DATE;
+            else
+                Deadline = DateTime.Parse(values[1]);
             Labels = values[2];
             IsStarred = Boolean.Parse(values[3]);
             Interval = TimeSpan.Parse(values[4]);
@@ -113,7 +114,7 @@ namespace F9S1.RememberMe
         {
             List<string> values = FromString(line);
             Details = values[0];
-            Deadline = values[1];
+            Deadline = DateTime.Parse(values[1]);
             Labels = values[2];
             IsStarred = Boolean.Parse(values[3]);
             Interval = TimeSpan.Parse(values[4]);
@@ -127,7 +128,7 @@ namespace F9S1.RememberMe
 
         private List<string> FromString(string line)
         {
-            return new List<string>(line.Split(new string[]{Utility.FILE_SEPARATER},10, StringSplitOptions.None));
+            return new List<string>(line.Split(new string[]{Utility.FILE_SEPARATER},StringSplitOptions.None));
         }
 
         private string ShortenDeadline(string longer)
@@ -155,7 +156,7 @@ namespace F9S1.RememberMe
 
         public override string ToString()
         {
-            return Details + Utility.FILE_SEPARATER + Deadline.ToString() + Utility.FILE_SEPARATER + Labels + Utility.FILE_SEPARATER + IsStarred.ToString() + Utility.FILE_SEPARATER + IsArchived.ToString();
+            return Details + Utility.FILE_SEPARATER + Deadline.ToString() + Utility.FILE_SEPARATER + Labels + Utility.FILE_SEPARATER + IsStarred.ToString() + Utility.FILE_SEPARATER + IsArchived.ToString() + Utility.FILE_SEPARATER + Interval.ToString();
         }
 
         public override bool Equals(object compareObject)
@@ -218,7 +219,7 @@ namespace F9S1.RememberMe
             {
                 archives = "     ";
             } 
-            return stars + " " + SetLength(Details, 30) + " " + SetLength(ShortenDeadline(Deadline), 15) +  " " + SetLength(Labels.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)[0].Trim(), 8) + " " + archives;
+            return stars + " " + SetLength(Details, 30) + " " + SetLength(ShortenDeadline(Deadline.ToString()), 15) +  " " + SetLength(Labels.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)[0].Trim(), 8) + " " + archives;
         }
     }
 }
