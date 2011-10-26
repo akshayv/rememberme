@@ -14,9 +14,13 @@ namespace F9S1.RememberMe
             {
                 return taskList;
             }
+            set
+            {
+                taskList = value;
+            }
         }
         Stack<List<Task>> undoStack, redoStack;
-        
+       
         public Register(List<string> stringListTasks)
         {
             taskList = new List<Task>();
@@ -214,6 +218,98 @@ namespace F9S1.RememberMe
             return false;
         }
 
+        private int findNumHits(Task check, string keyword)
+        {
+            int hitcount = 0;
+            if (check.Details.Contains(keyword))
+            {
+                hitcount++;
+            }
+            if (check.Labels.Contains(keyword))
+            {
+                hitcount++;
+            }
+            try
+            {
+                DateTime.Parse(keyword).ToString();
+                if (check.Deadline.Contains(DateTime.Parse(keyword).ToString()))
+                {
+                    hitcount++;
+                }
+
+            }
+            catch (Exception e)
+            {
+
+            }
+
+            return hitcount;
+        }
+
+        public List<string> InstantSearch(string input)
+        {
+            List<string> keywords = new List<string>(input.Split(' '));
+            for (int i = 0; i < keywords.Count; i++)
+                if (keywords[i].Equals(""))
+                    keywords.RemoveAt(i);
+            List<int> hitcount = new List<int>();
+            for (int i = 0; i < taskList.Count; i++)
+                hitcount.Add(0);
+            int maxhits = 0;
+            for (int i = 0; i < taskList.Count; i++)
+            {
+                for (int j = 0; j < keywords.Count; j++)
+                {
+                    if (taskList[i].ToString().Contains(keywords[j]))
+                    {
+                        keywords[j] = keywords[j].ToLower();
+                        hitcount[i] += findNumHits(taskList[i], keywords[j]);
+
+                        if (hitcount[i] > maxhits)
+                            maxhits = hitcount[i];
+                    }
+                }
+            }
+            List<string> temp = new List<string>();
+            List<Task> toBeDisplayed = new List<Task>();
+
+
+
+            for (int i = 0; i < taskList.Count; i++)
+            {
+                int flag = 0;
+                if (taskList[i].IsRepeat && taskList[i].IsArchived)
+                {
+                    flag++;
+                    continue;
+                }
+                for (int j = 0; j < i; j++)
+                {
+                    if (taskList[i].Interval.Days == 1 || taskList[i].Interval.Days == 2)
+                    {
+
+                        if (taskList[i].Details == taskList[j].Details//Since no two tasks can have same name except in this case
+                                 && taskList[i].Labels == taskList[j].Labels)
+                        {
+                            flag++;
+                            continue;
+                        }
+                    }
+                }
+
+                if (flag == 0)
+                    toBeDisplayed.Add(taskList[i]);
+            }
+
+
+            for (int i = maxhits; i > 0; i--)
+            {
+                for (int j = 0; j < toBeDisplayed.Count; j++)
+                    if (hitcount[j] == i)
+                        temp.Add(toBeDisplayed[j].GetDisplay());
+            }
+            return temp;
+        }
         //public bool viewByLabel(ref List<Task> taskList, string parameter, List<Task> currentList)
         //{
         //    int numWithLabel = 0;

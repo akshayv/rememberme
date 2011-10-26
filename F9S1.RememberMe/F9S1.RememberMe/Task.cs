@@ -41,6 +41,21 @@ namespace F9S1.RememberMe
             }
         }
 
+        private TimeSpan interval;
+        public TimeSpan Interval
+        {
+            get;
+            set;
+        }
+
+        public bool IsRepeat
+        {
+            get
+            {
+                return !(interval.Equals(Utility.NO_INTERVAL));
+            }
+        }
+
         private bool isStarred;
         public bool IsStarred       //Property
         {
@@ -72,14 +87,14 @@ namespace F9S1.RememberMe
         {
             get
             {
-                return convertLabelsToString(labels);
+                return ConvertLabelsToString(labels);
             }
             set
             {
                 if (value == null)
                     labels = new string[]{"#others"};
                 else
-                    labels = convertStringToLabels(value);
+                    labels = ConvertStringToLabels(value);
             }
         }
 
@@ -89,7 +104,9 @@ namespace F9S1.RememberMe
             Deadline = values[1];
             Labels = values[2];
             IsStarred = Boolean.Parse(values[3]);
+            Interval = TimeSpan.Parse(values[4]);
             IsArchived = false;
+
         }
 
         public Task(string line)
@@ -99,6 +116,7 @@ namespace F9S1.RememberMe
             Deadline = values[1];
             Labels = values[2];
             IsStarred = Boolean.Parse(values[3]);
+            Interval = TimeSpan.Parse(values[4]);
             IsArchived = false;
         }
         
@@ -119,12 +137,12 @@ namespace F9S1.RememberMe
             else
             {
                 DateTime longDeadline = DateTime.Parse(longer);
-                return String.Concat(setIntLength(longDeadline.Day.ToString(), 2), "/", setIntLength(longDeadline.Month.ToString(), 2), " ",
-                                     setIntLength(longDeadline.Hour.ToString(),2), ":", setIntLength(longDeadline.Minute.ToString(), 2));
+                return String.Concat(SetIntLength(longDeadline.Day.ToString(), 2), "/", SetIntLength(longDeadline.Month.ToString(), 2), " ",
+                                     SetIntLength(longDeadline.Hour.ToString(),2), ":", SetIntLength(longDeadline.Minute.ToString(), 2));
             }
         }
 
-        private string setIntLength(string shortInt, int length)
+        private string SetIntLength(string shortInt, int length)
         {
             int difference = length - shortInt.Length;
             if (difference > 0)
@@ -149,7 +167,7 @@ namespace F9S1.RememberMe
                    (Labels == compareTask.Labels);
         }
 
-        private string convertLabelsToString(string[] toConvert)
+        private string ConvertLabelsToString(string[] toConvert)
         {
             string result = "";
             for (int i = 0; i < toConvert.Length; i++)
@@ -159,7 +177,7 @@ namespace F9S1.RememberMe
             return result;
         }
 
-        private string[] convertStringToLabels(string toConvert)
+        private string[] ConvertStringToLabels(string toConvert)
         {
             return toConvert.Split(' ');
         }

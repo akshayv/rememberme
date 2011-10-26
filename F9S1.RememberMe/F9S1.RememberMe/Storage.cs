@@ -10,6 +10,7 @@ namespace F9S1.RememberMe
     {
         string contentFileName = "RememberMe.content.txt";
         string labelFileName = "RememberMe.labels.txt";
+        string logFileName = "RememberMe.logs.txt";
         public Storage()
         {
             
@@ -17,6 +18,11 @@ namespace F9S1.RememberMe
             {
                 StreamWriter contentStream = new StreamWriter(contentFileName);
                 contentStream.Close();
+            }
+            if (!File.Exists(logFileName))
+            {
+                StreamWriter logStream = new StreamWriter(logFileName);
+                logStream.Close();
             }
             if (!File.Exists(labelFileName))
             {
@@ -59,6 +65,13 @@ namespace F9S1.RememberMe
             {
                 writer.WriteLine(contents[i]);
             }
+            writer.Close();
+        }
+
+        public void Log(string contents) //Exception if file is missing
+        {
+            TextWriter writer = new StreamWriter(contentFileName);
+            writer.WriteLine(contents);
             writer.Close();
         }
 

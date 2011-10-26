@@ -60,11 +60,11 @@ namespace F9S1.RememberMe
         public List<string> AddParse(string input, List<string> labels)
         {
             List<string> parsedInput = new List<string>(), inputLabels = new List<string>(), betaParse = new List<string>(input.Split(new Char[] { ' ', ';' }, StringSplitOptions.RemoveEmptyEntries)); ;
-            string commandName, taskDetails, taskTime, betaInput = new string(input.ToCharArray());
+            string commandName, taskInterval, taskDetails, taskTime, betaInput = new string(input.ToCharArray());
             DateTime deadline;
             bool hasStars = betaInput.Contains("**");
             betaInput = betaInput.Replace("**", "");
-
+            
             commandName = "add";
             if (betaParse[0].Trim().ToLower().Equals("add"))
             {
@@ -113,6 +113,7 @@ namespace F9S1.RememberMe
             {
                 char[] splitter = new char[] { ' ' };
                 taskTime = Utility.DEFAULT_NO_TIME;
+                taskInterval = Utility.NO_INTERVAL.ToString();
                 taskDetails = betaInput.Split('@', '#')[0].Trim();
             }
             else
@@ -122,6 +123,8 @@ namespace F9S1.RememberMe
                 int _hash = betaInput.IndexOf('#');
                 int length = betaInput.Length;
                 taskTime = betaInput.Substring(_at + 1, ((_hash - _at > 0) ? _hash - _at - 1: length - _at - 1));
+                taskInterval = GetRepeat(taskTime).ToString();
+                taskTime.Replace(taskTime.Substring(taskTime.IndexOf('%')).Split(' ', ';')[0], "");
                 deadline = ToDate(taskTime);
                 if (deadline.Equals(Utility.DEFAULT_ERROR_DATE))
                 {
@@ -145,6 +148,7 @@ namespace F9S1.RememberMe
             parsedInput.Add(taskTime);
             parsedInput.Add(String.Concat(inputLabels));
             parsedInput.Add(hasStars.ToString());
+            parsedInput.Add(taskInterval);
             return parsedInput;
         }
 
@@ -172,13 +176,37 @@ namespace F9S1.RememberMe
             return parsedInput;
         }
 
+        private TimeSpan GetRepeat(string dateInput)
+        {
+            TimeSpan interval;
+            if (dateInput.Contains('%'))
+            {
+                int posmod = dateInput.IndexOf('%');
+                string next = dateInput.Substring(posmod + 1).Split(' ', ';')[0];
+                if (next == "w")
+                {
+                    interval = new TimeSpan(7, 0, 0, 0);
+                }
+                else if (Char.IsDigit(next[0]))
+                {
+                    interval = new TimeSpan(int.Parse(next), 0, 0, 0);
+                }
+                else
+                    interval = new TimeSpan(0, 0, 0);
+            }
+            else
+                interval = new TimeSpan(0, 0, 0);
+            return interval;
+        }
+
         public List<string> ColonParse(string input, List<string> labels)
         {
-            List<string> parsedInput = new List<string>(input.Split(';'));
-            parsedInput[0] = parsedInput[0].Trim();
-            parsedInput[1] = ToDate(parsedInput[1].Trim()).ToString();
-            parsedInput[2] = parsedInput[2].Trim().ToLower();
-            parsedInput[3] = (parsedInput[3].Trim().ToLower() == "high").ToString();
+            List<string> betaInput = new List<string>(input.Split(';')), parsedInput = new List<string>();
+            parsedInput[0] = betaInput[0].Trim();
+            parsedInput[1] = ToDate(betaInput[1].Trim()).ToString();
+            parsedInput[2] = betaInput[2].Trim().ToLower();
+            parsedInput[3] = (betaInput[3].Trim().ToLower() == "high").ToString();
+            parsedInput[4] = GetRepeat(betaInput[1].Trim()).ToString();
             parsedInput.Insert(0, "add");
             return parsedInput;
         }

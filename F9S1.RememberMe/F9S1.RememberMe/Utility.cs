@@ -26,6 +26,7 @@ namespace F9S1.RememberMe
         public const string STARRED = "**";
         public const string UNSTARRED = "--";
 
+        public static TimeSpan NO_INTERVAL = TimeSpan.MinValue;
         public static DateTime DEFAULT_ERROR_DATE = DateTime.MinValue;
         public static DateTime DEFAULT_UNDEFINED_DATE = DateTime.MaxValue;
     }

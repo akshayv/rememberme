@@ -38,7 +38,27 @@ namespace F9S1.RememberMe
             labels = store.ReadLabels();
         }
 
-        public List<string> userDispatch(string input)
+        public List<Task> GetTasks()
+        {
+            return taskData.TaskList;
+        }
+        public void Log(string logInput)
+        {
+            store.Log(logInput);
+        }
+
+        public List<string> CallSearch(string input)
+        {
+            List<string> tobeDisplayed = taskData.InstantSearch(input);
+            return tobeDisplayed;
+        }
+
+        public void WriteToFile(List<Task> taskList)
+        {
+            taskData.TaskList = taskList;
+            store.WriteTasks(taskData.GetList());
+        }
+        public List<string> UserDispatch(string input)
         {
             if (input.Trim().Length > 3)
             {
