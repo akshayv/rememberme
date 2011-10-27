@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Diagnostics;
 
 namespace F9S1.RememberMe
 {
@@ -16,10 +17,8 @@ namespace F9S1.RememberMe
             }
             set
             {
-                if (value == null)
-                    details = "?";
-                else
-                    details = value;
+                Debug.Assert(value != null);
+                details = value;
             }
         }
 
@@ -32,10 +31,8 @@ namespace F9S1.RememberMe
             }
             set
             {
-                if (value == null)
-                    deadline = Utility.DEFAULT_UNDEFINED_DATE;
-                else
-                    deadline = value ;          
+                Debug.Assert(value != null);
+                deadline = value ;          
             }
         }
 

@@ -57,7 +57,7 @@ namespace F9S1.RememberMe
                     return Command.add;
             }
         }
-        public List<string> AddParse(string input, List<string> labels)
+        public List<string> SymbolParse(string input, List<string> labels)
         {
             List<string> parsedInput = new List<string>(), inputLabels = new List<string>(), betaParse = new List<string>(input.Split(new Char[] { ' ', ';' }, StringSplitOptions.RemoveEmptyEntries)); ;
             string commandName, taskInterval, taskDetails, taskTime, betaInput = new string(input.ToCharArray());
@@ -81,7 +81,30 @@ namespace F9S1.RememberMe
 
             if (input.Contains(';'))
             {
-                return ColonParse(betaInput, labels);
+                List<string> toBeChecked =  ColonParse(betaInput, labels);
+                if (toBeChecked[1].Length == 0)
+                {
+                    parsedInput.Add(Utility.ERROR);
+                    parsedInput.Add(Utility.ADD_INPUT_ERROR);
+                    return parsedInput;
+                }
+                if (toBeChecked[2] == Utility.DEFAULT_ERROR_DATE.ToString())
+                {
+                    parsedInput.Add(Utility.ERROR);
+                    parsedInput.Add(Utility.DATE_ERROR);
+                    return parsedInput;
+                }
+                if (toBeChecked[3].Length == 0)
+                {
+                    toBeChecked[3] = Utility.DEFAULT_LABEL;
+                }
+                else if (!CheckLabels(toBeChecked[3], labels))
+                {
+                    parsedInput.Add(Utility.ERROR);
+                    parsedInput.Add(Utility.LABEL_UNDEFINED_ERROR);
+                    return parsedInput;
+                }
+                return toBeChecked;
             }
             
             if (!(betaInput.Contains('#')))
@@ -92,21 +115,19 @@ namespace F9S1.RememberMe
                 {
                     if (betaParse[i].Contains('#'))         //last words
                     {
-                        if (labels.Contains(betaParse[i].ToLower()))
-                        {
-                            inputLabels.Add(betaParse[i]);
+                            inputLabels.Add(betaParse[i].Substring(1));
                             betaParse.RemoveAt(i);
-                        }
-                        else
-                        {
-                            parsedInput.Add(Utility.ERROR);
-                            parsedInput.Add(Utility.LABEL_UNDEFINED_ERROR);
-                            return parsedInput;
-                        }
                     }
                     else
                         i++;
                 }
+            }
+
+            if (!CheckLabels(inputLabels, labels))
+            {
+                parsedInput.Add(Utility.ERROR);
+                parsedInput.Add(Utility.LABEL_UNDEFINED_ERROR);
+                return parsedInput;
             }
 
             if (!(betaInput.Contains('@')))
@@ -153,6 +174,26 @@ namespace F9S1.RememberMe
             return parsedInput;
         }
 
+        private bool CheckLabels(string input, List<string> labels)
+        {
+            string[] inputSplit = input.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (string item in inputSplit)
+            {
+                if (!labels.Contains(item))
+                    return false;
+            }
+            return true;
+        }
+        private bool CheckLabels(List<string> input, List<string> labels)
+        {
+            foreach (string item in input)
+            {
+                if (!labels.Contains(item))
+                    return false;
+            }
+            return true;
+        }
+
         public List<string> LabelParse(string input, List<string> labels)
         {
             char[] splitter = new char[] { ' ' , ';'};
@@ -184,9 +225,13 @@ namespace F9S1.RememberMe
             {
                 int posmod = dateInput.IndexOf('%');
                 string next = dateInput.Substring(posmod + 1).Split(' ', ';')[0];
-                if (next == "w")
+                if (next == "w" || next == "weekly")
                 {
-                    interval = new TimeSpan(7, 0, 0, 0);
+                    interval = Utility.WEEK_INTERVAL;
+                }
+                else if (next == "m" || next == "monthly")
+                {
+                    interval = Utility.MONTH_INTERVAL;
                 }
                 else if (Char.IsDigit(next[0]))
                 {
@@ -204,11 +249,11 @@ namespace F9S1.RememberMe
         {
             List<string> betaInput = new List<string>(input.Split(';')), parsedInput = new List<string>();
             parsedInput.Add("add");
-            parsedInput.Add(betaInput[0].Trim());                           //Task Details 
-            parsedInput.Add(ToDate(betaInput[1].Trim()).ToString());        //Deadline
-            parsedInput.Add(betaInput[2].Trim().ToLower());                 //Labels
-            parsedInput.Add((betaInput[3].Trim().ToLower() == "high").ToString());//Priority
-            parsedInput.Add(GetRepeat(betaInput[1].Trim()).ToString());     //Repetition
+            parsedInput.Add(betaInput[0].Trim());                                       //Task Details 
+            parsedInput.Add(ToDate(betaInput[1].Trim().ToLower()).ToString());          //Deadline
+            parsedInput.Add(betaInput[2].Trim().ToLower());                             //Labels
+            parsedInput.Add((betaInput[3].Trim().ToLower() == "high").ToString());      //Priority
+            parsedInput.Add(GetRepeat(betaInput[1].Trim()).ToString());                 //Repetition
             return parsedInput;
         }
 
@@ -219,7 +264,7 @@ namespace F9S1.RememberMe
             List<string> parsedInput = new List<string>();
             if (inputCommand == Command.add)
             {
-                parsedInput = AddParse(input, labels);
+                parsedInput = SymbolParse(input, labels);
             }
             else if (inputCommand == Command.label)
             {
@@ -282,6 +327,8 @@ namespace F9S1.RememberMe
         }
         public DateTime ToDate(string toBeConverted)
         {
+            if (toBeConverted.Length == 0)
+                return Utility.DEFAULT_UNDEFINED_DATE;
             DateTime tempDate = new DateTime();
             if (isDayValid(toBeConverted.ToLower().Trim()))
             {

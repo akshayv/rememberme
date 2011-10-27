@@ -20,12 +20,14 @@ namespace F9S1.RememberMe
         public const string LABEL_INPUT_ERROR = "Input error. The correct way of adding/deleting a label is \"label add/delete <label name>\"";
         public const string ADD_INPUT_ERROR = "Add error. Input missing";
 
-        public const string DEFAULT_LABEL = "#others";
+        public const string DEFAULT_LABEL = "others";
         public const string DEFAULT_NO_TIME = "undefined";
         public const string FILE_SEPARATER = " ~~ ";
         public const string STARRED = "**";
         public const string UNSTARRED = "--";
 
+        public static TimeSpan WEEK_INTERVAL = new TimeSpan(7, 0, 0, 0);
+        public static TimeSpan MONTH_INTERVAL = new TimeSpan(30, 0, 0, 0);
         public static TimeSpan NO_INTERVAL = new TimeSpan(0, 0, 0, 0);
         public static DateTime DEFAULT_ERROR_DATE = DateTime.MinValue;
         public static DateTime DEFAULT_UNDEFINED_DATE = DateTime.MaxValue;

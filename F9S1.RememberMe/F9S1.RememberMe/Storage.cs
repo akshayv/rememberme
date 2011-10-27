@@ -28,8 +28,8 @@ namespace F9S1.RememberMe
             {
                 StreamWriter labelStream = new StreamWriter(labelFileName);
                 labelStream.WriteLine(Utility.DEFAULT_LABEL);
-                labelStream.WriteLine("#work");
-                labelStream.WriteLine("#home");
+                labelStream.WriteLine("work");
+                labelStream.WriteLine("home");
                 labelStream.Close();
             }
         }
@@ -70,7 +70,20 @@ namespace F9S1.RememberMe
 
         public void Log(string contents) //Exception if file is missing
         {
+            List<string> alreadyIn = new List<string>();
+            using (StreamReader reader = new StreamReader(labelFileName))
+            {
+                string line;
+                while ((line = reader.ReadLine()) != null)
+                {
+                    alreadyIn.Add(line);
+                }
+            }
             TextWriter writer = new StreamWriter(contentFileName);
+            foreach (string item in alreadyIn)
+            {
+                writer.WriteLine(item);
+            }
             writer.WriteLine(contents);
             writer.Close();
         }
