@@ -47,11 +47,11 @@ namespace F9S1.RememberMe
             store.Log(logInput);
         }
 
-        public List<string> CallSearch(string input)
-        {
-            List<string> tobeDisplayed = taskData.InstantSearch(input);
-            return tobeDisplayed;
-        }
+//        public List<string> CallSearch(string input)
+//        {
+//            List<string> tobeDisplayed = taskData.InstantSearch(input);
+//            return tobeDisplayed;
+//        }
 
         public void WriteToFile(List<Task> taskList)
         {

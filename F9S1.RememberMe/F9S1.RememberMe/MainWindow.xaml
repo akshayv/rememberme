@@ -18,7 +18,6 @@
         <Grid.Background>
             <ImageBrush ImageSource="/F9S1.RememberMe;component/Images/large_Abstract_Dark_Gray_Paper_Rape_Wallpaper_86207.jpg" />
         </Grid.Background>
-        <ListBox Margin="12,0,12,126" Name="outputBox" Foreground="#FFE10000" FontFamily="Courier New" Height="136" VerticalAlignment="Bottom"></ListBox>
         <Label Margin="12,0,12,12" Name="displayBox" Foreground="#FFEB1919" FontWeight="Bold" Height="49" VerticalAlignment="Bottom" />
         <TextBox Margin="12,0,12,65" Name="inputBox" KeyDown="inputBox_KeyDown" Foreground="#FF19580E" TextChanged="inputBox_TextChanged" PreviewKeyDown="inputBox_PreviewKeyDown" Height="52" VerticalAlignment="Bottom" />
         <Label Content="*" Height="28" HorizontalAlignment="Left" Margin="12,0,0,262" Name="labelStar" VerticalAlignment="Bottom" FontWeight="Bold" Foreground="#FFF8F2F2"></Label>
@@ -26,5 +25,14 @@
         <Label Content="DEADLINE" Height="28" HorizontalAlignment="Left" Margin="263,0,0,262" Name="label2" VerticalAlignment="Bottom" Width="78" FontWeight="Bold" Foreground="#FFF8F2F2"></Label>
         <Label Content="LABEL" Height="28" HorizontalAlignment="Right" Margin="0,0,78,262" Name="label3" VerticalAlignment="Bottom" Width="51" FontWeight="Bold" Foreground="#FFF8F2F2"></Label>
         <Label Content="ARCH." Height="28" HorizontalAlignment="Right" Margin="0,0,12,262" Name="label4" VerticalAlignment="Bottom" Width="47" FontWeight="Bold" Foreground="#FFF8F2F2"></Label>
+        <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding}" Margin="12,27,12,123" Name="dataGrid1" >
+            <DataGrid.Columns>
+                <DataGridCheckBoxColumn Header=" " Binding="{Binding IsStarred}"/>
+                <DataGridTextColumn Header="Details" Binding="{Binding Details}" />
+                <DataGridTextColumn Header="Deadline" Binding="{Binding Deadline}" />
+                <DataGridTextColumn Header="Label" Binding="{Binding Labels}" />
+                <DataGridCheckBoxColumn Header="Deadline" Binding="{Binding IsArchived}" />
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </Window>

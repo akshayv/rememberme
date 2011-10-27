@@ -43,6 +43,7 @@ namespace F9S1.RememberMe
         {
             initialiseNotificationIcon();
             dispatch = new Controller();
+            taskInfo = dispatch.GetTasks();
             try
             {
                 InitializeComponent();
@@ -52,6 +53,8 @@ namespace F9S1.RememberMe
                 dispatch.Log(e.StackTrace);
             }
             inputBox.Focus(); 
+           // SetDisplay();
+           // dataGrid1.DataContext = dispatch.GetTasks();
             SetDisplay();
             this.Dispatcher.BeginInvoke(DispatcherPriority.SystemIdle, new timeCheck(setAlarm));
         }
@@ -117,7 +120,6 @@ namespace F9S1.RememberMe
         }
         public void setAlarm()
         {
-            taskInfo = dispatch.GetTasks();
             bool isLabelNotArchive;
             bool isDeadlineReached;
 
@@ -198,13 +200,102 @@ namespace F9S1.RememberMe
             else if (input.Length < SORT_PRIORITY.Length && input.StartsWith("p") && input.Equals(SORT_PRIORITY.Substring(0, input.Length)))
                 AutoComplete(input, SORT_PRIORITY);
         }
+        private int findNumHits(Task check, string keyword)
+        {
+            int hitcount = 0;
+            if (check.Details.Contains(keyword))
+            {
+                hitcount++;
+            }
+            if (check.Labels.Contains(keyword))
+            {
+                hitcount++;
+            }
+            try
+            {
+                DateTime.Parse(keyword).ToString(Utility.DATE_FORMAT);
+                if (check.Deadline.ToString(Utility.DATE_FORMAT).Contains(DateTime.Parse(keyword).ToString(Utility.DATE_FORMAT)))
+                {
+                    hitcount++;
+                }
+
+            }
+            catch (Exception e)
+            {
+
+            }
+
+            return hitcount;
+        }
+        public List<string> InstantSearch(string input)
+        {
+            List<Task> taskList = taskInfo;
+            List<string> keywords = new List<string>(input.Split(' '));
+            for (int i = 0; i < keywords.Count; i++)
+                if (keywords[i].Equals(""))
+                    keywords.RemoveAt(i);
+            List<int> hitcount = new List<int>();
+            for (int i = 0; i < taskList.Count; i++)
+                hitcount.Add(0);
+            int maxhits = 0;
+            for (int i = 0; i < taskList.Count; i++)
+            {
+                for (int j = 0; j < keywords.Count; j++)
+                {
+                    if (taskList[i].ToString().Contains(keywords[j]))
+                    {
+                        hitcount[i]++;
+
+                        if (hitcount[i] > maxhits)
+                            maxhits = hitcount[i];
+                    }
+                }
+            }
+            List<string> temp = new List<string>();
+            for (int i = maxhits; i > 0; i--)
+            {
+                for (int j = 0; j < taskList.Count; j++)
+                    if (hitcount[j] == i)
+                        temp.Add(taskList[j].GetDisplay());
+            }
+
+            /*
+            for (int i = 0; i < taskList.Count; i++)
+            {
+                int flag = 0;
+                if (taskList[i].IsRepeat && taskList[i].IsArchived)
+                {
+                    flag++;
+                    continue;
+                }
+                for (int j = 0; j < i; j++)
+                {
+                    if (taskList[i].Interval.Days == 1 || taskList[i].Interval.Days == 2)
+                    {
+
+                        if (taskList[i].Details == taskList[j].Details//Since no two tasks can have same name except in this case
+                                 && taskList[i].Labels == taskList[j].Labels)
+                        {
+                            flag++;
+                            continue;
+                        }
+                    }
+                }
+
+                if (flag == 0)
+                    toBeDisplayed.Add(taskList[i]);
+            }
+            */
+            
+            return temp;
+        }
         private void inputBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             string passToRelegator = inputBox.Text;
             if (inputBox.Text != "" && inputBox.Text.Length > 5 && passToRelegator.Substring(0, 5) == "find;")
             {
                 string searchString = passToRelegator.Substring(5, passToRelegator.Length - 5);
-                SetOutputBox(dispatch.CallSearch(searchString));
+                SetOutputBox(InstantSearch(searchString));
                 return;
             }
             if (Keyboard.IsKeyDown(Key.Back))
@@ -217,7 +308,7 @@ namespace F9S1.RememberMe
             if (numberBackSpace == 0 && !inputBox.Text.Contains(' ') && !inputBox.Text.Contains(";"))
                 AutoComplete(inputBox.Text);
             numberBackSpace = 0;
-
+    
             string getCommand = "";
             if (inputBox.Text.Contains(";"))
             {
@@ -239,43 +330,27 @@ namespace F9S1.RememberMe
                             inputBox.Select(semicolonIndex + 1, inputBox.Text.Length - semicolonIndex);
                         }
                     }
-
                 }
             }
             numberBackSpace = 0;
             if (getCommand == "delete" || getCommand == "edit" || getCommand == "archive")
             {
-                int posOfSemi = inputBox.Text.IndexOf(";");
-                string wordToSearch = "";
+                int posOfSemi = inputBox.Text.LastIndexOf(";");
+                string wordToSearch = inputBox.Text.Substring(posOfSemi + 1);
                 if (posOfSemi != -1)
                 {
-                    for (int i = posOfSemi + 1; i < inputBox.Text.Length && inputBox.Text[i] != ';'; i++)
-                    {
-                        wordToSearch += inputBox.Text.ToLower()[i];
-                        List<string> toBeDisplay = dispatch.CallSearch(wordToSearch);
-                        outputBox.Items.Clear();
-                        for (int j = 0; j < toBeDisplay.Count; j++)
-                        {
-                            outputBox.Items.Add(toBeDisplay[j]);
-                        }
-                    }
+                        List<string> toBeDisplay = InstantSearch(wordToSearch);
+                        SetOutputBox(toBeDisplay);
                 }
             }
-
-
-            if (inputBox.Text.Length <= getCommand.Length + 1)
+        if (inputBox.Text.Length <= getCommand.Length + 1)
                 SetDisplay();
         }
         private void SetDisplay()
         {
-            outputBox.Items.Clear();
             taskDetails = dispatch.UserDispatch("display");
-            for (int i = 0; i < taskDetails.Count; i++)
-            {
-                outputBox.Items.Add(taskDetails[i]);
-            }
+            SetOutputBox(taskDetails);
         }
-
         private void setErrorLabel(string errorMessage)
         {
             displayBox.Content = errorMessage;
@@ -296,15 +371,19 @@ namespace F9S1.RememberMe
                     string input = inputBox.Text.ToString();
                     lastInput = input;
                     List<string> output = new List<string>(dispatch.UserDispatch(input));
-                    inputBox.Clear();
-                    displayBox.Content = "";
                     if (output[0] == Utility.ERROR)
                     {
                         inputBox.Text = input;
                         displayBox.Content = input + "\n" + output[1];
                     }
+                    else
+                    {
+                        inputBox.Text = "";
+                        displayBox.Content = "";
+                    }
                     SetOutputBox(dispatch.UserDispatch("display"));
                 }
+                taskInfo = dispatch.GetTasks();
             }
             else if (e.Key == Key.Escape)
             {
@@ -313,14 +392,12 @@ namespace F9S1.RememberMe
                 displayBox.Content = "";
             }
             if (inputBox.Text != "" && e.Key == Key.Tab)
-            { // List<string> taskDetails = directFunction.displayTasks();
+            {
                 string words = inputBox.Text.Substring(inputBox.Text.LastIndexOf(';') + 1).ToLower();
                 string temp = inputBox.Text.Substring(0, inputBox.Text.LastIndexOf(';') + 1);
                 if (temp == "delete;" || temp == "edit;" || temp == "archive;")
                 {
-                    List<string> toBeDisplay = dispatch.CallSearch(words);
-                    // while (toBeDisplay.Count != 0)
-
+                    List<string> toBeDisplay = InstantSearch(words);
                     if (toBeDisplay.Count != 0)
                     {
                         inputBox.Text = temp + autoCompleteSearch(words);
@@ -360,7 +437,7 @@ namespace F9S1.RememberMe
         }
         public string autoCompleteSearch(string input)
         {
-            List<Task> contents = dispatch.GetTasks();
+            List<Task> contents = taskInfo;
             List<string> keywords = new List<string>(input.Split(new char[]{' '}, StringSplitOptions.RemoveEmptyEntries));
             for (int i = 0; i < keywords.Count; i++)
                 if (keywords[i].Equals(""))
@@ -403,69 +480,24 @@ namespace F9S1.RememberMe
 
         private void SetOutputBox(List<string> output)
         {
-            outputBox.Items.Clear();
+            /*outputBox.Items.Clear();
             for (int i = 0; i < output.Count; i++)
                 outputBox.Items.Add(output[i]);
+        */
+            List<Task> temp = new List<Task>();
+            foreach(string item in output)
+            {
+                temp.Add(new Task(item));
+            }
+            
+            dataGrid1.DataContext = temp;
+            dataGrid1.Items.Refresh();
         }
+        
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             inputBox.Focus();
         }
     }
-    //public partial class MainWindow : Window
-    //{
-    //    Controller dispatch;
-
-    //    public MainWindow()
-    //    {
-    //        InitializeComponent();
-    //        dispatch = new Controller();
-    //        SetOutputBox(dispatch.userDispatch("display"));
-    //        inputBox.Focus();
-    //    }
-
-    //    private void Window_Loaded(object sender, RoutedEventArgs e)
-    //    {
-    //        inputBox.Focus();
-    //    }
-
-    //    private void SetOutputBox(List<string> output)
-    //    {
-    //        outputBox.Items.Clear();
-    //        for (int i = 0; i < output.Count; i++)
-    //            outputBox.Items.Add(output[i]);
-    //    }
-
-    //    private void inputBox_KeyDown(object sender, KeyEventArgs e)
-    //    {
-    //        if (e.Key == Key.Enter)
-    //        {
-    //            if (inputBox.Text.Trim() == "")
-    //            {
-    //                SetOutputBox(dispatch.userDispatch("display"));
-    //                dispatch.Status = Controller.State.normal;
-    //                displayBox.Content = "";
-    //            }
-    //            else
-    //            {
-    //                string input = inputBox.Text.ToString();
-    //                List<string> output = new List<string>(dispatch.userDispatch(input));
-    //                inputBox.Clear();
-    //                displayBox.Content = "";
-    //                if (output[0] == Utility.ERROR)
-    //                {
-    //                    inputBox.Text = input;
-    //                    displayBox.Content = input + "\n" + output[1];
-    //                }
-    //                SetOutputBox(dispatch.userDispatch("display"));
-    //            }
-    //        }
-    //        else if (e.Key == Key.Escape)
-    //        {
-    //            inputBox.Clear();
-    //            dispatch.Status = Controller.State.normal;
-    //            displayBox.Content = "";
-    //        }
-    //    }
-    }
+}
 

@@ -104,9 +104,7 @@ namespace F9S1.RememberMe
             IsStarred = Boolean.Parse(values[3]);
             IsArchived = false;
             Interval = TimeSpan.Parse(values[4]);
-            
         }
-
         public Task(string line)
         {
             List<string> values = FromString(line);
@@ -122,11 +120,11 @@ namespace F9S1.RememberMe
             
         }
         
-        public override int GetHashCode()
+/*        public override int GetHashCode()
         {
             return details.GetHashCode() + deadline.GetHashCode() + isStarred.GetHashCode() + labels.GetHashCode();
         }
-
+*/
         private List<string> FromString(string line)
         {
             return new List<string>(line.Split(new string[]{Utility.FILE_SEPARATER},StringSplitOptions.None));
@@ -208,7 +206,8 @@ namespace F9S1.RememberMe
             {
                 archives = "     ";
             } 
-            return stars + " " + SetLength(Details, 30) + " " + SetLength(Deadline.ToString(Utility.SHORT_DATE_FORMAT), 15) +  " " + SetLength(Labels.Split(new char[] { ' ', ';' }, StringSplitOptions.RemoveEmptyEntries)[0].Trim(), 8) + " " + archives;
+            //return stars + " " + SetLength(Details, 30) + " " + SetLength(Deadline.ToString(Utility.SHORT_DATE_FORMAT), 15) +  " " + SetLength(Labels.Split(new char[] { ' ', ';' }, StringSplitOptions.RemoveEmptyEntries)[0].Trim(), 8) + " " + archives;
+            return this.ToString();
         }
     }
 }
