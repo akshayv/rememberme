@@ -223,7 +223,7 @@ namespace F9S1.RememberMe
             {
                 archives = "     ";
             } 
-            return stars + " " + SetLength(Details, 30) + " " + SetLength(ShortenDeadline(Deadline.ToString()), 15) +  " " + SetLength(Labels.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)[0].Trim(), 8) + " " + archives;
+            return stars + " " + SetLength(Details, 30) + " " + SetLength(ShortenDeadline(Deadline.ToString()), 15) +  " " + SetLength(Labels.Split(new char[] { ' ', ';' }, StringSplitOptions.RemoveEmptyEntries)[0].Trim(), 8) + " " + archives;
         }
     }
 }

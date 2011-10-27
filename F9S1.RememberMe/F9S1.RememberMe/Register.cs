@@ -166,27 +166,7 @@ namespace F9S1.RememberMe
             return toBeFound;
         }
 
-        int CompareByDeadline(Task first, Task second)
-        {
-            return first.Deadline.CompareTo(second.Deadline);
-        }
-        public bool SortDeadline()
-        {
-            taskList.Sort(CompareByPriority);
-            taskList.Sort(CompareByDeadline);
-            return true;
-        }
-
-        int CompareByPriority(Task first, Task second)
-        {
-            return first.IsStarred.CompareTo(second.IsStarred);
-        }
-        public bool SortPriority()
-        {
-            taskList.Sort(CompareByDeadline);
-            taskList.Sort(CompareByPriority);
-            return true;
-        }
+        
         public List<string> Display()
         {
             List<string> taskDetails = new List<string>();

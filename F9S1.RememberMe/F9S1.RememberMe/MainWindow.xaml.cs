@@ -251,7 +251,7 @@ namespace F9S1.RememberMe
                 {
                     for (int i = posOfSemi + 1; i < inputBox.Text.Length && inputBox.Text[i] != ';'; i++)
                     {
-                        wordToSearch += inputBox.Text[i];
+                        wordToSearch += inputBox.Text.ToLower()[i];
                         List<string> toBeDisplay = dispatch.CallSearch(wordToSearch);
                         outputBox.Items.Clear();
                         for (int j = 0; j < toBeDisplay.Count; j++)
@@ -314,7 +314,7 @@ namespace F9S1.RememberMe
             }
             if (inputBox.Text != "" && e.Key == Key.Tab)
             { // List<string> taskDetails = directFunction.displayTasks();
-                string words = inputBox.Text.Substring(inputBox.Text.LastIndexOf(';') + 1);
+                string words = inputBox.Text.Substring(inputBox.Text.LastIndexOf(';') + 1).ToLower();
                 string temp = inputBox.Text.Substring(0, inputBox.Text.LastIndexOf(';') + 1);
                 if (temp == "delete;" || temp == "edit;" || temp == "archive;")
                 {
@@ -361,7 +361,7 @@ namespace F9S1.RememberMe
         public string autoCompleteSearch(string input)
         {
             List<Task> contents = dispatch.GetTasks();
-            List<string> keywords = new List<string>(input.Split(' '));
+            List<string> keywords = new List<string>(input.Split(new char[]{' '}, StringSplitOptions.RemoveEmptyEntries));
             for (int i = 0; i < keywords.Count; i++)
                 if (keywords[i].Equals(""))
                     keywords.RemoveAt(i);
