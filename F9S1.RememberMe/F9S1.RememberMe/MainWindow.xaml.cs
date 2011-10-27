@@ -371,7 +371,7 @@ namespace F9S1.RememberMe
                     string input = inputBox.Text.ToString();
                     lastInput = input;
                     List<string> output = new List<string>(dispatch.UserDispatch(input));
-                    if (output[0] == Utility.ERROR)
+                    if (output.Count > 0 && output[0] == Utility.ERROR)
                     {
                         inputBox.Text = input;
                         displayBox.Content = input + "\n" + output[1];

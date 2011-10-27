@@ -31,7 +31,7 @@
                 <DataGridTextColumn Header="Details" Binding="{Binding Details}" />
                 <DataGridTextColumn Header="Deadline" Binding="{Binding Deadline}" />
                 <DataGridTextColumn Header="Label" Binding="{Binding Labels}" />
-                <DataGridCheckBoxColumn Header="Deadline" Binding="{Binding IsArchived}" />
+                <DataGridCheckBoxColumn Header="Archived" Binding="{Binding IsArchived}" />
             </DataGrid.Columns>
         </DataGrid>
     </Grid>
