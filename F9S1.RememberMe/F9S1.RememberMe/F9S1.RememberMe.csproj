@@ -61,7 +61,6 @@
       <DependentUpon>Alarm.xaml</DependentUpon>
     </Compile>
     <Compile Include="Register.cs" />
-    <Compile Include="TimePass.cs" />
     <Compile Include="Utility.cs" />
     <Compile Include="Parser.cs" />
     <Compile Include="Controller.cs" />
