@@ -211,8 +211,8 @@ namespace F9S1.RememberMe
             }
             try
             {
-                DateTime.Parse(keyword).ToString();
-                if (check.Deadline.ToString().Contains(DateTime.Parse(keyword).ToString()))
+                DateTime.Parse(keyword).ToString(Utility.DATE_FORMAT);
+                if (check.Deadline.ToString(Utility.DATE_FORMAT).Contains(DateTime.Parse(keyword).ToString(Utility.DATE_FORMAT)))
                 {
                     hitcount++;
                 }

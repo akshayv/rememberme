@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual C# Express 2010
+# Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "F9S1.RememberMe", "F9S1.RememberMe\F9S1.RememberMe.csproj", "{CF96C4B1-054D-46CC-A552-2A019CFDED9A}"
 EndProject
 Global

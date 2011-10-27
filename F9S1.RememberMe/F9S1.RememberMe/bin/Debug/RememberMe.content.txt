@@ -1,3 +1,12 @@
-inian ~~ 28/10/2011 12:00:00 AM ~~     others ~~ True ~~ True ~~ 00:00:00
-call Monica ~~ 27/10/2011 5:00:00 PM ~~    home ~~ True ~~ False ~~ 00:00:00
-call sid and tell him to send updated files ~~ 27/10/2011 9:00:00 PM ~~  work ~~ False ~~ False ~~ 00:00:00
+dabba ~~ 31 Dec 9999 23:59 ~~     others ~~ False ~~ False ~~ 00:00:00
+dabba(1) ~~ 31 Dec 9999 23:59 ~~     others ~~ False ~~ False ~~ 00:00:00
+today ~~ 27 Oct 2011 18:12 ~~     others ~~ False ~~ True ~~ 00:00:00
+quiet ~~ 31 Dec 9999 23:59 ~~    others ~~ False ~~ False ~~ 00:00:00
+my name is inian ~~ 31 Dec 9999 23:59 ~~   others ~~ False ~~ False ~~ 00:00:00
+quite happy today ~~ 31 Dec 9999 23:59 ~~   others ~~ False ~~ False ~~ 00:00:00
+quit my school ~~ 31 Dec 9999 23:59 ~~   others ~~ False ~~ False ~~ 00:00:00
+quit my ~~ 31 Dec 9999 23:59 ~~   others ~~ False ~~ False ~~ 00:00:00
+quit                   stupid test ~~ 31 Dec 9999 23:59 ~~   others ~~ False ~~ False ~~ 00:00:00
+quite ~~ 31 Dec 9999 23:59 ~~  others ~~ False ~~ False ~~ 00:00:00
+exitioin ~~ 31 Dec 9999 23:59 ~~  others ~~ False ~~ False ~~ 00:00:00
+exitquit ~~ 31 Dec 9999 23:59 ~~  others ~~ False ~~ False ~~ 00:00:00

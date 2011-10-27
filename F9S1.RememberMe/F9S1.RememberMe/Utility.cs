@@ -20,6 +20,9 @@ namespace F9S1.RememberMe
         public const string LABEL_INPUT_ERROR = "Input error. The correct way of adding/deleting a label is \"label add/delete <label name>\"";
         public const string ADD_INPUT_ERROR = "Add error. Input missing";
 
+        public const string DATE_FORMAT = "dd MMM yyyy HH:mm";
+        public const string SHORT_DATE_FORMAT = "dd/MMM hh:mm";
+
         public const string DEFAULT_LABEL = "others";
         public const string DEFAULT_NO_TIME = "undefined";
         public const string FILE_SEPARATER = " ~~ ";

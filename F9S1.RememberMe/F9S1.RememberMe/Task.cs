@@ -132,18 +132,6 @@ namespace F9S1.RememberMe
             return new List<string>(line.Split(new string[]{Utility.FILE_SEPARATER},StringSplitOptions.None));
         }
 
-        private string ShortenDeadline(string longer)
-        {
-            if (longer == "")
-                return "";
-            else
-            {
-                DateTime longDeadline = DateTime.Parse(longer);
-                return String.Concat(SetIntLength(longDeadline.Day.ToString(), 2), "/", SetIntLength(longDeadline.Month.ToString(), 2), " ",
-                                     SetIntLength(longDeadline.Hour.ToString(),2), ":", SetIntLength(longDeadline.Minute.ToString(), 2));
-            }
-        }
-
         private string SetIntLength(string shortInt, int length)
         {
             int difference = length - shortInt.Length;
@@ -157,7 +145,7 @@ namespace F9S1.RememberMe
 
         public override string ToString()
         {
-            return Details + Utility.FILE_SEPARATER + Deadline.ToString() + Utility.FILE_SEPARATER + Labels + Utility.FILE_SEPARATER + IsStarred.ToString() + Utility.FILE_SEPARATER + IsArchived.ToString() + Utility.FILE_SEPARATER + Interval.ToString();
+            return Details + Utility.FILE_SEPARATER + Deadline.ToString(Utility.DATE_FORMAT) + Utility.FILE_SEPARATER + Labels + Utility.FILE_SEPARATER + IsStarred.ToString() + Utility.FILE_SEPARATER + IsArchived.ToString() + Utility.FILE_SEPARATER + Interval.ToString();
         }
 
         public override bool Equals(object compareObject)
@@ -220,7 +208,7 @@ namespace F9S1.RememberMe
             {
                 archives = "     ";
             } 
-            return stars + " " + SetLength(Details, 30) + " " + SetLength(ShortenDeadline(Deadline.ToString()), 15) +  " " + SetLength(Labels.Split(new char[] { ' ', ';' }, StringSplitOptions.RemoveEmptyEntries)[0].Trim(), 8) + " " + archives;
+            return stars + " " + SetLength(Details, 30) + " " + SetLength(Deadline.ToString(Utility.SHORT_DATE_FORMAT), 15) +  " " + SetLength(Labels.Split(new char[] { ' ', ';' }, StringSplitOptions.RemoveEmptyEntries)[0].Trim(), 8) + " " + archives;
         }
     }
 }

@@ -63,8 +63,8 @@ namespace F9S1.RememberMe
         {
             if (input.Trim().Length > 3)
             {
-                if (input.Trim().Substring(0, 4).Trim().ToLower().Equals("exit") ||
-                    input.Trim().Substring(0, 4).Trim().ToLower().Equals("quit"))
+                if (input.Trim().ToLower().Equals("exit") ||
+                    input.Trim().ToLower().Equals("quit"))
                 {
                     Environment.Exit(0);
                 }

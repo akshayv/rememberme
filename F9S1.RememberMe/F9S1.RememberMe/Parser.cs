@@ -88,7 +88,7 @@ namespace F9S1.RememberMe
                     parsedInput.Add(Utility.ADD_INPUT_ERROR);
                     return parsedInput;
                 }
-                if (toBeChecked[2] == Utility.DEFAULT_ERROR_DATE.ToString())
+                if (toBeChecked[2] == Utility.DEFAULT_ERROR_DATE.ToString(Utility.DATE_FORMAT))
                 {
                     parsedInput.Add(Utility.ERROR);
                     parsedInput.Add(Utility.DATE_ERROR);
@@ -155,7 +155,7 @@ namespace F9S1.RememberMe
                     return parsedInput;
                 }
                 else
-                    taskTime = deadline.ToString();
+                    taskTime = deadline.ToString(Utility.DATE_FORMAT);
             }
 
             if (taskDetails == null || taskDetails == "")
@@ -250,7 +250,7 @@ namespace F9S1.RememberMe
             List<string> betaInput = new List<string>(input.Split(';')), parsedInput = new List<string>();
             parsedInput.Add("add");
             parsedInput.Add(betaInput[0].Trim());                                       //Task Details 
-            parsedInput.Add(ToDate(betaInput[1].Trim().ToLower()).ToString());          //Deadline
+            parsedInput.Add(ToDate(betaInput[1].Trim().ToLower()).ToString(Utility.DATE_FORMAT));          //Deadline
             parsedInput.Add(betaInput[2].Trim().ToLower());                             //Labels
             parsedInput.Add((betaInput[3].Trim().ToLower() == "high").ToString());      //Priority
             parsedInput.Add(GetRepeat(betaInput[1].Trim()).ToString());                 //Repetition
