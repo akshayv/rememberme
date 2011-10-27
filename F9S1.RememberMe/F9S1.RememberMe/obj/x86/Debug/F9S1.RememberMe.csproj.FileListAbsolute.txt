@@ -41,3 +41,21 @@ C:\Users\inian\Documents\Visual Studio 2010\Projects\rememberme v0.2\remembermef
 C:\Users\inian\Documents\Visual Studio 2010\Projects\rememberme v0.2\remembermef9s1\F9S1.RememberMe\F9S1.RememberMe\obj\x86\Debug\GenerateResource.write.1.tlog
 C:\Users\inian\Documents\Visual Studio 2010\Projects\rememberme v0.2\remembermef9s1\F9S1.RememberMe\F9S1.RememberMe\obj\x86\Debug\F9S1.RememberMe.exe
 C:\Users\inian\Documents\Visual Studio 2010\Projects\rememberme v0.2\remembermef9s1\F9S1.RememberMe\F9S1.RememberMe\obj\x86\Debug\F9S1.RememberMe.pdb
+C:\Users\Akshay.Akshay-PC\Documents\Visual Studio 2010\Projects\Remem1\remembermef9s1\F9S1.RememberMe\F9S1.RememberMe\obj\x86\Debug\F9S1.RememberMe.exe
+C:\Users\Akshay.Akshay-PC\Documents\Visual Studio 2010\Projects\Remem1\remembermef9s1\F9S1.RememberMe\F9S1.RememberMe\obj\x86\Debug\F9S1.RememberMe.pdb
+C:\Users\Akshay.Akshay-PC\Documents\Visual Studio 2010\Projects\Remem1\remembermef9s1\F9S1.RememberMe\F9S1.RememberMe\bin\Debug\F9S1.RememberMe.exe
+C:\Users\Akshay.Akshay-PC\Documents\Visual Studio 2010\Projects\Remem1\remembermef9s1\F9S1.RememberMe\F9S1.RememberMe\bin\Debug\F9S1.RememberMe.pdb
+C:\Users\Akshay.Akshay-PC\Documents\Visual Studio 2010\Projects\Remem1\remembermef9s1\F9S1.RememberMe\F9S1.RememberMe\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\Akshay.Akshay-PC\Documents\Visual Studio 2010\Projects\Remem1\remembermef9s1\F9S1.RememberMe\F9S1.RememberMe\obj\x86\Debug\Alarm.baml
+C:\Users\Akshay.Akshay-PC\Documents\Visual Studio 2010\Projects\Remem1\remembermef9s1\F9S1.RememberMe\F9S1.RememberMe\obj\x86\Debug\MainWindow.baml
+C:\Users\Akshay.Akshay-PC\Documents\Visual Studio 2010\Projects\Remem1\remembermef9s1\F9S1.RememberMe\F9S1.RememberMe\obj\x86\Debug\Alarm.g.cs
+C:\Users\Akshay.Akshay-PC\Documents\Visual Studio 2010\Projects\Remem1\remembermef9s1\F9S1.RememberMe\F9S1.RememberMe\obj\x86\Debug\MainWindow.g.cs
+C:\Users\Akshay.Akshay-PC\Documents\Visual Studio 2010\Projects\Remem1\remembermef9s1\F9S1.RememberMe\F9S1.RememberMe\obj\x86\Debug\App.g.cs
+C:\Users\Akshay.Akshay-PC\Documents\Visual Studio 2010\Projects\Remem1\remembermef9s1\F9S1.RememberMe\F9S1.RememberMe\obj\x86\Debug\F9S1.RememberMe_MarkupCompile.cache
+C:\Users\Akshay.Akshay-PC\Documents\Visual Studio 2010\Projects\Remem1\remembermef9s1\F9S1.RememberMe\F9S1.RememberMe\obj\x86\Debug\F9S1.RememberMe.g.resources
+C:\Users\Akshay.Akshay-PC\Documents\Visual Studio 2010\Projects\Remem1\remembermef9s1\F9S1.RememberMe\F9S1.RememberMe\obj\x86\Debug\F9S1.RememberMe.Properties.Resources.resources
+C:\Users\Akshay.Akshay-PC\Documents\Visual Studio 2010\Projects\Remem1\remembermef9s1\F9S1.RememberMe\F9S1.RememberMe\obj\x86\Debug\GenerateResource.read.1.tlog
+C:\Users\Akshay.Akshay-PC\Documents\Visual Studio 2010\Projects\Remem1\remembermef9s1\F9S1.RememberMe\F9S1.RememberMe\obj\x86\Debug\GenerateResource.write.1.tlog
+C:\Users\Akshay.Akshay-PC\Documents\Visual Studio 2010\Projects\Remem1\remembermef9s1\F9S1.RememberMe\F9S1.RememberMe\bin\Debug\NLog.dll
+C:\Users\Akshay.Akshay-PC\Documents\Visual Studio 2010\Projects\Remem1\remembermef9s1\F9S1.RememberMe\F9S1.RememberMe\bin\Debug\NLog.xml
+C:\Users\Akshay.Akshay-PC\Documents\Visual Studio 2010\Projects\Remem1\remembermef9s1\F9S1.RememberMe\F9S1.RememberMe\bin\Debug\NLog.config

@@ -42,10 +42,7 @@ namespace F9S1.RememberMe
         {
             return taskData.TaskList;
         }
-        public void Log(string logInput)
-        {
-            store.Log(logInput);
-        }
+     
 
 //        public List<string> CallSearch(string input)
 //        {

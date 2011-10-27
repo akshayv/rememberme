@@ -3,29 +3,30 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using NLog;
+using System.Diagnostics;
 
 namespace F9S1.RememberMe
 {
     class Storage
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
         string contentFileName = "RememberMe.content.txt";
         string labelFileName = "RememberMe.labels.txt";
-        string logFileName = "RememberMe.logs.txt";
         public Storage()
         {
             
             if (!File.Exists(contentFileName))
             {
+                logger.Warn("Contents file did not exist");
                 StreamWriter contentStream = new StreamWriter(contentFileName);
                 contentStream.Close();
             }
-            if (!File.Exists(logFileName))
-            {
-                StreamWriter logStream = new StreamWriter(logFileName);
-                logStream.Close();
-            }
+            
             if (!File.Exists(labelFileName))
             {
+
+                logger.Warn("Label file did not exist");
                 StreamWriter labelStream = new StreamWriter(labelFileName);
                 labelStream.WriteLine(Utility.DEFAULT_LABEL);
                 labelStream.WriteLine("work");
@@ -46,60 +47,89 @@ namespace F9S1.RememberMe
 
         public List<string> ReadLabels() //Exception if file is missing
         {
-            List<string> labels = new List<string>();
-            using (StreamReader reader = new StreamReader(labelFileName))
+            try
             {
-                string line;
-                while ((line = reader.ReadLine()) != null)
+                List<string> labels = new List<string>();
+                using (StreamReader reader = new StreamReader(labelFileName))
                 {
-                    labels.Add(line);
+                    string line;
+                    while ((line = reader.ReadLine()) != null)
+                    {
+                        labels.Add(line);
+                    }
                 }
+                return labels;
             }
-            return labels;
-        }
+            catch (FileNotFoundException e)
+            {
+                logger.Error("Label File not found");
+           
+                File.Create(labelFileName);
+
+            }
+            catch (Exception e)
+            {
+                logger.Error("Label File unknown error");
+            }
+
+            List<string> dummy = new List<String>();
+            return dummy;
+          }
 
         public void WriteTasks(List<string> contents) //Exception if file is missing
         {
-            TextWriter writer = new StreamWriter(contentFileName);
-            for (int i = 0; i < contents.Count; i++)
+            try
             {
-                writer.WriteLine(contents[i]);
-            }
-            writer.Close();
-        }
-
-        public void Log(string contents) //Exception if file is missing
-        {
-            List<string> alreadyIn = new List<string>();
-            using (StreamReader reader = new StreamReader(labelFileName))
-            {
-                string line;
-                while ((line = reader.ReadLine()) != null)
+                TextWriter writer = new StreamWriter(contentFileName);
+                for (int i = 0; i < contents.Count; i++)
                 {
-                    alreadyIn.Add(line);
+                    writer.WriteLine(contents[i]);
                 }
+                writer.Close();
             }
-            TextWriter writer = new StreamWriter(contentFileName);
-            foreach (string item in alreadyIn)
+            catch (FileNotFoundException e)
             {
-                writer.WriteLine(item);
+                logger.Error("Label File not found");
+                File.Create(contentFileName);
+
             }
-            writer.WriteLine(contents);
-            writer.Close();
+            catch (Exception e)
+            {
+                logger.Error("Label File unknown error");
+            }
         }
 
+        
         public List<string> ReadTasks() //Exception if file is missing
         {
-            List<string> contents = new List<string>();
-            using (StreamReader reader = new StreamReader(contentFileName))
+            try
             {
-                string line;
-                while ((line = reader.ReadLine()) != null)
+                List<string> contents = new List<string>();
+                using (StreamReader reader = new StreamReader(contentFileName))
                 {
-                    contents.Add(line);
+
+                    string line;
+                    while ((line = reader.ReadLine()) != null)
+                    {
+                        contents.Add(line);
+                    }
                 }
+                return contents;
+
             }
-            return contents;
-        }
+            catch (FileNotFoundException e)
+            {
+                logger.Error("Contents File not found");
+                File.Create(contentFileName);
+
+            }
+            catch (Exception e)
+            {
+                logger.Error("File unknown error");
+            } 
+            List<string> dummy = new List<String>();
+            return dummy;
+            }
+
     }
 }

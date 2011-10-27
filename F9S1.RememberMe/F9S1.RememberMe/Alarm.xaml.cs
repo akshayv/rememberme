@@ -19,6 +19,7 @@ namespace F9S1.RememberMe
     /// </summary>
     public partial class Alarm : Window
     {
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
         String taskName;
         int[] time;
         public delegate void timeCheck();
@@ -75,7 +76,6 @@ namespace F9S1.RememberMe
             this.Close();
         }
 
-
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
@@ -112,6 +112,8 @@ namespace F9S1.RememberMe
             }
             catch (Exception a)
             {
+
+                logger.Warn("Incorrect days format");
                 days.Text = "0";
                 days.Select(0, 1);
             }
@@ -132,6 +134,8 @@ namespace F9S1.RememberMe
             }
             catch (Exception a)
             {
+
+                logger.Warn("Incorrect hours format");
                 hours.Text = "0";
                 hours.Select(0, 1);
             }
@@ -152,6 +156,7 @@ namespace F9S1.RememberMe
             }
             catch (Exception a)
             {
+                logger.Warn("Incorrect minutes format");  
                 minutes.Text = "0";
                 minutes.Select(0, 1);
             }

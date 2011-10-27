@@ -13,6 +13,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using System.ComponentModel;
+using System.IO;
+using System.Diagnostics;
 
 namespace F9S1.RememberMe
 {
@@ -36,7 +38,7 @@ namespace F9S1.RememberMe
         const string DEADLINE = "deadline";
         const string ARCHIVE_COMMAND = "archive";
         const string CLEAR_COMMAND = "clear";
-
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
         int numberBackSpace = 0;
         string[] userPrompts = { "", "details", "deadline", "label", "priority"};
         public MainWindow()
@@ -50,7 +52,8 @@ namespace F9S1.RememberMe
             }
             catch (Exception e)
             {
-                dispatch.Log(e.StackTrace);
+                logger.Error(e.StackTrace);
+                //dispatch.Log(e.StackTrace);
             }
             inputBox.Focus(); 
            // SetDisplay();
@@ -64,7 +67,7 @@ namespace F9S1.RememberMe
             m_notifyIcon.BalloonTipText = "Remember Me has been minimised. Click the tray icon to show.";
             m_notifyIcon.BalloonTipTitle = "Remember Me";
             m_notifyIcon.Text = "Remember Me";
-            m_notifyIcon.Icon = new System.Drawing.Icon("AddedIcon.ico");
+           m_notifyIcon.Icon = new System.Drawing.Icon("AddedIcon.ico");
             m_notifyIcon.Click += new EventHandler(m_notifyIcon_Click);
         }
         private void OnClose(object sender, System.ComponentModel.CancelEventArgs e)
@@ -140,6 +143,7 @@ namespace F9S1.RememberMe
                     }
                     else
                     {
+                        //Debug.Assert(taskInfo != null);
                         updateDeadline(ref taskInfo, time, i);
                     }
                     dispatch.WriteToFile(taskInfo);
@@ -159,6 +163,7 @@ namespace F9S1.RememberMe
         }
         private int numberOfSemiColon(String text)
         {
+            Debug.Assert(text == null);
             int count = 0;
             for (int i = 0; i < text.Length; i++)
             {
@@ -171,6 +176,7 @@ namespace F9S1.RememberMe
         }
         private void AutoComplete(String input)
         {
+            //Debug.Assert(input==null);
             if (input.Equals(""))
                 return;
             else if (input.Length < ARCHIVE_COMMAND.Length && input.StartsWith("ar") && input.Equals(ARCHIVE_COMMAND.Substring(0, input.Length)))

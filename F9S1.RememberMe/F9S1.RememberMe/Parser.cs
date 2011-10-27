@@ -23,6 +23,7 @@ namespace F9S1.RememberMe
 
     class Parser
     {
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
         public Parser()
         {
 
@@ -57,9 +58,25 @@ namespace F9S1.RememberMe
                     return Command.add;
             }
         }
+
+        private void addSemiCol(ref string input)
+        {
+            int count = 0;
+                for (int i = 0; i < input.Length; i++)
+                {
+                    if (input[i] == ';')
+                    {
+                        count++;
+                    }
+                }
+                int numOfSemi = 4;
+                for (int i = 0; i < numOfSemi - count; i++)
+                    input += ";";
+           }
+
         public List<string> SymbolParse(string input, List<string> labels)
         {
-            List<string> parsedInput = new List<string>(), inputLabels = new List<string>(), betaParse = new List<string>(input.Split(new Char[] { ' ', ';' }, StringSplitOptions.RemoveEmptyEntries)); ;
+            List<string> parsedInput = new List<string>(), inputLabels = new List<string>(), betaParse = new List<string>(input.Split(new Char[] { ' ', ';' })); ;
             string commandName, taskInterval, taskDetails, taskTime, betaInput = new string(input.ToCharArray());
             DateTime deadline;
             bool hasStars = betaInput.Contains("**");
@@ -68,7 +85,7 @@ namespace F9S1.RememberMe
             commandName = "add";
             if (betaParse[0].Trim().ToLower().Equals("add"))
             {
-                string[] temp = betaInput.Split(new Char[] { ' ' , ';'}, 2, StringSplitOptions.RemoveEmptyEntries);
+                string[] temp = betaInput.Split(new Char[] { ' ' , ';'}, 2);
                 if (temp.Length < 2)
                 {
                     parsedInput.Add(Utility.ERROR);
@@ -81,25 +98,32 @@ namespace F9S1.RememberMe
 
             if (input.Contains(';'))
             {
+                addSemiCol(ref input);
+                addSemiCol(ref betaInput);
                 List<string> toBeChecked =  ColonParse(betaInput, labels);
                 if (toBeChecked[1].Length == 0)
                 {
+                    logger.Info("No name entered");
                     parsedInput.Add(Utility.ERROR);
                     parsedInput.Add(Utility.ADD_INPUT_ERROR);
                     return parsedInput;
                 }
                 if (toBeChecked[2] == Utility.DEFAULT_ERROR_DATE.ToString(Utility.DATE_FORMAT))
                 {
+                    logger.Info("Incorrect Date format");
+            
                     parsedInput.Add(Utility.ERROR);
                     parsedInput.Add(Utility.DATE_ERROR);
                     return parsedInput;
                 }
                 if (toBeChecked[3].Length == 0)
-                {
+                {   
                     toBeChecked[3] = Utility.DEFAULT_LABEL;
                 }
                 else if (!CheckLabels(toBeChecked[3], labels))
                 {
+
+                    logger.Info("Label not found");
                     parsedInput.Add(Utility.ERROR);
                     parsedInput.Add(Utility.LABEL_UNDEFINED_ERROR);
                     return parsedInput;
@@ -125,6 +149,8 @@ namespace F9S1.RememberMe
 
             if (!CheckLabels(inputLabels, labels))
             {
+                logger.Info("Label not found");
+                  
                 parsedInput.Add(Utility.ERROR);
                 parsedInput.Add(Utility.LABEL_UNDEFINED_ERROR);
                 return parsedInput;
@@ -150,6 +176,7 @@ namespace F9S1.RememberMe
                 deadline = ToDate(taskTime);
                 if (deadline.Equals(Utility.DEFAULT_ERROR_DATE))
                 {
+                    logger.Info("Incorrect Date Format");
                     parsedInput.Add(Utility.ERROR);
                     parsedInput.Add(Utility.DATE_ERROR);
                     return parsedInput;
@@ -248,14 +275,65 @@ namespace F9S1.RememberMe
         public List<string> ColonParse(string input, List<string> labels)
         {
             List<string> betaInput = new List<string>(input.Split(';')), parsedInput = new List<string>();
-            parsedInput.Add("add");
-            parsedInput.Add(betaInput[0].Trim());                                       //Task Details 
-            parsedInput.Add(ToDate(betaInput[1].Trim().ToLower()).ToString(Utility.DATE_FORMAT));          //Deadline
-            parsedInput.Add(betaInput[2].Trim().ToLower());                             //Labels
-            parsedInput.Add((betaInput[3].Trim().ToLower() == "high").ToString());      //Priority
-            parsedInput.Add(GetRepeat(betaInput[1].Trim()).ToString());                 //Repetition
+            
+                parsedInput.Add("add");
+                try
+                {
+                    parsedInput.Add(betaInput[0].Trim());
+                }                                       //Task Details 
+                catch (Exception e)
+                {
+                    logger.Error("Details null");
+                    parsedInput.Add("");
+                }
+               
+            try
+                {
+                    parsedInput.Add(ToDate(betaInput[1].Trim().ToLower()).ToString(Utility.DATE_FORMAT));          //Deadline
+                }
+            catch (Exception e)
+            {
+                parsedInput.Add("");
+                logger.Error("Deadline null");
+            }
+           
+            try
+                {
+                    parsedInput.Add(betaInput[2].Trim().ToLower());                             //Labels
+                }
+           
+               catch (Exception e)
+                {
+                   
+                    logger.Error("Label null");
+                    parsedInput.Add("");
+                }
+               try
+                {
+                    parsedInput.Add((betaInput[3].Trim().ToLower() == "high").ToString());      //Priority
+                }
+                 catch (Exception e)
+                {
+                     
+                    logger.Error("Priority null");
+                    parsedInput.Add("");
+                }
+               
+                try
+                {
+                    parsedInput.Add(GetRepeat(betaInput[1].Trim()).ToString());                 //Repetition
+                }
+                catch (Exception e)
+                {
+                    parsedInput.Add("");
+
+                    logger.Error("isRepeat null");
+                }
+               
             return parsedInput;
-        }
+
+            }
+           
 
         public List<string> InputParse(string input, List<string> labels)
         {

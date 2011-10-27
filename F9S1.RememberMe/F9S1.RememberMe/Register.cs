@@ -7,6 +7,7 @@ namespace F9S1.RememberMe
 {
     class Register
     {
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
         List<Task> taskList;
         public List<Task> TaskList
         {
@@ -82,6 +83,8 @@ namespace F9S1.RememberMe
                     newDetails = taskDetails + "(" + count + ")";
                 }
             }
+            if (isModified)
+                logger.Info("Task with same name exists");
             return newDetails;
         }
 
@@ -163,6 +166,8 @@ namespace F9S1.RememberMe
                     toBeFound = taskList[i];
                 }
             }
+
+            logger.Info("Task not found");
             return toBeFound;
         }
 
@@ -183,6 +188,8 @@ namespace F9S1.RememberMe
                 taskList = new List<Task>(undoStack.Peek());
                 return true;
             }
+
+            logger.Info("No more undos");
             return false;
         }
         public bool RedoAction()
@@ -193,6 +200,9 @@ namespace F9S1.RememberMe
                 undoStack.Push(new List<Task>(taskList));
                 return true;
             }
+
+            logger.Info("No more redos");
+            
             return false;
         }
 

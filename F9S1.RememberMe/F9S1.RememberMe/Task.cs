@@ -8,7 +8,7 @@ namespace F9S1.RememberMe
 {
     class Task
     {
-        private string details;     //No semicolons
+         private string details;     //No semicolons
         public string Details       //Property
         {
             get
@@ -17,7 +17,6 @@ namespace F9S1.RememberMe
             }
             set
             {
-                Debug.Assert(value != null);
                 details = value;
             }
         }
@@ -31,7 +30,6 @@ namespace F9S1.RememberMe
             }
             set
             {
-                Debug.Assert(value != null);
                 deadline = value ;          
             }
         }
@@ -55,7 +53,7 @@ namespace F9S1.RememberMe
         public bool IsStarred       //Property
         {
             get
-            {
+            {   
                 return isStarred;
             }
             set
@@ -95,11 +93,12 @@ namespace F9S1.RememberMe
 
         public Task(List<string> values)
         {
-            Details = values[0];
+                Details = values[0];
             if (values[1] == Utility.DEFAULT_NO_TIME)
                 Deadline = Utility.DEFAULT_UNDEFINED_DATE;
             else
                 Deadline = DateTime.Parse(values[1]);
+             
             Labels = values[2];
             IsStarred = Boolean.Parse(values[3]);
             IsArchived = false;
@@ -130,7 +129,7 @@ namespace F9S1.RememberMe
             return new List<string>(line.Split(new string[]{Utility.FILE_SEPARATER},StringSplitOptions.None));
         }
 
-        private string SetIntLength(string shortInt, int length)
+ /*       private string SetIntLength(string shortInt, int length)
         {
             int difference = length - shortInt.Length;
             if (difference > 0)
@@ -140,7 +139,7 @@ namespace F9S1.RememberMe
             }
             return shortInt;
         }
-
+*/
         public override string ToString()
         {
             return Details + Utility.FILE_SEPARATER + Deadline.ToString(Utility.DATE_FORMAT) + Utility.FILE_SEPARATER + Labels + Utility.FILE_SEPARATER + IsStarred.ToString() + Utility.FILE_SEPARATER + IsArchived.ToString() + Utility.FILE_SEPARATER + Interval.ToString();
