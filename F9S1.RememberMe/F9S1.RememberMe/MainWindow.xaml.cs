@@ -28,15 +28,6 @@ namespace F9S1.RememberMe
         List<Task> taskInfo;
         List<string> taskDetails;
         string lastInput;
-        const string C_ERROR = "error";
-        const string C_PRINT = "print";
-        const string C_TASK = "task";
-        const string C_TASKLIST = "tasklist";
-        const int SIZE_OF_DESCRIPTION = 11;
-        const int SIZE_OF_TASKNAME = 8;
-        const int SIZE_OF_DEADLINE = 8;
-        const int SIZE_OF_PRIORITY = 8;
-        const int SIZE_OF_LABEL = 5;
         const string ADD_COMMAND = "add";
         const string EDIT_COMMAND = "edit";
         const string SORT_COMMAND = "sort";
@@ -47,8 +38,7 @@ namespace F9S1.RememberMe
         const string CLEAR_COMMAND = "clear";
 
         int numberBackSpace = 0;
-        string[] userPrompts = { "", "taskname", "description", "deadline", "priority", "label" };
-        int[] lengthofPrompts = { 0, SIZE_OF_TASKNAME, SIZE_OF_DESCRIPTION, SIZE_OF_DEADLINE, SIZE_OF_PRIORITY, SIZE_OF_PRIORITY };
+        string[] userPrompts = { "", "details", "deadline", "label", "priority"};
         public MainWindow()
         {
             initialiseNotificationIcon();
@@ -242,10 +232,11 @@ namespace F9S1.RememberMe
                     {
                         int countSemiColon = numberOfSemiColon(inputBox.Text);
 
-                        if (countSemiColon < 6) //does this reduce the readablity of the code? - inian
+                        if (countSemiColon < 5) //does this reduce the readablity of the code? - inian
                         {
                             inputBox.Text += userPrompts[countSemiColon];
-                            inputBox.Select(inputBox.Text.LastIndexOf(';') + 1, lengthofPrompts[countSemiColon]);
+                            int semicolonIndex = inputBox.Text.LastIndexOf(';');
+                            inputBox.Select(semicolonIndex + 1, inputBox.Text.Length - semicolonIndex);
                         }
                     }
 
@@ -332,7 +323,7 @@ namespace F9S1.RememberMe
 
                     if (toBeDisplay.Count != 0)
                     {
-                        inputBox.Text = temp + autoCompleteSearch(words)[0].Split(';')[0];
+                        inputBox.Text = temp + autoCompleteSearch(words);
                         inputBox.Select(inputBox.Text.Length, 0);
                     }
                     else
@@ -354,22 +345,20 @@ namespace F9S1.RememberMe
         }
         private void undoExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            string displayText = "";
-            dispatch.UserDispatch("undo;");
-            inputBox.Text = displayText;
+            dispatch.UserDispatch("undo");
+            inputBox.Text = "";
             displayBox.Content = "Action undone";
             SetDisplay();
         }
 
         private void redoExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            string displayText = "";
-            dispatch.UserDispatch("redo;");
-            inputBox.Text = displayText;
+            dispatch.UserDispatch("redo");
+            inputBox.Text = "";
             displayBox.Content = "Action redone";
             SetDisplay();
         }
-        public List<string> autoCompleteSearch(string input)
+        public string autoCompleteSearch(string input)
         {
             List<Task> contents = dispatch.GetTasks();
             List<string> keywords = new List<string>(input.Split(' '));
@@ -380,6 +369,7 @@ namespace F9S1.RememberMe
             for (int i = 0; i < contents.Count; i++)
                 hitcount.Add(0);
             int maxhits = 0;
+            string temp = null;
             for (int i = 0; i < contents.Count; i++)
             {
                 for (int j = 0; j < keywords.Count; j++)
@@ -389,16 +379,12 @@ namespace F9S1.RememberMe
                         hitcount[i]++;
 
                         if (hitcount[i] > maxhits)
+                        {
                             maxhits = hitcount[i];
+                            temp = contents[i].Details;
+                        }
                     }
                 }
-            }
-            List<string> temp = new List<string>();
-            for (int i = maxhits; i > 0; i--)
-            {
-                for (int j = 0; j < contents.Count; j++)
-                    if (hitcount[j] == i)
-                        temp.Add(contents[j].ToString());
             }
             return temp;
         }

@@ -203,12 +203,12 @@ namespace F9S1.RememberMe
         public List<string> ColonParse(string input, List<string> labels)
         {
             List<string> betaInput = new List<string>(input.Split(';')), parsedInput = new List<string>();
-            parsedInput[0] = betaInput[0].Trim();
-            parsedInput[1] = ToDate(betaInput[1].Trim()).ToString();
-            parsedInput[2] = betaInput[2].Trim().ToLower();
-            parsedInput[3] = (betaInput[3].Trim().ToLower() == "high").ToString();
-            parsedInput[4] = GetRepeat(betaInput[1].Trim()).ToString();
-            parsedInput.Insert(0, "add");
+            parsedInput.Add("add");
+            parsedInput.Add(betaInput[0].Trim());                           //Task Details 
+            parsedInput.Add(ToDate(betaInput[1].Trim()).ToString());        //Deadline
+            parsedInput.Add(betaInput[2].Trim().ToLower());                 //Labels
+            parsedInput.Add((betaInput[3].Trim().ToLower() == "high").ToString());//Priority
+            parsedInput.Add(GetRepeat(betaInput[1].Trim()).ToString());     //Repetition
             return parsedInput;
         }
 
