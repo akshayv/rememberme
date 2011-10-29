@@ -117,6 +117,18 @@
   <ItemGroup>
     <Resource Include="Images\large_Abstract_Dark_Gray_Paper_Rape_Wallpaper_86207.jpg" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\big-tick.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\big-tick.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="big-tick.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="delete.jpg" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

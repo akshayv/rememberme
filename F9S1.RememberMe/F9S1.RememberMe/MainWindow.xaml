@@ -28,6 +28,24 @@
                 <DataGridTextColumn Header="Deadline" Binding="{Binding Deadline}" />
                 <DataGridTextColumn Header="Label" Binding="{Binding Labels}" />
                 <DataGridCheckBoxColumn Header="Archived" Binding="{Binding IsArchived}" />
+                <DataGridTemplateColumn Header="    ">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Background="Transparent" Width="20" BorderBrush="White" Click="Archive_Button_Click">
+                                <Image Source="/F9S1.RememberMe;component/big-tick.jpg" />
+                            </Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="    ">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Background="Transparent" Width="20" BorderBrush="White" Click="Delete_Button_Click">
+                                <Image Source="/F9S1.RememberMe;component/delete.jpg" />
+                            </Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

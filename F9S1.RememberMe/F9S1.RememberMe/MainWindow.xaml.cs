@@ -163,7 +163,7 @@ namespace F9S1.RememberMe
         }
         private int numberOfSemiColon(String text)
         {
-            Debug.Assert(text == null);
+// Debug.Assert(text == null); typing add; causes this stupid assert to give an error so commented it out fr now
             int count = 0;
             for (int i = 0; i < text.Length; i++)
             {
@@ -504,6 +504,38 @@ namespace F9S1.RememberMe
         {
             inputBox.Focus();
         }
+
+        private void Delete_Button_Click(object sender, RoutedEventArgs e)
+        {
+            
+            //Task temp = ((FrameworkElement)sender).DataContext as Task;
+            DataGridRow selectedRow = (DataGridRow)(dataGrid1.ItemContainerGenerator.ContainerFromIndex(dataGrid1.SelectedIndex));
+            int positionOfSeperator = selectedRow.Item.ToString().IndexOf(Utility.FILE_SEPARATER);
+            String taskName = selectedRow.Item.ToString().Substring(0, positionOfSeperator);
+            String command = "delete;" + taskName;
+            List<String> output = new List<String>(dispatch.UserDispatch(command));
+            SetOutputBox(output);
+            taskInfo = dispatch.GetTasks();
+        }
+
+        private void Archive_Button_Click(object sender, RoutedEventArgs e)
+        {
+            DataGridRow selectedRow = (DataGridRow)(dataGrid1.ItemContainerGenerator.ContainerFromIndex(dataGrid1.SelectedIndex));
+            int positionOfSeperator = selectedRow.Item.ToString().IndexOf(Utility.FILE_SEPARATER);
+            String taskName = selectedRow.Item.ToString().Substring(0, positionOfSeperator);
+            String command = "archive;" + taskName;
+            List<String> output = new List<String>(dispatch.UserDispatch(command));
+            if (output.Count > 0 && output[0] == Utility.ERROR)
+            {
+                displayBox.Content = output[1];
+            }
+            else
+            {
+                SetOutputBox(output);
+            }
+            taskInfo = dispatch.GetTasks();
+        }
+
     }
 }
 

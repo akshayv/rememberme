@@ -1,1 +1,4 @@
-hi ~~ 31 Dec 9999 23:59 ~~  others ~~ False ~~ False ~~ 00:00:00
+hi ~~ 31 Dec 9999 23:59 ~~             others ~~ False ~~ True ~~ 00:00:00
+simply testing ~~ 31 Dec 9999 23:59 ~~           others ~~ False ~~ True ~~ 00:00:00
+checking ~~ 31 Dec 9999 23:59 ~~  others ~~ False ~~ True ~~ 00:00:00
+testing ~~ 31 Dec 9999 23:59 ~~  others ~~ False ~~ False ~~ 00:00:00

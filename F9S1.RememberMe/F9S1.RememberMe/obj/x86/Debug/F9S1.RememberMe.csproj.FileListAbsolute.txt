@@ -59,3 +59,6 @@ C:\Users\Akshay.Akshay-PC\Documents\Visual Studio 2010\Projects\Remem1\rememberm
 C:\Users\Akshay.Akshay-PC\Documents\Visual Studio 2010\Projects\Remem1\remembermef9s1\F9S1.RememberMe\F9S1.RememberMe\bin\Debug\NLog.dll
 C:\Users\Akshay.Akshay-PC\Documents\Visual Studio 2010\Projects\Remem1\remembermef9s1\F9S1.RememberMe\F9S1.RememberMe\bin\Debug\NLog.xml
 C:\Users\Akshay.Akshay-PC\Documents\Visual Studio 2010\Projects\Remem1\remembermef9s1\F9S1.RememberMe\F9S1.RememberMe\bin\Debug\NLog.config
+C:\Users\inian\Documents\Visual Studio 2010\Projects\rememberme v0.2\remembermef9s1\F9S1.RememberMe\F9S1.RememberMe\bin\Debug\NLog.config
+C:\Users\inian\Documents\Visual Studio 2010\Projects\rememberme v0.2\remembermef9s1\F9S1.RememberMe\F9S1.RememberMe\bin\Debug\NLog.dll
+C:\Users\inian\Documents\Visual Studio 2010\Projects\rememberme v0.2\remembermef9s1\F9S1.RememberMe\F9S1.RememberMe\bin\Debug\NLog.xml
