@@ -20,8 +20,8 @@ namespace F9S1.RememberMe
                 taskList = value;
             }
         }
-        Stack<List<Task>> undoStack, redoStack;
-       
+        Stack<string> undoStack, redoStack;
+        int initundocount=2;
         public Register(List<string> stringListTasks)
         {
             taskList = new List<Task>();
@@ -29,9 +29,85 @@ namespace F9S1.RememberMe
             {
                 taskList.Add(new Task(stringListTasks[i]));
             }
-            undoStack = new Stack<List<Task>>();
-            redoStack = new Stack<List<Task>>();
-            undoStack.Push(TaskList);
+            undoStack = new Stack<string>();
+            redoStack = new Stack<string>();
+
+            
+            for (int i = 0; i < taskList.Count; i++)
+            {
+                undoStack.Push(taskList[i].ToString());
+                initundocount++;
+            }
+            undoStack.Push(";");
+    
+        }
+        public void UpdateTasks()
+        {
+            if ((redoStack.Count > 0) && (taskList.Equals(redoStack.Peek())))
+            {
+                undoStack.Push(redoStack.Pop());
+            }
+            else
+            {
+               
+                for (int i = 0; i < taskList.Count; i++)
+                    undoStack.Push(taskList[i].ToString());
+                undoStack.Push(";");
+
+            }
+        }
+
+        public bool UndoAction()
+        {
+
+            if (undoStack.Count > initundocount-1)
+            {
+
+                taskList.Clear();
+
+                redoStack.Push(undoStack.Pop());
+                while (undoStack.Peek() != ";")
+
+                    redoStack.Push(undoStack.Pop());
+
+                redoStack.Push(undoStack.Pop());
+                
+                Task temp;
+                while (undoStack.Count >0 && undoStack.Peek() != ";")
+                {
+                    temp = new Task(undoStack.Pop());
+
+                    taskList.Add(temp);
+                }
+
+                return true;
+            }
+
+            logger.Info("No more undos");
+            return false;
+        }
+        public bool RedoAction()
+        {
+            if (redoStack.Count > 1)
+            {
+                taskList.Clear();
+
+                redoStack.Pop();
+                Task temp;
+                while (redoStack.Count > 0 && redoStack.Peek() != ";")
+                {
+                    temp = new Task(redoStack.Pop());
+
+                    taskList.Add(temp);
+                }
+
+                redoStack.Pop();
+                return true;
+            }
+
+            logger.Info("No more redos");
+
+            return false;
         }
         //public void SetTasks(List<string> stringList)
         //{
@@ -44,18 +120,6 @@ namespace F9S1.RememberMe
                 stringListTasks.Add(taskList[i].ToString());
             }
             return stringListTasks;
-        }
-        public void UpdateTasks()
-        {
-            if ((redoStack.Count > 0) && (taskList.Equals(redoStack.Peek())))
-            {
-                undoStack.Push(redoStack.Pop());
-            }
-            else
-            {
-                undoStack.Push(taskList);
-                redoStack.Clear();
-            }
         }
         public bool AddTask(List<string> newTask)
         {
@@ -178,32 +242,6 @@ namespace F9S1.RememberMe
             for (int i = 0; i < taskList.Count; i++)
                 taskDetails.Add(taskList[i].GetDisplay());
             return taskDetails;
-        }
-
-        public bool UndoAction()
-        {
-            if (undoStack.Count > 1)
-            {
-                redoStack.Push(undoStack.Pop());
-                taskList = new List<Task>(undoStack.Peek());
-                return true;
-            }
-
-            logger.Info("No more undos");
-            return false;
-        }
-        public bool RedoAction()
-        {
-            if (redoStack.Count > 0)
-            {
-                taskList = redoStack.Pop();
-                undoStack.Push(new List<Task>(taskList));
-                return true;
-            }
-
-            logger.Info("No more redos");
-            
-            return false;
         }
 
         private int findNumHits(Task check, string keyword)
