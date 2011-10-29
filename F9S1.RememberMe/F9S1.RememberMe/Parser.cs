@@ -369,15 +369,15 @@ namespace F9S1.RememberMe
 
         public bool isDayValid(string day)
         {
-            if (day == "monday" || day == "mon"
-                || day == "tuesday" || day == "tue"
-                || day == "wednesday" || day == "wed"
-                || day == "thursday" || day == "thu"
-                || day == "friday" || day == "fri"
-                || day == "saturday" || day == "sat"
-                || day == "sunday" || day == "sun"
-                || day == "today"
-                || day == "tomorrow")
+            if (day.Contains("monday") || day.Contains("mon")
+                || day.Contains("tuesay") || day.Contains("tue")
+                || day.Contains("wednesday") || day.Contains("wed")
+                || day.Contains("thursday") || day.Contains("thur")
+                || day.Contains("friday") || day.Contains("fri")
+                || day.Contains("saturday") || day.Contains("sat")
+                || day.Contains("sunday") || day.Contains("sun")
+                || day.Contains("today")
+                || day.Contains("tomorrow"))
                 return true;
             else
             {
@@ -408,26 +408,47 @@ namespace F9S1.RememberMe
         }
         private int NumberOfDays(string day)
         {
-            DayOfWeek deadline = toDay(day);
+            DayOfWeek deadline = toDay(day.Split(' ')[0]);
             DayOfWeek curDay = System.DateTime.Today.DayOfWeek;
             if (deadline >= curDay)
                 return (deadline - curDay);
             else
                 return deadline - curDay + 7;
         }
+
+
+        private DateTime updateTime(ref DateTime Template, DateTime containsTime)
+        {
+           Template=Template.AddHours(containsTime.Hour);
+           Template=Template.AddMinutes(containsTime.Minute);
+           Template= Template.AddSeconds(containsTime.Second);
+            return Template;
+        }
+
         public DateTime ToDate(string toBeConverted)
         {
             if (toBeConverted.Length == 0)
                 return Utility.DEFAULT_UNDEFINED_DATE;
             DateTime tempDate = new DateTime();
+            
             if (isDayValid(toBeConverted.ToLower().Trim()))
             {
                 tempDate = System.DateTime.Today.Date;
                 int x = NumberOfDays(toBeConverted);
                 tempDate = tempDate.AddDays(x * 1.0);
+                DateTime tempTime;
+                try
+                {
+                    tempTime = DateTime.Parse(toBeConverted.Split(' ')[1]);
+                    tempDate = updateTime(ref tempDate, tempTime);
+                }
+                catch (Exception e)
+                { 
+                }
             }
             else
-            {
+            {   
+                
                 try
                 {
                     tempDate = DateTime.Parse(toBeConverted);
