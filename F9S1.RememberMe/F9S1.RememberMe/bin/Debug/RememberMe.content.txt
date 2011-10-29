@@ -1,4 +1,4 @@
-ajnsajsan ~~ 30 Oct 2011 00:00 ~~    others ~~ False ~~ False ~~ 00:00:00
-oijn ~~ 30 Oct 2011 17:00 ~~   others ~~ False ~~ False ~~ 00:00:00
-smalsm ~~ 30 Oct 2011 00:00 ~~  others ~~ False ~~ False ~~ 00:00:00
-aaskaknas ~~ 30 Oct 2011 17:00 ~~  others ~~ False ~~ False ~~ 00:00:00
+sdf ~~ 01 Nov 2011 05:00 ~~  others ~~ False ~~ False ~~ 00:00:00
+hello ~~ 31 Dec 9999 23:59 ~~  others ~~ False ~~ False ~~ 00:00:00
+meeting ~~ 30 Dec 2011 00:00 ~~  others ~~ False ~~ False ~~ 00:00:00
+meeting(1) ~~ 01 Nov 2011 00:00 ~~  others ~~ False ~~ False ~~ 00:00:00
