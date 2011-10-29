@@ -116,7 +116,13 @@ namespace F9S1.RememberMe
                     parsedInput.Add(Utility.DATE_ERROR);
                     return parsedInput;
                 }
-                if (toBeChecked[3].Length == 0)
+                if (DateTime.Parse(toBeChecked[2]) < System.DateTime.Now)
+                {
+                    parsedInput.Add(Utility.ERROR);
+                    parsedInput.Add(Utility.EARLY_DATE_ERROR);
+                    return parsedInput;
+
+                } if (toBeChecked[3].Length == 0)
                 {   
                     toBeChecked[3] = Utility.DEFAULT_LABEL;
                 }
@@ -179,6 +185,12 @@ namespace F9S1.RememberMe
                     logger.Info("Incorrect Date Format");
                     parsedInput.Add(Utility.ERROR);
                     parsedInput.Add(Utility.DATE_ERROR);
+                    return parsedInput;
+                }
+                else if (deadline < System.DateTime.Now)
+                {
+                    parsedInput.Add(Utility.ERROR);
+                    parsedInput.Add(Utility.EARLY_DATE_ERROR);
                     return parsedInput;
                 }
                 else
