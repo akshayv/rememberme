@@ -7,6 +7,7 @@ namespace F9S1.RememberMe
 {
     class Register
     {
+        
         private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
         List<Task> taskList;
         public List<Task> TaskList
@@ -121,6 +122,27 @@ namespace F9S1.RememberMe
             }
             return stringListTasks;
         }
+
+        public bool DeleteLabel(string newLabel, ref List<string> labels)
+        {
+            for (int i = 0; i < labels.Count; i++)
+                if (labels[i].ToLower() == newLabel.ToLower())
+                {
+                    labels.Remove(newLabel);
+                    return true;
+                }
+            return false;
+        }
+        public bool AddLabel(string newLabel,ref List<string> labels)
+        {
+            for (int i = 0; i < labels.Count; i++)
+                if (labels[i].ToLower() == newLabel.ToLower())
+                    return false;
+            labels.Add(newLabel);
+            
+            return true;
+        }
+
         public bool AddTask(List<string> newTask)
         {
             newTask[0] = CheckIfDuplicate(newTask[0]);

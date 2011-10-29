@@ -53,7 +53,7 @@ namespace F9S1.RememberMe
         public void WriteToFile(List<Task> taskList)
         {
             taskData.TaskList = taskList;
-            store.WriteTasks(taskData.GetList());
+            store.WriteTasks(taskData.GetList(),labels);
         }
 
         public List<string> UserDispatch(string input)
@@ -77,6 +77,14 @@ namespace F9S1.RememberMe
                 switch (commandName)
                 {
 
+                    case "label":
+                        {
+                            if(parsedInput[0]=="add")
+                                isModified = taskData.AddLabel(parsedInput[1],ref labels);
+                            else if(parsedInput[0]=="delete")
+                                isModified = taskData.DeleteLabel(parsedInput[1],ref labels);
+                            break;
+                        }
                     case "add":
                         {
                             isModified = taskData.AddTask(parsedInput);
@@ -164,7 +172,7 @@ namespace F9S1.RememberMe
 
             if (isModified)
             {
-                store.WriteTasks(taskData.GetList());
+                store.WriteTasks(taskData.GetList(),labels);
                 taskData.UpdateTasks();
             }
 
