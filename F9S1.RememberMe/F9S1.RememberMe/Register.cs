@@ -177,9 +177,19 @@ namespace F9S1.RememberMe
         public bool DeleteTask(string taskDetails)
         {
             Task foundTask = SearchTask(taskDetails);
+            Task Temp = foundTask;
             if (foundTask != null)
             {
-                taskList.Remove(foundTask);
+                if (foundTask.Interval != TimeSpan.Parse("00:00:00"))
+                {
+                    taskList.Remove(foundTask);
+                    Temp.Deadline = Temp.Deadline.Add(Temp.Interval);
+                    Temp.IsArchived = false;
+                    taskList.Add(Temp);
+                }
+                else
+                    taskList.Remove(foundTask);
+
                 return true;
             }
             return false;
@@ -187,9 +197,17 @@ namespace F9S1.RememberMe
         public bool ArchiveTask(string taskDetails)
         {
             Task foundTask = SearchTask(taskDetails);
+            Task temp = foundTask;
             if (foundTask != null && !foundTask.IsArchived) //archive how?
             {
                 foundTask.IsArchived = true;
+                if (foundTask.Interval != TimeSpan.Parse("00:00:00"))
+                {
+                    DeleteTask(taskDetails);
+                    foundTask.Deadline = foundTask.Deadline.Add(foundTask.Interval);
+                    foundTask.IsArchived = false;
+                    taskList.Add(foundTask);
+                }
                 return true;
             }
             return false;
