@@ -180,15 +180,7 @@ namespace F9S1.RememberMe
             Task Temp = foundTask;
             if (foundTask != null)
             {
-                if (foundTask.Interval != TimeSpan.Parse("00:00:00"))
-                {
-                    taskList.Remove(foundTask);
-                    Temp.Deadline = Temp.Deadline.Add(Temp.Interval);
-                    Temp.IsArchived = false;
-                    taskList.Add(Temp);
-                }
-                else
-                    taskList.Remove(foundTask);
+                  taskList.Remove(foundTask);
 
                 return true;
             }
