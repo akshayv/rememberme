@@ -272,7 +272,8 @@ namespace F9S1.RememberMe
         {
             List<string> taskDetails = new List<string>();
             for (int i = 0; i < taskList.Count; i++)
-                taskDetails.Add(taskList[i].GetDisplay());
+                if(taskList[i].IsArchived==false)
+                    taskDetails.Add(taskList[i].GetDisplay());
             return taskDetails;
         }
 

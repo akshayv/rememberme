@@ -233,7 +233,7 @@ namespace F9S1.RememberMe
 
             return hitcount;
         }
-        public List<string> InstantSearch(string input)
+        public List<string> InstantSearch(string input,string command)
         {
             List<Task> taskList = taskInfo;
             List<string> keywords = new List<string>(input.Split(' '));
@@ -248,7 +248,21 @@ namespace F9S1.RememberMe
             {
                 for (int j = 0; j < keywords.Count; j++)
                 {
-                    if (taskList[i].ToString().Contains(keywords[j]))
+                    if (taskList[i].ToString().Contains(keywords[j])  && taskList[i].IsArchived==false)
+                    {
+                        hitcount[i]++;
+
+                        if (hitcount[i] > maxhits)
+                            maxhits = hitcount[i];
+                    }
+                   if ("archive".Contains(keywords[j]) && taskList[i].IsArchived == true && command == "find")
+                    {
+                        hitcount[i]++;
+
+                        if (hitcount[i] > maxhits)
+                            maxhits = hitcount[i];
+                    }
+                    if("highpriority".Contains(keywords[j]) && taskList[i].IsStarred==true)
                     {
                         hitcount[i]++;
 
@@ -265,45 +279,12 @@ namespace F9S1.RememberMe
                         temp.Add(taskList[j].GetDisplay());
             }
 
-            /*
-            for (int i = 0; i < taskList.Count; i++)
-            {
-                int flag = 0;
-                if (taskList[i].IsRepeat && taskList[i].IsArchived)
-                {
-                    flag++;
-                    continue;
-                }
-                for (int j = 0; j < i; j++)
-                {
-                    if (taskList[i].Interval.Days == 1 || taskList[i].Interval.Days == 2)
-                    {
-
-                        if (taskList[i].Details == taskList[j].Details//Since no two tasks can have same name except in this case
-                                 && taskList[i].Labels == taskList[j].Labels)
-                        {
-                            flag++;
-                            continue;
-                        }
-                    }
-                }
-
-                if (flag == 0)
-                    toBeDisplayed.Add(taskList[i]);
-            }
-            */
-            
             return temp;
         }
         private void inputBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             string passToRelegator = inputBox.Text;
-            if (inputBox.Text != "" && inputBox.Text.Length > 5 && passToRelegator.Substring(0, 5) == "find;")
-            {
-                string searchString = passToRelegator.Substring(5, passToRelegator.Length - 5);
-                SetOutputBox(InstantSearch(searchString));
-                return;
-            }
+            
             if (Keyboard.IsKeyDown(Key.Back))
                 numberBackSpace = 1;
             if (numberBackSpace == 0 && inputBox.Text.StartsWith(SORT_COMMAND + ';') && !inputBox.Text.EndsWith(";"))
@@ -337,18 +318,20 @@ namespace F9S1.RememberMe
                         }
                     }
                 }
+                
             }
             numberBackSpace = 0;
-            if (getCommand == "delete" || getCommand == "edit" || getCommand == "archive")
+            if (getCommand == "delete" || getCommand == "edit" || getCommand == "archive" || getCommand == "find")
             {
                 int posOfSemi = inputBox.Text.LastIndexOf(";");
                 string wordToSearch = inputBox.Text.Substring(posOfSemi + 1);
                 if (posOfSemi != -1)
                 {
-                        List<string> toBeDisplay = InstantSearch(wordToSearch);
+                        List<string> toBeDisplay = InstantSearch(wordToSearch,getCommand);
                         SetOutputBox(toBeDisplay);
                 }
             }
+           
         if (inputBox.Text.Length <= getCommand.Length + 1)
                 SetDisplay();
         }
@@ -401,9 +384,10 @@ namespace F9S1.RememberMe
             {
                 string words = inputBox.Text.Substring(inputBox.Text.LastIndexOf(';') + 1).ToLower();
                 string temp = inputBox.Text.Substring(0, inputBox.Text.LastIndexOf(';') + 1);
-                if (temp == "delete;" || temp == "edit;" || temp == "archive;")
+                if (temp == "delete;" || temp == "edit;" || temp == "archive;" || temp == "find;")
                 {
-                    List<string> toBeDisplay = InstantSearch(words);
+                    string getCommand = temp.Remove(';');
+                    List<string> toBeDisplay = InstantSearch(words,getCommand);
                     if (toBeDisplay.Count != 0)
                     {
                         inputBox.Text = temp + autoCompleteSearch(words);
