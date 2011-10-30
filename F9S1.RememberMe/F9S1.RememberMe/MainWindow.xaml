@@ -30,5 +30,6 @@
                 <DataGridCheckBoxColumn Header="Archived" Binding="{Binding IsArchived}" />
             </DataGrid.Columns>
         </DataGrid>
+        <Button Content="G" Height="27" HorizontalAlignment="Left" Margin="468,2,0,0" Name="button1" VerticalAlignment="Top" Width="23" Click="button1_Click" />
     </Grid>
 </Window>

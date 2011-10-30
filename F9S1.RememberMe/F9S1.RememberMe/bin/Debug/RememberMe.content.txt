@@ -1,1 +1,4 @@
-hi ~~ 31 Dec 9999 23:59 ~~  others ~~ False ~~ False ~~ 00:00:00
+hi ~~ 31 Dec 9999 23:59 ~~      others ~~ False ~~ False ~~ 00:00:00
+gcal test ~~ 31 Dec 9999 23:59 ~~    others ~~ False ~~ False ~~ 00:00:00
+gcal test 2 ~~ 04 Nov 2011 00:00 ~~   others ~~ False ~~ False ~~ 00:00:00
+Gcal test 3 ~~ 31 Dec 9999 23:59 ~~  others ~~ False ~~ False ~~ 00:00:00

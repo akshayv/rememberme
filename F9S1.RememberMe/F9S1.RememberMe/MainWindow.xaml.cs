@@ -15,6 +15,11 @@ using System.Windows.Threading;
 using System.ComponentModel;
 using System.IO;
 using System.Diagnostics;
+using Google.GData.Calendar;
+using Google.GData.Client;
+using Google.GData.Extensions;
+using Google.GData.AccessControl;
+
 
 namespace F9S1.RememberMe
 {
@@ -163,7 +168,7 @@ namespace F9S1.RememberMe
         }
         private int numberOfSemiColon(String text)
         {
-            Debug.Assert(text == null);
+           // Debug.Assert(text == null);
             int count = 0;
             for (int i = 0; i < text.Length; i++)
             {
@@ -503,6 +508,88 @@ namespace F9S1.RememberMe
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             inputBox.Focus();
+        }
+
+        private bool isTaskPresent(Task LocTask, EventFeed cloudfeed)
+        {
+            for(int i=0;i<cloudfeed.Entries.Count;i++)
+                if (cloudfeed.Entries[i].Title.Text.Contains(LocTask.Details))
+                    return true;
+            return false;
+        
+        }
+
+        private void button1_Click(object sender, RoutedEventArgs e)
+        {
+
+            {
+                CalendarService Gcal = new CalendarService("remMe");
+                Gcal.setUserCredentials("akshay.irock@gmail.com", "truck123");
+                //get tasks from google
+                              
+
+
+                //EventQuery query = new EventQuery(feedUrl);
+                EventQuery query = new EventQuery("https://www.google.com/calendar/feeds/default/private/full");
+                EventFeed feed = Gcal.Query(query);
+               // query.StartTime = new DateTime (DateTime.Now.Year,DateTime.Now.Month, DateTime.Now.Day);
+                //EventFeed myResultsFeed = myService.Query(query);
+                //if (feed.Entries.Count > 0)
+                //{
+                //    AtomEntry firstMatchEntry = feed.Entries[0];
+                //    String myEntryTitle = firstMatchEntry.Title.Text;
+                //    string check = feed.Entries[0].Title.Text;
+                    
+
+                //}
+
+                //for (int i = 0; i < feed.Entries.Count; i++)
+                //{
+                //    string check = feed.Entries[i].Title.Text;
+                //}
+
+
+                //write back to gcal
+              
+
+                List<Task> taskList = new List<Task>();
+                Controller taskFetcher = new Controller();
+                taskList = taskFetcher.GetTasks();
+
+                
+
+
+                for (int i = 0; i < taskList.Count; i++)
+                {
+
+                    if (!isTaskPresent(taskList[i], feed))
+                    {
+                        EventEntry entry = new EventEntry();
+
+                        // Set the title and content of the entry.
+                        if (!taskList[i].Details.Contains("[RM!]"))
+                            entry.Title.Text = "[RM!]" + taskList[i].Details;
+                        else
+                            entry.Title.Text = taskList[i].Details;
+                        //entry.Content.Content = taskList[i].getDesc();
+
+
+
+                        if (taskList[i].Deadline.Year != DateTime.MaxValue.Year)
+                        {
+                            When eventTime = new When(taskList[i].Deadline, taskList[i].Deadline.AddHours(1));
+                            entry.Times.Add(eventTime);
+                        }
+
+
+
+                        Uri postUri = new Uri("https://www.google.com/calendar/feeds/default/private/full");
+
+                        // Send the request and receive the response:
+                        AtomEntry insertedEntry = Gcal.Insert(postUri, entry);
+                    }
+                }
+            }
         }
     }
 }
