@@ -147,6 +147,8 @@ namespace F9S1.RememberMe
 
         public override bool Equals(object compareObject)
         {
+            if (!((compareObject.GetType()).Equals(typeof(Task)))) //disconnected object problem
+                return true;
             Task compareTask = (Task) compareObject;
             return (Details == compareTask.Details) &&
                    (Deadline.Equals(compareTask.Deadline)) &&
@@ -205,9 +207,10 @@ namespace F9S1.RememberMe
             {
                 archives = "     ";
             } 
-            //return stars + " " + SetLength(Details, 30) + " " + SetLength(Deadline.ToString(Utility.SHORT_DATE_FORMAT), 15) +  " " + SetLength(Labels.Split(new char[] { ' ', ';' }, StringSplitOptions.RemoveEmptyEntries)[0].Trim(), 8) + " " + archives;
+           // return stars + " " + SetLength(Details, 30) + " " + SetLength(Deadline.ToString(Utility.SHORT_DATE_FORMAT), 15) +  " " + SetLength(Labels.Split(new char[] { ' ', ';' }, StringSplitOptions.RemoveEmptyEntries)[0].Trim(), 8) + " " + archives;
             return this.ToString();
         }
+        
     }
 }
  

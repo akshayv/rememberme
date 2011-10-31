@@ -42,6 +42,10 @@ namespace F9S1.RememberMe
         {
             return taskData.TaskList;
         }
+      /*  public void SetTasks(List<Task> newTaskList)
+        {
+            taskData.TaskList = newTaskList;
+        }*/
      
 
 //        public List<string> CallSearch(string input)
