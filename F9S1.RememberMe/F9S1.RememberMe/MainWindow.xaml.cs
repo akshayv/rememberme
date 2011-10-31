@@ -59,7 +59,7 @@ namespace F9S1.RememberMe
             // SetDisplay();
             // dataGrid1.DataContext = dispatch.GetTasks();
             SetDisplay();
-            this.Dispatcher.BeginInvoke(DispatcherPriority.SystemIdle, new timeCheck(setAlarm));
+           // this.Dispatcher.BeginInvoke(DispatcherPriority.SystemIdle, new timeCheck(setAlarm));
         }
         void initialiseNotificationIcon()
         {
@@ -121,7 +121,7 @@ namespace F9S1.RememberMe
             DateTime updatedDate = DateTime.Now.Add(difference);
             taskList[i].Deadline = updatedDate;
         }
-        public void setAlarm()
+     /*   public void setAlarm()
         {
             bool isLabelNotArchive;
             bool isDeadlineReached;
@@ -151,7 +151,7 @@ namespace F9S1.RememberMe
                 }
             }
             this.Dispatcher.BeginInvoke(DispatcherPriority.SystemIdle, new timeCheck(setAlarm));
-        }
+        }*/
         private bool checkIfZero(int[] array)
         {
             for (int i = 0; i < array.Length; i++)

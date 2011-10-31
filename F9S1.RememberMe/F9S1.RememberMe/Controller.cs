@@ -36,6 +36,7 @@ namespace F9S1.RememberMe
             store = new Storage();
             taskData = new Register(store.ReadTasks());
             labels = store.ReadLabels();
+            AlarmCheck checkAlarm = new AlarmCheck(this);
         }
 
         public List<Task> GetTasks()
