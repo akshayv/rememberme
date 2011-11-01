@@ -564,21 +564,28 @@ namespace F9S1.RememberMe
                     Controller taskFetcher = new Controller();
                     taskList = taskFetcher.GetTasks();
 
-
-
+                    //delete all RM tasks
+                    query.Query = "[RM!]";
+                    EventFeed allTasks = Gcal.Query(query);
+                    for (int i = 0; i < allTasks.Entries.Count; i++)
+                    {
+                        AtomEntry task = allTasks.Entries[i];
+                        task.Delete();
+                        task.Update();
+                    }
 
                     for (int i = 0; i < taskList.Count; i++)
                     {
 
-                        if (!isTaskPresent(taskList[i], feed))
+                        //if (!isTaskPresent(taskList[i], feed))
                         {
                             EventEntry entry = new EventEntry();
 
                             // Set the title and content of the entry.
-                            if (!taskList[i].Details.Contains("[RM!]"))
+                    //        if (!taskList[i].Details.Contains("[RM!]"))
                                 entry.Title.Text = "[RM!]" + taskList[i].Details;
-                            else
-                                entry.Title.Text = taskList[i].Details;
+                        //    else
+                          //      entry.Title.Text = taskList[i].Details;
                             //entry.Content.Content = taskList[i].getDesc();
 
 
