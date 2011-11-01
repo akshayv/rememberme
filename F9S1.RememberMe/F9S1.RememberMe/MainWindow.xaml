@@ -38,9 +38,9 @@
         <Label Margin="12,0,12,12" Name="displayBox" Foreground="#FFEB1919" FontWeight="Bold" Height="49" VerticalAlignment="Bottom" />
         <TextBox Margin="12,0,12,65" Name="inputBox" KeyDown="inputBox_KeyDown" Foreground="#FF19580E" TextChanged="inputBox_TextChanged" PreviewKeyDown="inputBox_PreviewKeyDown" Height="52" VerticalAlignment="Bottom" />
         <Label Content="*" Height="28" HorizontalAlignment="Left" Margin="12,0,0,262" Name="labelStar" VerticalAlignment="Bottom" FontWeight="Bold" Foreground="#FFF8F2F2"></Label>
-        <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding}" Margin="12,27,12,123" Name="dataGrid1" Opacity="0.4" Foreground="Black" BorderBrush="Black" CanUserDeleteRows="False" GridLinesVisibility="None" CellEditEnding="dataGrid1_CellEditEnding">
+        <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding}" Margin="12,27,12,123" Name="dataGrid1" Opacity="0.4" Foreground="Black" BorderBrush="Black" CanUserDeleteRows="False" GridLinesVisibility="None" CellEditEnding="dataGrid1_CellEditEnding" BeginningEdit="dataGrid1_BeginningEdit">
             <DataGrid.Columns>
-                <DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="  ">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ToggleButton IsChecked="{Binding Path=IsStarred}" Click="ToggleButton_Click">
@@ -48,7 +48,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn Header="Details" Binding="{Binding Details}" />
+                <DataGridTextColumn Header="Details" Binding="{Binding Details}" IsReadOnly="True" />
                 <DataGridTextColumn Header="Deadline" Binding="{Binding Deadline}" />
                 <DataGridTextColumn Header="Label" Binding="{Binding Labels}" />
                 <DataGridCheckBoxColumn Header="Archived" Binding="{Binding IsArchived}" />

@@ -31,12 +31,13 @@ namespace F9S1.RememberMe
         List<Task> taskInfo;
         List<string> taskDetails;
         string lastInput;
+        const string FIND_COMMAND = "find";
         const string ADD_COMMAND = "add";
         const string EDIT_COMMAND = "edit";
-        const string SORT_COMMAND = "sort";
+       // const string SORT_COMMAND = "sort";
         const string DELETE_COMMAND = "delete";
-        const string SORT_PRIORITY = "priority";
-        const string DEADLINE = "deadline";
+       // const string SORT_PRIORITY = "priority";
+       // const string DEADLINE = "deadline";
         const string ARCHIVE_COMMAND = "archive";
         const string CLEAR_COMMAND = "clear";
         private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
@@ -116,13 +117,13 @@ namespace F9S1.RememberMe
                 this.Show();
             }
         }
-        void updateDeadline(ref List<Task> taskList, int[] time, int i)
+     /*   void updateDeadline(ref List<Task> taskList, int[] time, int i)
         {
             TimeSpan difference = new TimeSpan(time[0], time[1], time[2], 0);
             DateTime updatedDate = DateTime.Now.Add(difference);
             taskList[i].Deadline = updatedDate;
         }
-     /*   public void setAlarm()
+        public void setAlarm()
         {
             bool isLabelNotArchive;
             bool isDeadlineReached;
@@ -153,7 +154,7 @@ namespace F9S1.RememberMe
             }
             this.Dispatcher.BeginInvoke(DispatcherPriority.SystemIdle, new timeCheck(setAlarm));
         }*/
-        private bool checkIfZero(int[] array)
+       /* private bool checkIfZero(int[] array)
         {
             for (int i = 0; i < array.Length; i++)
             {
@@ -161,7 +162,7 @@ namespace F9S1.RememberMe
                     return false;
             }
             return true;
-        }
+        }*/
         private int numberOfSemiColon(String text)
         {
             // Debug.Assert(text == null); typing add; causes this stupid assert to give an error so commented it out fr now
@@ -186,12 +187,14 @@ namespace F9S1.RememberMe
                 AutoComplete(input, ADD_COMMAND);
             else if (input.Length < EDIT_COMMAND.Length && input.StartsWith("e") && input.Equals(EDIT_COMMAND.Substring(0, input.Length)))
                 AutoComplete(input, EDIT_COMMAND);
-            else if (input.Length < SORT_COMMAND.Length && input.StartsWith("s") && input.Equals(SORT_COMMAND.Substring(0, input.Length)))
-                AutoComplete(input, SORT_COMMAND);
+            //else if (input.Length < SORT_COMMAND.Length && input.StartsWith("s") && input.Equals(SORT_COMMAND.Substring(0, input.Length)))
+              //  AutoComplete(input, SORT_COMMAND);
             else if (input.Length < DELETE_COMMAND.Length && input.StartsWith("d") && input.Equals(DELETE_COMMAND.Substring(0, input.Length)))
                 AutoComplete(input, DELETE_COMMAND);
             else if (input.Length < CLEAR_COMMAND.Length && input.StartsWith("c") && input.Equals(CLEAR_COMMAND.Substring(0, input.Length)))
                 AutoComplete(input, CLEAR_COMMAND);
+            else if (input.Length < FIND_COMMAND.Length && input.StartsWith("f") && input.Equals(FIND_COMMAND.Substring(0, input.Length)))
+                AutoComplete(input, FIND_COMMAND);
         }
         private void AutoComplete(String input, String keyWord)
         {
@@ -200,13 +203,13 @@ namespace F9S1.RememberMe
             inputBox.Select(start, keyWord.Length - input.Length);
         }
 
-        private void sortAutoComplete(String input)
+      /*  private void sortAutoComplete(String input)
         {
             if (input.Length < DEADLINE.Length && input.StartsWith("d") && input.Equals(DEADLINE.Substring(0, input.Length)))
                 AutoComplete(input, DEADLINE);
             else if (input.Length < SORT_PRIORITY.Length && input.StartsWith("p") && input.Equals(SORT_PRIORITY.Substring(0, input.Length)))
                 AutoComplete(input, SORT_PRIORITY);
-        }
+        }*/
         private int findNumHits(Task check, string keyword)
         {
             int hitcount = 0;
@@ -256,7 +259,7 @@ namespace F9S1.RememberMe
                         if (hitcount[i] > maxhits)
                             maxhits = hitcount[i];
                     }
-                    if ("archive".Contains(keywords[j]) && taskList[i].IsArchived == true && command == "find")
+                    if ("archive".Contains(keywords[j]) && taskList[i].IsArchived == true && command == FIND_COMMAND)
                     {
                         hitcount[i]++;
 
@@ -288,8 +291,8 @@ namespace F9S1.RememberMe
 
             if (Keyboard.IsKeyDown(Key.Back))
                 numberBackSpace = 1;
-            if (numberBackSpace == 0 && inputBox.Text.StartsWith(SORT_COMMAND + ';') && !inputBox.Text.EndsWith(";"))
-                sortAutoComplete(inputBox.Text.Substring(inputBox.Text.IndexOf(';') + 1));
+           /* if (numberBackSpace == 0 && inputBox.Text.StartsWith(SORT_COMMAND + ';') && !inputBox.Text.EndsWith(";"))
+                sortAutoComplete(inputBox.Text.Substring(inputBox.Text.IndexOf(';') + 1));*/
             numberBackSpace = 0;
             if (Keyboard.IsKeyDown(Key.Back))
                 numberBackSpace = 1;
@@ -322,7 +325,7 @@ namespace F9S1.RememberMe
 
             }
             numberBackSpace = 0;
-            if (getCommand == "delete" || getCommand == "edit" || getCommand == "archive" || getCommand == "find")
+            if (getCommand == DELETE_COMMAND || getCommand == EDIT_COMMAND || getCommand == ARCHIVE_COMMAND || getCommand == FIND_COMMAND)
             {
                 int posOfSemi = inputBox.Text.LastIndexOf(";");
                 string wordToSearch = inputBox.Text.Substring(posOfSemi + 1);
@@ -523,6 +526,9 @@ namespace F9S1.RememberMe
 
         private void dataGrid1_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
+            //e.column and e.header datagridtextcolumn and tht dot header
+            DataGridColumn currentColumn = e.Column;
+            String currentHeader = (String)currentColumn.Header;
             FrameworkElement element;
             String newData;
             Task updatedTask = dispatch.GetTasks().ElementAt(0);//create a temp task
@@ -534,7 +540,7 @@ namespace F9S1.RememberMe
             List<Task> updatedList = dispatch.GetTasks();
             for (int i = 0; i < updatedList.Count; i++)
             {
-                if (updatedList[i].Details == taskName)
+                if (updatedList[i].Details == taskName) //delete the task before edit
                 {
                     deletedTask = updatedList.ElementAt(i);
                     updatedList.RemoveAt(i);
@@ -542,14 +548,14 @@ namespace F9S1.RememberMe
                 }
             }
             
-            if (dataGrid1.CurrentCell.Column.Header.Equals("Label"))
+            if (currentHeader.Equals("Label"))
             {
                 element = dataGrid1.Columns[3].GetCellContent(e.Row);
                 newData = ((TextBox)element).Text;
                 updatedTask = new Task(((Task)(e.Row.Item)).ToString());
                 updatedTask.Labels = newData;
             }
-            if (dataGrid1.CurrentCell.Column.Header.Equals("Deadline"))
+            if (currentHeader.Equals("Deadline"))
             {
                 element = dataGrid1.Columns[2].GetCellContent(e.Row);
                 newData = ((TextBox)element).Text;
@@ -599,6 +605,11 @@ namespace F9S1.RememberMe
                 command += Utility.STARRED;
             dispatch.UserDispatch(command);
             SetOutputBox(dispatch.UserDispatch("display"));
+        }
+
+        private void dataGrid1_BeginningEdit(object sender, DataGridBeginningEditEventArgs e)
+        {
+            displayBox.Content = "";
         }
 
     }
