@@ -45,7 +45,7 @@ namespace F9S1.RememberMe
         const string CLEAR_COMMAND = "clear";
         private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
         int numberBackSpace = 0;
-        string[] userPrompts = { "", "details", "deadline", "label", "priority"};
+        string[] userPrompts = { "", "details", "deadline", "label", "priority" };
         public MainWindow()
         {
             initialiseNotificationIcon();
@@ -60,9 +60,9 @@ namespace F9S1.RememberMe
                 logger.Error(e.StackTrace);
                 //dispatch.Log(e.StackTrace);
             }
-            inputBox.Focus(); 
-           // SetDisplay();
-           // dataGrid1.DataContext = dispatch.GetTasks();
+            inputBox.Focus();
+            // SetDisplay();
+            // dataGrid1.DataContext = dispatch.GetTasks();
             SetDisplay();
             this.Dispatcher.BeginInvoke(DispatcherPriority.SystemIdle, new timeCheck(setAlarm));
         }
@@ -72,7 +72,7 @@ namespace F9S1.RememberMe
             m_notifyIcon.BalloonTipText = "Remember Me has been minimised. Click the tray icon to show.";
             m_notifyIcon.BalloonTipTitle = "Remember Me";
             m_notifyIcon.Text = "Remember Me";
-           m_notifyIcon.Icon = new System.Drawing.Icon("AddedIcon.ico");
+            m_notifyIcon.Icon = new System.Drawing.Icon("AddedIcon.ico");
             m_notifyIcon.Click += new EventHandler(m_notifyIcon_Click);
         }
         private void OnClose(object sender, System.ComponentModel.CancelEventArgs e)
@@ -131,6 +131,8 @@ namespace F9S1.RememberMe
             bool isLabelNotArchive;
             bool isDeadlineReached;
 
+
+
             for (int i = 0; i < taskInfo.Count; i++)
             {
                 isLabelNotArchive = !taskInfo[i].IsArchived;
@@ -168,7 +170,7 @@ namespace F9S1.RememberMe
         }
         private int numberOfSemiColon(String text)
         {
-           // Debug.Assert(text == null);
+            // Debug.Assert(text == null);
             int count = 0;
             for (int i = 0; i < text.Length; i++)
             {
@@ -297,7 +299,7 @@ namespace F9S1.RememberMe
                     toBeDisplayed.Add(taskList[i]);
             }
             */
-            
+
             return temp;
         }
         private void inputBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -319,7 +321,7 @@ namespace F9S1.RememberMe
             if (numberBackSpace == 0 && !inputBox.Text.Contains(' ') && !inputBox.Text.Contains(";"))
                 AutoComplete(inputBox.Text);
             numberBackSpace = 0;
-    
+
             string getCommand = "";
             if (inputBox.Text.Contains(";"))
             {
@@ -350,11 +352,11 @@ namespace F9S1.RememberMe
                 string wordToSearch = inputBox.Text.Substring(posOfSemi + 1);
                 if (posOfSemi != -1)
                 {
-                        List<string> toBeDisplay = InstantSearch(wordToSearch);
-                        SetOutputBox(toBeDisplay);
+                    List<string> toBeDisplay = InstantSearch(wordToSearch);
+                    SetOutputBox(toBeDisplay);
                 }
             }
-        if (inputBox.Text.Length <= getCommand.Length + 1)
+            if (inputBox.Text.Length <= getCommand.Length + 1)
                 SetDisplay();
         }
         private void SetDisplay()
@@ -449,7 +451,7 @@ namespace F9S1.RememberMe
         public string autoCompleteSearch(string input)
         {
             List<Task> contents = taskInfo;
-            List<string> keywords = new List<string>(input.Split(new char[]{' '}, StringSplitOptions.RemoveEmptyEntries));
+            List<string> keywords = new List<string>(input.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries));
             for (int i = 0; i < keywords.Count; i++)
                 if (keywords[i].Equals(""))
                     keywords.RemoveAt(i);
@@ -496,15 +498,15 @@ namespace F9S1.RememberMe
                 outputBox.Items.Add(output[i]);
         */
             List<Task> temp = new List<Task>();
-            foreach(string item in output)
+            foreach (string item in output)
             {
                 temp.Add(new Task(item));
             }
-            
+
             dataGrid1.DataContext = temp;
             dataGrid1.Items.Refresh();
         }
-        
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             inputBox.Focus();
@@ -512,85 +514,100 @@ namespace F9S1.RememberMe
 
         private bool isTaskPresent(Task LocTask, EventFeed cloudfeed)
         {
-            for(int i=0;i<cloudfeed.Entries.Count;i++)
+            for (int i = 0; i < cloudfeed.Entries.Count; i++)
                 if (cloudfeed.Entries[i].Title.Text.Contains(LocTask.Details))
                     return true;
             return false;
-        
+
         }
 
         private void button1_Click(object sender, RoutedEventArgs e)
         {
 
             {
-                CalendarService Gcal = new CalendarService("remMe");
-                Gcal.setUserCredentials("akshay.irock@gmail.com", "truck123");
-                //get tasks from google
-                              
-
-
-                //EventQuery query = new EventQuery(feedUrl);
-                EventQuery query = new EventQuery("https://www.google.com/calendar/feeds/default/private/full");
-                EventFeed feed = Gcal.Query(query);
-               // query.StartTime = new DateTime (DateTime.Now.Year,DateTime.Now.Month, DateTime.Now.Day);
-                //EventFeed myResultsFeed = myService.Query(query);
-                //if (feed.Entries.Count > 0)
-                //{
-                //    AtomEntry firstMatchEntry = feed.Entries[0];
-                //    String myEntryTitle = firstMatchEntry.Title.Text;
-                //    string check = feed.Entries[0].Title.Text;
-                    
-
-                //}
-
-                //for (int i = 0; i < feed.Entries.Count; i++)
-                //{
-                //    string check = feed.Entries[i].Title.Text;
-                //}
-
-
-                //write back to gcal
-              
-
-                List<Task> taskList = new List<Task>();
-                Controller taskFetcher = new Controller();
-                taskList = taskFetcher.GetTasks();
-
-                
-
-
-                for (int i = 0; i < taskList.Count; i++)
+                Auth Authentication = new Auth();
+                //maximiseWindow()
+                Authentication.ShowDialog();
+                //time = showAlarm.getTimeArray();
+                try
                 {
+                    CalendarService Gcal = new CalendarService("remMe");
+                    Gcal.setUserCredentials(Authentication.textBox1.Text, Authentication.passwordBox1.Password);
+                    //get tasks from google
 
-                    if (!isTaskPresent(taskList[i], feed))
+
+
+                    //EventQuery query = new EventQuery(feedUrl);
+                    EventQuery query = new EventQuery("https://www.google.com/calendar/feeds/default/private/full");
+                    EventFeed feed = Gcal.Query(query);
+                    // query.StartTime = new DateTime (DateTime.Now.Year,DateTime.Now.Month, DateTime.Now.Day);
+                    //EventFeed myResultsFeed = myService.Query(query);
+                    //if (feed.Entries.Count > 0)
+                    //{
+                    //    AtomEntry firstMatchEntry = feed.Entries[0];
+                    //    String myEntryTitle = firstMatchEntry.Title.Text;
+                    //    string check = feed.Entries[0].Title.Text;
+
+
+                    //}
+
+                    //for (int i = 0; i < feed.Entries.Count; i++)
+                    //{
+                    //    string check = feed.Entries[i].Title.Text;
+                    //}
+
+
+                    //write back to gcal
+
+
+                    List<Task> taskList = new List<Task>();
+                    Controller taskFetcher = new Controller();
+                    taskList = taskFetcher.GetTasks();
+
+
+
+
+                    for (int i = 0; i < taskList.Count; i++)
                     {
-                        EventEntry entry = new EventEntry();
 
-                        // Set the title and content of the entry.
-                        if (!taskList[i].Details.Contains("[RM!]"))
-                            entry.Title.Text = "[RM!]" + taskList[i].Details;
-                        else
-                            entry.Title.Text = taskList[i].Details;
-                        //entry.Content.Content = taskList[i].getDesc();
-
-
-
-                        if (taskList[i].Deadline.Year != DateTime.MaxValue.Year)
+                        if (!isTaskPresent(taskList[i], feed))
                         {
-                            When eventTime = new When(taskList[i].Deadline, taskList[i].Deadline.AddHours(1));
-                            entry.Times.Add(eventTime);
+                            EventEntry entry = new EventEntry();
+
+                            // Set the title and content of the entry.
+                            if (!taskList[i].Details.Contains("[RM!]"))
+                                entry.Title.Text = "[RM!]" + taskList[i].Details;
+                            else
+                                entry.Title.Text = taskList[i].Details;
+                            //entry.Content.Content = taskList[i].getDesc();
+
+
+
+                            if (taskList[i].Deadline.Year != DateTime.MaxValue.Year)
+                            {
+                                When eventTime = new When(taskList[i].Deadline, taskList[i].Deadline.AddHours(1));
+                                entry.Times.Add(eventTime);
+                            }
+
+
+
+                            Uri postUri = new Uri("https://www.google.com/calendar/feeds/default/private/full");
+
+                            // Send the request and receive the response:
+                            AtomEntry insertedEntry = Gcal.Insert(postUri, entry);
                         }
-
-
-
-                        Uri postUri = new Uri("https://www.google.com/calendar/feeds/default/private/full");
-
-                        // Send the request and receive the response:
-                        AtomEntry insertedEntry = Gcal.Insert(postUri, entry);
                     }
                 }
+                catch {
+
+                    displayBox.Content = "Authentication Error / Internet is too slow";
+                }
             }
+
         }
+
+
+        }
+    
     }
-}
 
