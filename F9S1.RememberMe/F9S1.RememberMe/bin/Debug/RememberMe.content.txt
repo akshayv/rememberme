@@ -1,2 +1,2 @@
-imporatnt ~~ 04 Nov 2011 21:00 ~~  others ~~ True ~~ False ~~ 00:00:00
-meeting ~~ 02 Nov 2011 18:00 ~~  others ~~ True ~~ False ~~ 00:00:00
+meeting ~~ 02 Nov 2011 18:00 ~~     work ~~ False ~~ False ~~ 00:00:00
+imporatnt ~~ 04 Nov 2011 21:00 ~~        work ~~ False ~~ False ~~ 00:00:00

@@ -165,7 +165,7 @@ namespace F9S1.RememberMe
         }*/
         private int numberOfSemiColon(String text)
         {
-            // Debug.Assert(text == null); typing add; causes this stupid assert to give an error so commented it out fr now
+            // Debug.Assert(text == null); 
             int count = 0;
             for (int i = 0; i < text.Length; i++)
             {
@@ -390,7 +390,7 @@ namespace F9S1.RememberMe
                 string temp = inputBox.Text.Substring(0, inputBox.Text.LastIndexOf(';') + 1);
                 if (temp == "delete;" || temp == "edit;" || temp == "archive;" || temp == "find;")
                 {
-                    string getCommand = temp.Remove(';');
+                    string getCommand = temp.Remove(temp.Length-1);
                     List<string> toBeDisplay = InstantSearch(words, getCommand);
                     if (toBeDisplay.Count != 0)
                     {
