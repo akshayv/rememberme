@@ -237,6 +237,33 @@ namespace F9S1.RememberMe
 
             return hitcount;
         }
+        
+
+        int findHits(string keywords,Task findHits,string command)
+        {
+            int hitcount = 0;
+            if (findHits.ToString().Contains(keywords) && findHits.IsArchived == false)
+            {
+                hitcount = findNumHits(findHits,keywords);
+            }
+            if ("archive".Contains(keywords) && findHits.IsArchived == true && command == FIND_COMMAND
+                || findHits.ToString().Contains(keywords) && findHits.IsArchived == true && (command == FIND_COMMAND || command == DELETE_COMMAND))
+            {
+                hitcount++;
+            }
+            if ("highstar".Contains(keywords) && findHits.IsStarred == true && findHits.IsArchived == false)
+            {
+                hitcount++;
+            }
+            if ("highstar".Contains(keywords) && findHits.IsStarred == true && findHits.IsArchived == true && command == FIND_COMMAND)
+            {
+                hitcount++;
+               
+            }
+            return hitcount;
+
+
+        }
         public List<string> InstantSearch(string input, string command)
         {
             List<Task> taskList = taskInfo;
@@ -252,27 +279,9 @@ namespace F9S1.RememberMe
             {
                 for (int j = 0; j < keywords.Count; j++)
                 {
-                    if (taskList[i].ToString().Contains(keywords[j]) && taskList[i].IsArchived == false)
-                    {
-                        hitcount[i]++;
-
-                        if (hitcount[i] > maxhits)
-                            maxhits = hitcount[i];
-                    }
-                    if ("archive".Contains(keywords[j]) && taskList[i].IsArchived == true && command == FIND_COMMAND)
-                    {
-                        hitcount[i]++;
-
-                        if (hitcount[i] > maxhits)
-                            maxhits = hitcount[i];
-                    }
-                    if ("highpriority".Contains(keywords[j]) && taskList[i].IsStarred == true)
-                    {
-                        hitcount[i]++;
-
-                        if (hitcount[i] > maxhits)
-                            maxhits = hitcount[i];
-                    }
+                    hitcount[i] = findHits(keywords[j],taskList[i],command);
+                    if (hitcount[i] > maxhits)
+                        maxhits = hitcount[i];
                 }
             }
             List<string> temp = new List<string>();
@@ -394,7 +403,7 @@ namespace F9S1.RememberMe
                     List<string> toBeDisplay = InstantSearch(words, getCommand);
                     if (toBeDisplay.Count != 0)
                     {
-                        inputBox.Text = temp + autoCompleteSearch(words);
+                        inputBox.Text = temp + autoCompleteSearch(words,getCommand);
                         inputBox.Select(inputBox.Text.Length, 0);
                     }
                     else
@@ -429,7 +438,7 @@ namespace F9S1.RememberMe
             displayBox.Content = "Action redone";
             SetDisplay();
         }
-        public string autoCompleteSearch(string input)
+        public string autoCompleteSearch(string input,string command)
         {
             List<Task> contents = taskInfo;
             List<string> keywords = new List<string>(input.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries));
@@ -445,15 +454,12 @@ namespace F9S1.RememberMe
             {
                 for (int j = 0; j < keywords.Count; j++)
                 {
-                    if (contents[i].Details.Contains(keywords[j]))
-                    {
-                        hitcount[i]++;
-
+                    hitcount[i] = findHits(keywords[j],contents[i],command);
                         if (hitcount[i] > maxhits)
                         {
                             maxhits = hitcount[i];
                             temp = contents[i].Details;
-                        }
+                        
                     }
                 }
             }

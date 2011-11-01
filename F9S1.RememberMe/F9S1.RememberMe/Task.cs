@@ -169,7 +169,7 @@ namespace F9S1.RememberMe
 
         private string[] ConvertStringToLabels(string toConvert)
         {
-            return toConvert.Split(' ');
+            return toConvert.Split(new char[] {' '}, StringSplitOptions.RemoveEmptyEntries);
         }
 
         public string SetLength(string input, int length)
