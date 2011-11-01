@@ -83,3 +83,12 @@ C:\Users\Abhishek\Documents\Visual Studio 2010\Projects\RememberMeV2\F9S1.Rememb
 C:\Users\Abhishek\Documents\Visual Studio 2010\Projects\RememberMeV2\F9S1.RememberMe\F9S1.RememberMe\obj\x86\Debug\F9S1.RememberMe.pdb
 C:\Users\Abhishek\Documents\Visual Studio 2010\Projects\RememberMeV2\F9S1.RememberMe\F9S1.RememberMe\obj\x86\Debug\Auth.baml
 C:\Users\Abhishek\Documents\Visual Studio 2010\Projects\RememberMeV2\F9S1.RememberMe\F9S1.RememberMe\obj\x86\Debug\Auth.g.cs
+C:\Users\inian\Documents\Visual Studio 2010\Projects\rememberme v0.2\remembermef9s1\F9S1.RememberMe\F9S1.RememberMe\bin\Debug\NLog.config
+C:\Users\inian\Documents\Visual Studio 2010\Projects\rememberme v0.2\remembermef9s1\F9S1.RememberMe\F9S1.RememberMe\bin\Debug\Google.GData.AccessControl.dll
+C:\Users\inian\Documents\Visual Studio 2010\Projects\rememberme v0.2\remembermef9s1\F9S1.RememberMe\F9S1.RememberMe\bin\Debug\Google.GData.Calendar.dll
+C:\Users\inian\Documents\Visual Studio 2010\Projects\rememberme v0.2\remembermef9s1\F9S1.RememberMe\F9S1.RememberMe\bin\Debug\Google.GData.Client.dll
+C:\Users\inian\Documents\Visual Studio 2010\Projects\rememberme v0.2\remembermef9s1\F9S1.RememberMe\F9S1.RememberMe\bin\Debug\Google.GData.Extensions.dll
+C:\Users\inian\Documents\Visual Studio 2010\Projects\rememberme v0.2\remembermef9s1\F9S1.RememberMe\F9S1.RememberMe\bin\Debug\NLog.dll
+C:\Users\inian\Documents\Visual Studio 2010\Projects\rememberme v0.2\remembermef9s1\F9S1.RememberMe\F9S1.RememberMe\bin\Debug\NLog.xml
+C:\Users\inian\Documents\Visual Studio 2010\Projects\rememberme v0.2\remembermef9s1\F9S1.RememberMe\F9S1.RememberMe\obj\x86\Debug\Auth.baml
+C:\Users\inian\Documents\Visual Studio 2010\Projects\rememberme v0.2\remembermef9s1\F9S1.RememberMe\F9S1.RememberMe\obj\x86\Debug\Auth.g.cs
