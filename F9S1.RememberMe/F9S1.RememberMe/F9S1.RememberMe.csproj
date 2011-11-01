@@ -77,6 +77,9 @@
     <Compile Include="Alarm.xaml.cs">
       <DependentUpon>Alarm.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Auth.xaml.cs">
+      <DependentUpon>Auth.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Register.cs" />
     <Compile Include="Utility.cs" />
     <Compile Include="Parser.cs" />
@@ -84,6 +87,10 @@
     <Compile Include="Storage.cs" />
     <Compile Include="Task.cs" />
     <Page Include="Alarm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Auth.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
