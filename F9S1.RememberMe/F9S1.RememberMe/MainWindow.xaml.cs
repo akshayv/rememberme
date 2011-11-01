@@ -15,6 +15,7 @@ using System.Windows.Threading;
 using System.ComponentModel;
 using System.IO;
 using System.Diagnostics;
+using System.Windows.Controls.Primitives;
 
 namespace F9S1.RememberMe
 {
@@ -566,6 +567,38 @@ namespace F9S1.RememberMe
             }
             SetOutputBox(dispatch.UserDispatch("display"));
             return;
+        }
+
+        private void ToggleButton_Click(object sender, RoutedEventArgs e)
+        {
+            DataGridRow selectedRow = (DataGridRow)(dataGrid1.ItemContainerGenerator.ContainerFromIndex(dataGrid1.SelectedIndex));
+            int taskNameLength = selectedRow.Item.ToString().IndexOf(Utility.FILE_SEPARATER);
+            String taskName = selectedRow.Item.ToString().Substring(0, taskNameLength);
+            List<Task> updatedList = dispatch.GetTasks();
+            String command = selectedRow.Item.ToString();
+            Task UpdatedTask = new Task(((Task)selectedRow.Item).ToString());
+            for (int i = 0; i < updatedList.Count; i++)
+            {
+                if (updatedList[i].Details == taskName)
+                {
+                    updatedList.RemoveAt(i);
+                    break;
+                }
+            }
+            ToggleButton button = (ToggleButton)e.OriginalSource;
+            if((bool)button.IsChecked)
+            {
+                UpdatedTask.IsStarred = true;
+            }
+            else
+            {
+                UpdatedTask.IsStarred = false;
+            }
+            command = "add " + UpdatedTask.Details + " @" + UpdatedTask.Deadline + " #" + UpdatedTask.Labels.Trim() +" ";
+            if (UpdatedTask.IsStarred)
+                command += Utility.STARRED;
+            dispatch.UserDispatch(command);
+            SetOutputBox(dispatch.UserDispatch("display"));
         }
 
     }

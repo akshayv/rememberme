@@ -43,7 +43,7 @@
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ToggleButton IsChecked="{Binding Path=IsStarred}">
+                            <ToggleButton IsChecked="{Binding Path=IsStarred}" Click="ToggleButton_Click">
                             </ToggleButton>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>

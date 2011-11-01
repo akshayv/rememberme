@@ -1,7 +1,1 @@
-task ~~ 31 Oct 2011 18:00 ~~      work ~~ False ~~ True ~~ 00:00:00
-important ~~ 01 Nov 2011 23:00 ~~     others ~~ False ~~ False ~~ 00:00:00
-meeting ~~ 01 Nov 2011 13:00 ~~     others ~~ True ~~ False ~~ 00:00:00
-really imp ~~ 01 Nov 2011 10:00 ~~    others ~~ True ~~ False ~~ 00:00:00
-meeting today 3:50PM ~~ 31 Dec 9999 23:59 ~~   others ~~ True ~~ False ~~ 00:00:00
-meeting(1) ~~ 01 Nov 2011 03:57 ~~   others ~~ True ~~ True ~~ 00:00:00
-meeting haha ~~ 01 Nov 2011 05:30 ~~  others ~~ False ~~ True ~~ 00:00:00
+check ~~ 02 Nov 2011 13:00 ~~  home ~~ False ~~ False ~~ 00:00:00
