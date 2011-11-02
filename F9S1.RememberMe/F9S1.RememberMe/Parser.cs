@@ -5,24 +5,25 @@ using System.Text;
 
 namespace F9S1.RememberMe
 {
-    enum Command
-    {
-        add,
-        edit,
-        delete,
-        clear,
-        undo,
-        redo,
-        error,
-        search, 
-        find,
-        display,
-        archive,
-        label
-    };
-
     class Parser
     {
+        enum Command
+        {
+            add,
+            edit,
+            delete,
+            clear,
+            undo,
+            redo,
+            error,
+            search,
+            find,
+            display,
+            archive,
+            label
+        };
+
+
         private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
         public Parser()
         {
