@@ -29,6 +29,7 @@ namespace F9S1.RememberMe
     /// </summary>
     public partial class MainWindow : Window
     {
+
         private System.Windows.Forms.NotifyIcon m_notifyIcon;
         public delegate void timeCheck();
         Controller dispatch;
@@ -62,6 +63,8 @@ namespace F9S1.RememberMe
                 //dispatch.Log(e.StackTrace);
             }
             inputBox.Focus();
+            helpBox.Visibility = System.Windows.Visibility.Collapsed;
+            helpButton.Visibility = System.Windows.Visibility.Collapsed;
             // SetDisplay();
             // dataGrid1.DataContext = dispatch.GetTasks();
             SetDisplay();
@@ -170,10 +173,26 @@ namespace F9S1.RememberMe
         private void displayHelp()
         {
             dataGrid1.Visibility = System.Windows.Visibility.Collapsed;
-            helpLabel.Visibility = System.Windows.Visibility.Visible;
-            labelButton.Visibility = System.Windows.Visibility.Visible;
+            helpBox.Visibility = System.Windows.Visibility.Visible;
+            helpButton.Visibility = System.Windows.Visibility.Visible;
+            inputBox.Visibility = System.Windows.Visibility.Collapsed;
             inputBox.Text = "";
-            helpLabel.Content = "hahahahaahhaa";
+            helpBox.Focus();
+            helpBox.Text = "Help...\nThis is to test Scrolling" +
+                                    "\nThis is to test Scrolling" +
+                                    "\nThis is to test Scrolling" +
+                                    "\nThis is to test Scrolling" +
+                                    "\nThis is to test Scrolling" +
+                                    "\nThis is to test Scrolling" +
+                                    "\nThis is to test Scrolling" +
+                                    "\nThis is to test Scrolling" +
+                                    "\nThis is to test Scrolling" +
+                                    "\nThis is to test Scrolling" +
+                                    "\nThis is to test Scrolling" +
+                                    "\nThis is to test Scrolling" +
+                                    "\nThis is to test Scrolling" +
+                                    "\nThis is to test Scrolling" +
+                                    "\nThis is to test Scrolling";
         }
         private int numberOfSemiColon(String text)
         {
@@ -640,9 +659,11 @@ namespace F9S1.RememberMe
 
         private void labelButton_Click(object sender, RoutedEventArgs e)
         {
-            labelButton.Visibility = System.Windows.Visibility.Collapsed;
-            helpLabel.Visibility = System.Windows.Visibility.Collapsed;
+            helpButton.Visibility = System.Windows.Visibility.Collapsed;
+            helpBox.Visibility = System.Windows.Visibility.Collapsed;
             dataGrid1.Visibility = System.Windows.Visibility.Visible;
+            inputBox.Visibility = System.Windows.Visibility.Visible;
+            inputBox.Focus();
             SetDisplay();
         }
         private void syncButton_Click(object sender, RoutedEventArgs e)
