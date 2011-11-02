@@ -59,5 +59,12 @@ namespace F9S1.RememberMe.Properties {
                 resourceCulture = value;
             }
         }
+        
+        internal static System.Drawing.Bitmap big_tick {
+            get {
+                object obj = ResourceManager.GetObject("big_tick", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }

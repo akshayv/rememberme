@@ -142,11 +142,14 @@ namespace F9S1.RememberMe
 */
         public override string ToString()
         {
+           
             return Details + Utility.FILE_SEPARATER + Deadline.ToString(Utility.DATE_FORMAT) + Utility.FILE_SEPARATER + Labels + Utility.FILE_SEPARATER + IsStarred.ToString() + Utility.FILE_SEPARATER + IsArchived.ToString() + Utility.FILE_SEPARATER + Interval.ToString();
         }
 
         public override bool Equals(object compareObject)
         {
+            if (!((compareObject.GetType()).Equals(typeof(Task)))) //disconnected object problem
+                return true;
             Task compareTask = (Task) compareObject;
             return (Details == compareTask.Details) &&
                    (Deadline.Equals(compareTask.Deadline)) &&
@@ -166,7 +169,7 @@ namespace F9S1.RememberMe
 
         private string[] ConvertStringToLabels(string toConvert)
         {
-            return toConvert.Split(' ');
+            return toConvert.Split(new char[] {' '}, StringSplitOptions.RemoveEmptyEntries);
         }
 
         public string SetLength(string input, int length)
@@ -205,9 +208,10 @@ namespace F9S1.RememberMe
             {
                 archives = "     ";
             } 
-            //return stars + " " + SetLength(Details, 30) + " " + SetLength(Deadline.ToString(Utility.SHORT_DATE_FORMAT), 15) +  " " + SetLength(Labels.Split(new char[] { ' ', ';' }, StringSplitOptions.RemoveEmptyEntries)[0].Trim(), 8) + " " + archives;
+           // return stars + " " + SetLength(Details, 30) + " " + SetLength(Deadline.ToString(Utility.SHORT_DATE_FORMAT), 15) +  " " + SetLength(Labels.Split(new char[] { ' ', ';' }, StringSplitOptions.RemoveEmptyEntries)[0].Trim(), 8) + " " + archives;
             return this.ToString();
         }
+        
     }
 }
  
