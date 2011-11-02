@@ -15,11 +15,11 @@ using System.Windows.Threading;
 using System.ComponentModel;
 using System.IO;
 using System.Diagnostics;
+using System.Windows.Controls.Primitives;
+using Google.GData.AccessControl;
 using Google.GData.Calendar;
 using Google.GData.Client;
 using Google.GData.Extensions;
-using Google.GData.AccessControl;
-
 
 namespace F9S1.RememberMe
 {
@@ -35,12 +35,13 @@ namespace F9S1.RememberMe
         List<Task> taskInfo;
         List<string> taskDetails;
         string lastInput;
+        const string FIND_COMMAND = "find";
         const string ADD_COMMAND = "add";
         const string EDIT_COMMAND = "edit";
-        const string SORT_COMMAND = "sort";
+        // const string SORT_COMMAND = "sort";
         const string DELETE_COMMAND = "delete";
-        const string SORT_PRIORITY = "priority";
-        const string DEADLINE = "deadline";
+        // const string SORT_PRIORITY = "priority";
+        // const string DEADLINE = "deadline";
         const string ARCHIVE_COMMAND = "archive";
         const string CLEAR_COMMAND = "clear";
         private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
@@ -64,7 +65,7 @@ namespace F9S1.RememberMe
             // SetDisplay();
             // dataGrid1.DataContext = dispatch.GetTasks();
             SetDisplay();
-            this.Dispatcher.BeginInvoke(DispatcherPriority.SystemIdle, new timeCheck(setAlarm));
+            // this.Dispatcher.BeginInvoke(DispatcherPriority.SystemIdle, new timeCheck(setAlarm));
         }
         void initialiseNotificationIcon()
         {
@@ -120,57 +121,63 @@ namespace F9S1.RememberMe
                 this.Show();
             }
         }
-        void updateDeadline(ref List<Task> taskList, int[] time, int i)
-        {
-            TimeSpan difference = new TimeSpan(time[0], time[1], time[2], 0);
-            DateTime updatedDate = DateTime.Now.Add(difference);
-            taskList[i].Deadline = updatedDate;
-        }
-        public void setAlarm()
-        {
-            bool isLabelNotArchive;
-            bool isDeadlineReached;
+        /*   void updateDeadline(ref List<Task> taskList, int[] time, int i)
+           {
+               TimeSpan difference = new TimeSpan(time[0], time[1], time[2], 0);
+               DateTime updatedDate = DateTime.Now.Add(difference);
+               taskList[i].Deadline = updatedDate;
+           }
+           public void setAlarm()
+           {
+               bool isLabelNotArchive;
+               bool isDeadlineReached;
 
-
-
-            for (int i = 0; i < taskInfo.Count; i++)
-            {
-                isLabelNotArchive = !taskInfo[i].IsArchived;
-                isDeadlineReached = taskInfo[i].Deadline.CompareTo(DateTime.Now) < 0;
-                if (isLabelNotArchive && isDeadlineReached)
-                {
-                    int[] time = new int[3];
-                    Alarm showAlarm = new Alarm(taskInfo[i].Details, taskInfo[i].Deadline);
-                    maximiseWindow();
-                    showAlarm.ShowDialog();
-                    time = showAlarm.getTimeArray();
-                    if (time == null)
-                    {
-                        taskInfo[i].IsArchived = true;
-                    }
-                    else
-                    {
-                        //Debug.Assert(taskInfo != null);
-                        updateDeadline(ref taskInfo, time, i);
-                    }
-                    dispatch.WriteToFile(taskInfo);
-                    SetDisplay();
-                }
-            }
-            this.Dispatcher.BeginInvoke(DispatcherPriority.SystemIdle, new timeCheck(setAlarm));
-        }
-        private bool checkIfZero(int[] array)
+               for (int i = 0; i < taskInfo.Count; i++)
+               {
+                   isLabelNotArchive = !taskInfo[i].IsArchived;
+                   isDeadlineReached = taskInfo[i].Deadline.CompareTo(DateTime.Now) < 0;
+                   if (isLabelNotArchive && isDeadlineReached)
+                   {
+                       int[] time = new int[3];
+                       Alarm showAlarm = new Alarm(taskInfo[i].Details, taskInfo[i].Deadline);
+                       maximiseWindow();
+                       showAlarm.ShowDialog();
+                       time = showAlarm.getTimeArray();
+                       if (time == null)
+                       {
+                           taskInfo[i].IsArchived = true;
+                       }
+                       else
+                       {
+                           //Debug.Assert(taskInfo != null);
+                           updateDeadline(ref taskInfo, time, i);
+                       }
+                       dispatch.WriteToFile(taskInfo);
+                       SetDisplay();
+                   }
+               }
+               this.Dispatcher.BeginInvoke(DispatcherPriority.SystemIdle, new timeCheck(setAlarm));
+           }*/
+        /* private bool checkIfZero(int[] array)
+         {
+             for (int i = 0; i < array.Length; i++)
+             {
+                 if (array[i] != 0)
+                     return false;
+             }
+             return true;
+         }*/
+        private void displayHelp()
         {
-            for (int i = 0; i < array.Length; i++)
-            {
-                if (array[i] != 0)
-                    return false;
-            }
-            return true;
+            dataGrid1.Visibility = System.Windows.Visibility.Collapsed;
+            helpLabel.Visibility = System.Windows.Visibility.Visible;
+            labelButton.Visibility = System.Windows.Visibility.Visible;
+            inputBox.Text = "";
+            helpLabel.Content = "hahahahaahhaa";
         }
         private int numberOfSemiColon(String text)
         {
-            // Debug.Assert(text == null);
+            // Debug.Assert(text == null); 
             int count = 0;
             for (int i = 0; i < text.Length; i++)
             {
@@ -192,12 +199,14 @@ namespace F9S1.RememberMe
                 AutoComplete(input, ADD_COMMAND);
             else if (input.Length < EDIT_COMMAND.Length && input.StartsWith("e") && input.Equals(EDIT_COMMAND.Substring(0, input.Length)))
                 AutoComplete(input, EDIT_COMMAND);
-            else if (input.Length < SORT_COMMAND.Length && input.StartsWith("s") && input.Equals(SORT_COMMAND.Substring(0, input.Length)))
-                AutoComplete(input, SORT_COMMAND);
+            //else if (input.Length < SORT_COMMAND.Length && input.StartsWith("s") && input.Equals(SORT_COMMAND.Substring(0, input.Length)))
+            //  AutoComplete(input, SORT_COMMAND);
             else if (input.Length < DELETE_COMMAND.Length && input.StartsWith("d") && input.Equals(DELETE_COMMAND.Substring(0, input.Length)))
                 AutoComplete(input, DELETE_COMMAND);
             else if (input.Length < CLEAR_COMMAND.Length && input.StartsWith("c") && input.Equals(CLEAR_COMMAND.Substring(0, input.Length)))
                 AutoComplete(input, CLEAR_COMMAND);
+            else if (input.Length < FIND_COMMAND.Length && input.StartsWith("f") && input.Equals(FIND_COMMAND.Substring(0, input.Length)))
+                AutoComplete(input, FIND_COMMAND);
         }
         private void AutoComplete(String input, String keyWord)
         {
@@ -206,13 +215,13 @@ namespace F9S1.RememberMe
             inputBox.Select(start, keyWord.Length - input.Length);
         }
 
-        private void sortAutoComplete(String input)
-        {
-            if (input.Length < DEADLINE.Length && input.StartsWith("d") && input.Equals(DEADLINE.Substring(0, input.Length)))
-                AutoComplete(input, DEADLINE);
-            else if (input.Length < SORT_PRIORITY.Length && input.StartsWith("p") && input.Equals(SORT_PRIORITY.Substring(0, input.Length)))
-                AutoComplete(input, SORT_PRIORITY);
-        }
+        /*  private void sortAutoComplete(String input)
+          {
+              if (input.Length < DEADLINE.Length && input.StartsWith("d") && input.Equals(DEADLINE.Substring(0, input.Length)))
+                  AutoComplete(input, DEADLINE);
+              else if (input.Length < SORT_PRIORITY.Length && input.StartsWith("p") && input.Equals(SORT_PRIORITY.Substring(0, input.Length)))
+                  AutoComplete(input, SORT_PRIORITY);
+          }*/
         private int findNumHits(Task check, string keyword)
         {
             int hitcount = 0;
@@ -240,7 +249,34 @@ namespace F9S1.RememberMe
 
             return hitcount;
         }
-        public List<string> InstantSearch(string input)
+
+
+        int findHits(string keywords, Task findHits, string command)
+        {
+            int hitcount = 0;
+            if (findHits.ToString().Contains(keywords) && findHits.IsArchived == false)
+            {
+                hitcount = findNumHits(findHits, keywords);
+            }
+            if ("archive".Contains(keywords) && findHits.IsArchived == true && command == FIND_COMMAND
+                || findHits.ToString().Contains(keywords) && findHits.IsArchived == true && (command == FIND_COMMAND || command == DELETE_COMMAND))
+            {
+                hitcount++;
+            }
+            if ("highstar".Contains(keywords) && findHits.IsStarred == true && findHits.IsArchived == false)
+            {
+                hitcount++;
+            }
+            if ("highstar".Contains(keywords) && findHits.IsStarred == true && findHits.IsArchived == true && command == FIND_COMMAND)
+            {
+                hitcount++;
+
+            }
+            return hitcount;
+
+
+        }
+        public List<string> InstantSearch(string input, string command)
         {
             List<Task> taskList = taskInfo;
             List<string> keywords = new List<string>(input.Split(' '));
@@ -255,13 +291,9 @@ namespace F9S1.RememberMe
             {
                 for (int j = 0; j < keywords.Count; j++)
                 {
-                    if (taskList[i].ToString().Contains(keywords[j]))
-                    {
-                        hitcount[i]++;
-
-                        if (hitcount[i] > maxhits)
-                            maxhits = hitcount[i];
-                    }
+                    hitcount[i] = findHits(keywords[j], taskList[i], command);
+                    if (hitcount[i] > maxhits)
+                        maxhits = hitcount[i];
                 }
             }
             List<string> temp = new List<string>();
@@ -272,49 +304,16 @@ namespace F9S1.RememberMe
                         temp.Add(taskList[j].GetDisplay());
             }
 
-            /*
-            for (int i = 0; i < taskList.Count; i++)
-            {
-                int flag = 0;
-                if (taskList[i].IsRepeat && taskList[i].IsArchived)
-                {
-                    flag++;
-                    continue;
-                }
-                for (int j = 0; j < i; j++)
-                {
-                    if (taskList[i].Interval.Days == 1 || taskList[i].Interval.Days == 2)
-                    {
-
-                        if (taskList[i].Details == taskList[j].Details//Since no two tasks can have same name except in this case
-                                 && taskList[i].Labels == taskList[j].Labels)
-                        {
-                            flag++;
-                            continue;
-                        }
-                    }
-                }
-
-                if (flag == 0)
-                    toBeDisplayed.Add(taskList[i]);
-            }
-            */
-
             return temp;
         }
         private void inputBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             string passToRelegator = inputBox.Text;
-            if (inputBox.Text != "" && inputBox.Text.Length > 5 && passToRelegator.Substring(0, 5) == "find;")
-            {
-                string searchString = passToRelegator.Substring(5, passToRelegator.Length - 5);
-                SetOutputBox(InstantSearch(searchString));
-                return;
-            }
+
             if (Keyboard.IsKeyDown(Key.Back))
                 numberBackSpace = 1;
-            if (numberBackSpace == 0 && inputBox.Text.StartsWith(SORT_COMMAND + ';') && !inputBox.Text.EndsWith(";"))
-                sortAutoComplete(inputBox.Text.Substring(inputBox.Text.IndexOf(';') + 1));
+            /* if (numberBackSpace == 0 && inputBox.Text.StartsWith(SORT_COMMAND + ';') && !inputBox.Text.EndsWith(";"))
+                 sortAutoComplete(inputBox.Text.Substring(inputBox.Text.IndexOf(';') + 1));*/
             numberBackSpace = 0;
             if (Keyboard.IsKeyDown(Key.Back))
                 numberBackSpace = 1;
@@ -344,18 +343,20 @@ namespace F9S1.RememberMe
                         }
                     }
                 }
+
             }
             numberBackSpace = 0;
-            if (getCommand == "delete" || getCommand == "edit" || getCommand == "archive")
+            if (getCommand == DELETE_COMMAND || getCommand == EDIT_COMMAND || getCommand == ARCHIVE_COMMAND || getCommand == FIND_COMMAND)
             {
                 int posOfSemi = inputBox.Text.LastIndexOf(";");
                 string wordToSearch = inputBox.Text.Substring(posOfSemi + 1);
                 if (posOfSemi != -1)
                 {
-                    List<string> toBeDisplay = InstantSearch(wordToSearch);
+                    List<string> toBeDisplay = InstantSearch(wordToSearch, getCommand);
                     SetOutputBox(toBeDisplay);
                 }
             }
+
             if (inputBox.Text.Length <= getCommand.Length + 1)
                 SetDisplay();
         }
@@ -371,6 +372,7 @@ namespace F9S1.RememberMe
 
         private void inputBox_KeyDown(object sender, KeyEventArgs e)
         {
+            string input = inputBox.Text.ToString();
             if (e.Key == Key.Enter)
             {
                 if (inputBox.Text.Trim() == "")
@@ -379,9 +381,15 @@ namespace F9S1.RememberMe
                     dispatch.Status = Controller.State.normal;
                     displayBox.Content = "";
                 }
+
+                else if (input.Length >= 4 && input.Substring(0, 4).ToLower() == "help")
+                {
+                    displayHelp();
+                    return;
+                }
                 else
                 {
-                    string input = inputBox.Text.ToString();
+
                     lastInput = input;
                     List<string> output = new List<string>(dispatch.UserDispatch(input));
                     if (output.Count > 0 && output[0] == Utility.ERROR)
@@ -389,6 +397,7 @@ namespace F9S1.RememberMe
                         inputBox.Text = input;
                         displayBox.Content = input + "\n" + output[1];
                     }
+
                     else
                     {
                         inputBox.Text = "";
@@ -408,12 +417,13 @@ namespace F9S1.RememberMe
             {
                 string words = inputBox.Text.Substring(inputBox.Text.LastIndexOf(';') + 1).ToLower();
                 string temp = inputBox.Text.Substring(0, inputBox.Text.LastIndexOf(';') + 1);
-                if (temp == "delete;" || temp == "edit;" || temp == "archive;")
+                if (temp == "delete;" || temp == "edit;" || temp == "archive;" || temp == "find;")
                 {
-                    List<string> toBeDisplay = InstantSearch(words);
+                    string getCommand = temp.Remove(temp.Length - 1);
+                    List<string> toBeDisplay = InstantSearch(words, getCommand);
                     if (toBeDisplay.Count != 0)
                     {
-                        inputBox.Text = temp + autoCompleteSearch(words);
+                        inputBox.Text = temp + autoCompleteSearch(words, getCommand);
                         inputBox.Select(inputBox.Text.Length, 0);
                     }
                     else
@@ -448,7 +458,7 @@ namespace F9S1.RememberMe
             displayBox.Content = "Action redone";
             SetDisplay();
         }
-        public string autoCompleteSearch(string input)
+        public string autoCompleteSearch(string input, string command)
         {
             List<Task> contents = taskInfo;
             List<string> keywords = new List<string>(input.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries));
@@ -464,15 +474,12 @@ namespace F9S1.RememberMe
             {
                 for (int j = 0; j < keywords.Count; j++)
                 {
-                    if (contents[i].Details.Contains(keywords[j]))
+                    hitcount[i] = findHits(keywords[j], contents[i], command);
+                    if (hitcount[i] > maxhits)
                     {
-                        hitcount[i]++;
+                        maxhits = hitcount[i];
+                        temp = contents[i].Details;
 
-                        if (hitcount[i] > maxhits)
-                        {
-                            maxhits = hitcount[i];
-                            temp = contents[i].Details;
-                        }
                     }
                 }
             }
@@ -512,27 +519,143 @@ namespace F9S1.RememberMe
             inputBox.Focus();
         }
 
-        private bool isTaskPresent(Task LocTask, EventFeed cloudfeed)
+        private void Delete_Button_Click(object sender, RoutedEventArgs e)
         {
-            for (int i = 0; i < cloudfeed.Entries.Count; i++)
-                if (cloudfeed.Entries[i].Title.Text.Contains(LocTask.Details))
-                    return true;
-            return false;
 
+            //Task temp = ((FrameworkElement)sender).DataContext as Task;
+            DataGridRow selectedRow = (DataGridRow)(dataGrid1.ItemContainerGenerator.ContainerFromIndex(dataGrid1.SelectedIndex));
+            int positionOfSeperator = selectedRow.Item.ToString().IndexOf(Utility.FILE_SEPARATER);
+            String taskName = selectedRow.Item.ToString().Substring(0, positionOfSeperator);
+            String command = "delete;" + taskName;
+            List<String> output = new List<String>(dispatch.UserDispatch(command));
+            SetOutputBox(output);
+            taskInfo = dispatch.GetTasks();
         }
 
-        private void button1_Click(object sender, RoutedEventArgs e)
+        private void Archive_Button_Click(object sender, RoutedEventArgs e)
         {
-
+            DataGridRow selectedRow = (DataGridRow)(dataGrid1.ItemContainerGenerator.ContainerFromIndex(dataGrid1.SelectedIndex));
+            int positionOfSeperator = selectedRow.Item.ToString().IndexOf(Utility.FILE_SEPARATER);
+            String taskName = selectedRow.Item.ToString().Substring(0, positionOfSeperator);
+            String command = "archive;" + taskName;
+            List<String> output = new List<String>(dispatch.UserDispatch(command));
+            if (output.Count > 0 && output[0] == Utility.ERROR)
             {
-                Auth Authentication = new Auth();
+                displayBox.Content = output[1];
+            }
+            else
+            {
+                SetOutputBox(output);
+            }
+            taskInfo = dispatch.GetTasks();
+        }
+
+        private void dataGrid1_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+        {
+            //e.column and e.header datagridtextcolumn and tht dot header
+            DataGridColumn currentColumn = e.Column;
+            String currentHeader = (String)currentColumn.Header;
+            FrameworkElement element;
+            String newData;
+            Task updatedTask = dispatch.GetTasks().ElementAt(0);//create a temp task
+            //  var newData;
+
+            int taskNameLength = e.Row.Item.ToString().IndexOf(Utility.FILE_SEPARATER);
+            String taskName = e.Row.Item.ToString().Substring(0, taskNameLength);
+            Task deletedTask = dispatch.GetTasks().ElementAt(0); //to initialse
+            List<Task> updatedList = dispatch.GetTasks();
+            for (int i = 0; i < updatedList.Count; i++)
+            {
+                if (updatedList[i].Details == taskName) //delete the task before edit
+                {
+                    deletedTask = updatedList.ElementAt(i);
+                    updatedList.RemoveAt(i);
+                    break;
+                }
+            }
+
+            if (currentHeader.Equals("Label"))
+            {
+                element = dataGrid1.Columns[3].GetCellContent(e.Row);
+                newData = ((TextBox)element).Text;
+                updatedTask = new Task(((Task)(e.Row.Item)).ToString());
+                updatedTask.Labels = newData;
+            }
+            if (currentHeader.Equals("Deadline"))
+            {
+                element = dataGrid1.Columns[2].GetCellContent(e.Row);
+                newData = ((TextBox)element).Text;
+                updatedTask = new Task(((Task)(e.Row.Item)).ToString());
+                updatedTask.Deadline = DateTime.Parse(newData);
+            }
+            String command = "add " + updatedTask.Details + " @" + updatedTask.Deadline + " #" + updatedTask.Labels.Trim() + " ";
+            if (updatedTask.IsStarred)
+                command += Utility.STARRED;
+            List<String> output = dispatch.UserDispatch(command);
+            if (output.Count > 0 && output[0] == Utility.ERROR)
+            {
+                updatedList.Add(deletedTask);
+                displayBox.Content = output[1];
+            }
+            SetOutputBox(dispatch.UserDispatch("display"));
+            return;
+        }
+
+        private void ToggleButton_Click(object sender, RoutedEventArgs e)
+        {
+            DataGridRow selectedRow = (DataGridRow)(dataGrid1.ItemContainerGenerator.ContainerFromIndex(dataGrid1.SelectedIndex));
+            int taskNameLength = selectedRow.Item.ToString().IndexOf(Utility.FILE_SEPARATER);
+            String taskName = selectedRow.Item.ToString().Substring(0, taskNameLength);
+            List<Task> updatedList = dispatch.GetTasks();
+            String command = selectedRow.Item.ToString();
+            Task UpdatedTask = new Task(((Task)selectedRow.Item).ToString());
+            for (int i = 0; i < updatedList.Count; i++)
+            {
+                if (updatedList[i].Details == taskName)
+                {
+                    updatedList.RemoveAt(i);
+                    break;
+                }
+            }
+            ToggleButton button = (ToggleButton)e.OriginalSource;
+            if ((bool)button.IsChecked)
+            {
+                UpdatedTask.IsStarred = true;
+            }
+            else
+            {
+                UpdatedTask.IsStarred = false;
+            }
+            command = "add " + UpdatedTask.Details + " @" + UpdatedTask.Deadline + " #" + UpdatedTask.Labels.Trim() + " ";
+            if (UpdatedTask.IsStarred)
+                command += Utility.STARRED;
+            dispatch.UserDispatch(command);
+            SetOutputBox(dispatch.UserDispatch("display"));
+        }
+
+        private void dataGrid1_BeginningEdit(object sender, DataGridBeginningEditEventArgs e)
+        {
+            displayBox.Content = "";
+        }
+
+        private void labelButton_Click(object sender, RoutedEventArgs e)
+        {
+            labelButton.Visibility = System.Windows.Visibility.Collapsed;
+            helpLabel.Visibility = System.Windows.Visibility.Collapsed;
+            dataGrid1.Visibility = System.Windows.Visibility.Visible;
+            SetDisplay();
+        }
+        private void syncButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (SyncItemsVisible())
+            {
+
                 //maximiseWindow()
-                Authentication.ShowDialog();
                 //time = showAlarm.getTimeArray();
                 try
                 {
                     CalendarService Gcal = new CalendarService("remMe");
-                    Gcal.setUserCredentials(Authentication.textBox1.Text, Authentication.passwordBox1.Password);
+                    Gcal.setUserCredentials(userBox.Text, passwordBox1.Password);
                     //get tasks from google
 
 
@@ -582,10 +705,10 @@ namespace F9S1.RememberMe
                             EventEntry entry = new EventEntry();
 
                             // Set the title and content of the entry.
-                    //        if (!taskList[i].Details.Contains("[RM!]"))
-                                entry.Title.Text = "[RM!]" + taskList[i].Details;
-                        //    else
-                          //      entry.Title.Text = taskList[i].Details;
+                            //        if (!taskList[i].Details.Contains("[RM!]"))
+                            entry.Title.Text = "[RM!]" + taskList[i].Details;
+                            //    else
+                            //      entry.Title.Text = taskList[i].Details;
                             //entry.Content.Content = taskList[i].getDesc();
 
 
@@ -605,16 +728,44 @@ namespace F9S1.RememberMe
                         }
                     }
                 }
-                catch {
+                catch
+                {
 
                     displayBox.Content = "Authentication Error / Internet is too slow";
                 }
             }
-
+            else
+            {
+                SetSyncItemsVisible();
+            }
+        }
+        void SetSyncItemsVisible()
+        {
+            userLabel.Visibility = System.Windows.Visibility.Visible;
+            userBox.Visibility = System.Windows.Visibility.Visible;
+            passwordLabel.Visibility = System.Windows.Visibility.Visible;
+            passwordBox1.Visibility = System.Windows.Visibility.Visible;
+        }
+        void SetSyncItemsCollapsed()
+        {
+            userLabel.Visibility = System.Windows.Visibility.Collapsed;
+            userBox.Visibility = System.Windows.Visibility.Collapsed;
+            passwordLabel.Visibility = System.Windows.Visibility.Collapsed;
+            passwordBox1.Visibility = System.Windows.Visibility.Collapsed;
+        }
+        bool SyncItemsVisible() 
+        {
+            return (userBox.Visibility == System.Windows.Visibility.Visible ||
+                    userLabel.Visibility == System.Windows.Visibility.Visible ||
+                    passwordBox1.Visibility == System.Windows.Visibility.Visible ||
+                    passwordLabel.Visibility == System.Windows.Visibility.Visible);
         }
 
-
+        private void inputBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (SyncItemsVisible())
+                SetSyncItemsCollapsed();
         }
-    
     }
+}
 

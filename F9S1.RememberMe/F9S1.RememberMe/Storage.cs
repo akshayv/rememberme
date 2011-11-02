@@ -76,8 +76,17 @@ namespace F9S1.RememberMe
             return dummy;
           }
 
-        public void WriteTasks(List<string> contents) //Exception if file is missing
+        public void WriteTasks(List<string> contents,List<string> labels) //Exception if file is missing
         {
+            try
+            {
+                WriteLabels(labels);
+            }
+
+            catch (Exception e)
+            { logger.Error("Label unknown error");
+            
+            }
             try
             {
                 TextWriter writer = new StreamWriter(contentFileName);

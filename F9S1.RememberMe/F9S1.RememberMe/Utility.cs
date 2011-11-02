@@ -14,6 +14,7 @@ namespace F9S1.RememberMe
         public const string SORT_ERROR = "Sort Failed. Please check your input";
         public const string ARCHIVE_ERROR = "Archive Failed. Please check your input";
         public const string DATE_ERROR = "Date Error. Please enter in the format \"<day> <hh:mm>\" or \"<dd-mm-yy> <hh:mm>\"";
+        public const string EARLY_DATE_ERROR = "Date/Time has already elapsed. Please check your input";
 
         public const string ERROR = "Error";
         public const string LABEL_UNDEFINED_ERROR = "Undefined label error. Add new labels using \"label add <newlabel>\"";
