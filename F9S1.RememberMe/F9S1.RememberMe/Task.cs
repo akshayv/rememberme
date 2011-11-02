@@ -8,7 +8,7 @@ namespace F9S1.RememberMe
 {
     class Task
     {
-         private string details;     //No semicolons
+        private string details;     //No semicolons
         public string Details       //Property
         {
             get
@@ -22,6 +22,28 @@ namespace F9S1.RememberMe
         }
 
         private DateTime deadline;  //After now
+        public string DisplayDeadline
+        {
+            get
+            {
+                if (deadline.Equals(Utility.DEFAULT_UNDEFINED_DATE))
+                    return "";
+                else
+                {
+                    string temp = deadline.ToString(Utility.SHORT_DATE_FORMAT);
+                    if (temp == "11:59 PM 31 Dec 99")
+                        temp = "";
+                    return temp;
+                }
+            }
+            set
+            {
+                if (value == Utility.DEFAULT_NO_TIME)
+                    deadline = Utility.DEFAULT_UNDEFINED_DATE;
+                else
+                    deadline = DateTime.Parse(value);
+            }
+        }
         public DateTime Deadline    //Property
         {
             get
@@ -189,7 +211,7 @@ namespace F9S1.RememberMe
             }
         }
 
-        public string GetDisplay()
+/*        public string GetDisplay()
         {
             string stars, archives;
             if (IsStarred)
@@ -211,7 +233,7 @@ namespace F9S1.RememberMe
            // return stars + " " + SetLength(Details, 30) + " " + SetLength(Deadline.ToString(Utility.SHORT_DATE_FORMAT), 15) +  " " + SetLength(Labels.Split(new char[] { ' ', ';' }, StringSplitOptions.RemoveEmptyEntries)[0].Trim(), 8) + " " + archives;
             return this.ToString();
         }
-        
+*/        
     }
 }
  

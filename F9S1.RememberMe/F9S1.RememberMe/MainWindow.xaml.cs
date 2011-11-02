@@ -31,7 +31,7 @@ namespace F9S1.RememberMe
     {
 
         private System.Windows.Forms.NotifyIcon m_notifyIcon;
-        public delegate void timeCheck();
+        
         Controller dispatch;
         List<Task> taskInfo;
         List<string> taskDetails;
@@ -320,7 +320,7 @@ namespace F9S1.RememberMe
             {
                 for (int j = 0; j < taskList.Count; j++)
                     if (hitcount[j] == i)
-                        temp.Add(taskList[j].GetDisplay());
+                        temp.Add(taskList[j].ToString());
             }
 
             return temp;
@@ -447,7 +447,11 @@ namespace F9S1.RememberMe
                     }
                     else
                         inputBox.Text = "";
+                    
                 }
+                inputBox.Focus();
+                inputBox.SelectionStart = inputBox.Text.Length;
+                e.Handled = true;
             }
             if (e.Key == Key.Escape)
             {
@@ -523,13 +527,13 @@ namespace F9S1.RememberMe
             for (int i = 0; i < output.Count; i++)
                 outputBox.Items.Add(output[i]);
         */
-            List<Task> temp = new List<Task>();
+            List<Task> displayList = new List<Task>();
             foreach (string item in output)
             {
-                temp.Add(new Task(item));
+                displayList.Add(new Task(item));
             }
 
-            dataGrid1.DataContext = temp;
+            dataGrid1.DataContext = displayList;
             dataGrid1.Items.Refresh();
         }
 
@@ -579,63 +583,68 @@ namespace F9S1.RememberMe
             Task updatedTask = dispatch.GetTasks().ElementAt(0);//create a temp task
             //  var newData;
 
-            int taskNameLength = e.Row.Item.ToString().IndexOf(Utility.FILE_SEPARATER);
-            String taskName = e.Row.Item.ToString().Substring(0, taskNameLength);
-            Task deletedTask = dispatch.GetTasks().ElementAt(0); //to initialse
+            String taskName = (new Task(e.Row.Item.ToString())).Details;
+            Task deletedTask = null;// = dispatch.GetTasks().ElementAt(0); //to initialse
             List<Task> updatedList = dispatch.GetTasks();
             for (int i = 0; i < updatedList.Count; i++)
             {
                 if (updatedList[i].Details == taskName) //delete the task before edit
                 {
                     deletedTask = updatedList.ElementAt(i);
-                    updatedList.RemoveAt(i);
                     break;
                 }
             }
-
+            string command = "delete " + deletedTask.Details;
+            List<String> output = dispatch.UserDispatch(command);
+            
             if (currentHeader.Equals("Label"))
             {
                 element = dataGrid1.Columns[3].GetCellContent(e.Row);
                 newData = ((TextBox)element).Text;
                 updatedTask = new Task(((Task)(e.Row.Item)).ToString());
-                updatedTask.Labels = newData;
+                command = "add " + updatedTask.Details + " @" + updatedTask.Deadline + " #" + newData + " ";
             }
             if (currentHeader.Equals("Deadline"))
             {
                 element = dataGrid1.Columns[2].GetCellContent(e.Row);
                 newData = ((TextBox)element).Text;
                 updatedTask = new Task(((Task)(e.Row.Item)).ToString());
-                updatedTask.Deadline = DateTime.Parse(newData);
+                command = "add " + updatedTask.Details + " @" + newData + " #" + updatedTask.Labels.Trim() + " ";
             }
-            String command = "add " + updatedTask.Details + " @" + updatedTask.Deadline + " #" + updatedTask.Labels.Trim() + " ";
             if (updatedTask.IsStarred)
                 command += Utility.STARRED;
-            List<String> output = dispatch.UserDispatch(command);
+            output = dispatch.UserDispatch(command);
             if (output.Count > 0 && output[0] == Utility.ERROR)
             {
-                updatedList.Add(deletedTask);
                 displayBox.Content = output[1];
+                command = "add " + deletedTask.Details + " @" + deletedTask.Deadline + " #" + deletedTask.Labels.Trim() + " ";
+                if (updatedTask.IsStarred)
+                    command += Utility.STARRED;
+                output = dispatch.UserDispatch(command);
+
             }
-            SetOutputBox(dispatch.UserDispatch("display"));
+            SetDisplay();
             return;
         }
 
         private void ToggleButton_Click(object sender, RoutedEventArgs e)
         {
             DataGridRow selectedRow = (DataGridRow)(dataGrid1.ItemContainerGenerator.ContainerFromIndex(dataGrid1.SelectedIndex));
-            int taskNameLength = selectedRow.Item.ToString().IndexOf(Utility.FILE_SEPARATER);
-            String taskName = selectedRow.Item.ToString().Substring(0, taskNameLength);
+          //  int taskNameLength = selectedRow.Item.ToString().IndexOf(Utility.FILE_SEPARATER);
+            String details = new Task(selectedRow.Item.ToString()).Details;
             List<Task> updatedList = dispatch.GetTasks();
             String command = selectedRow.Item.ToString();
-            Task UpdatedTask = new Task(((Task)selectedRow.Item).ToString());
+            Task UpdatedTask = new Task(selectedRow.Item.ToString());
             for (int i = 0; i < updatedList.Count; i++)
             {
-                if (updatedList[i].Details == taskName)
+                if (updatedList[i].Details == details)
                 {
                     updatedList.RemoveAt(i);
                     break;
                 }
             }
+            command = "delete " + UpdatedTask.Details;
+            dispatch.UserDispatch(command);
             ToggleButton button = (ToggleButton)e.OriginalSource;
             if ((bool)button.IsChecked)
             {
@@ -648,8 +657,8 @@ namespace F9S1.RememberMe
             command = "add " + UpdatedTask.Details + " @" + UpdatedTask.Deadline + " #" + UpdatedTask.Labels.Trim() + " ";
             if (UpdatedTask.IsStarred)
                 command += Utility.STARRED;
-            dispatch.UserDispatch(command);
-            SetOutputBox(dispatch.UserDispatch("display"));
+            List<string> output = dispatch.UserDispatch(command);
+            SetOutputBox(output);
         }
 
         private void dataGrid1_BeginningEdit(object sender, DataGridBeginningEditEventArgs e)
@@ -747,7 +756,7 @@ namespace F9S1.RememberMe
                             // Send the request and receive the response:
                             AtomEntry insertedEntry = Gcal.Insert(postUri, entry);
                         }
-                    }
+                        }
                 }
                 catch
                 {

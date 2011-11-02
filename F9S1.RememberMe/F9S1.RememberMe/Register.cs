@@ -14,7 +14,7 @@ namespace F9S1.RememberMe
         {
             get
             {
-                return taskList;
+                return new List<Task>(taskList);
             }
             set
             {
@@ -273,7 +273,7 @@ namespace F9S1.RememberMe
             List<string> taskDetails = new List<string>();
             for (int i = 0; i < taskList.Count; i++)
                 if(taskList[i].IsArchived==false)
-                    taskDetails.Add(taskList[i].GetDisplay());
+                    taskDetails.Add(taskList[i].ToString());
             return taskDetails;
         }
 

@@ -9,6 +9,7 @@ namespace F9S1.RememberMe
     public delegate void timeCheck();
     class AlarmCheck
     {
+        public delegate void timeCheck();
         List<Task> taskInfo;
         Controller dispatch;
         Alarm newAlarm = new Alarm("",DateTime.Now);

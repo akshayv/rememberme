@@ -35,6 +35,7 @@
         <Grid.Background>
             <ImageBrush ImageSource="/F9S1.RememberMe;component/Images/large_Abstract_Dark_Gray_Paper_Rape_Wallpaper_86207.jpg" />
         </Grid.Background>
+        <TextBox Height="145" HorizontalAlignment="Left" Margin="12,42,0,0" Name="helpBox" VerticalAlignment="Top" Width="479" Visibility="Collapsed" IsEnabled="True" IsReadOnly="True" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto" />
         <Label Margin="12,0,12,12" Name="displayBox" Foreground="#FFEB1919" FontWeight="Bold" Height="49" VerticalAlignment="Bottom" />
         <TextBox Margin="12,0,12,65" Name="inputBox" KeyDown="inputBox_KeyDown" Foreground="#FF19580E" TextChanged="inputBox_TextChanged" PreviewKeyDown="inputBox_PreviewKeyDown" Height="52" VerticalAlignment="Bottom" IsUndoEnabled="False" GotFocus="inputBox_GotFocus" />
         <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding}" Margin="12,40,12,126" Name="dataGrid1" Foreground="Black" BorderBrush="Black" CanUserDeleteRows="False" GridLinesVisibility="None" CellEditEnding="dataGrid1_CellEditEnding" BeginningEdit="dataGrid1_BeginningEdit">
@@ -47,9 +48,9 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn Header="Details" Binding="{Binding Details}" IsReadOnly="True" />
-                <DataGridTextColumn Header="Deadline" Binding="{Binding Deadline}" />
-                <DataGridTextColumn Header="Label" Binding="{Binding Labels}" />
+                <DataGridTextColumn Header="Details" Binding="{Binding Details}" IsReadOnly="True" MinWidth="190"/>
+                <DataGridTextColumn Header="Deadline" Binding="{Binding DisplayDeadline}" MinWidth="60"/>
+                <DataGridTextColumn Header="Label" Binding="{Binding Labels}" MinWidth="40"/>
                 <DataGridCheckBoxColumn Header="Archived" Binding="{Binding IsArchived}" />
                 <DataGridTemplateColumn Header="    ">
                     <DataGridTemplateColumn.CellTemplate>
@@ -77,6 +78,5 @@
         <TextBox Height="23" HorizontalAlignment="Right" Margin="0,12,292,0" Name="userBox" VerticalAlignment="Top" Width="122" Visibility="Collapsed" />
         <Label Content="Username" FontSize="13" FontWeight="Bold" Height="26" HorizontalAlignment="Left" Margin="12,9,0,0" Name="userLabel" VerticalAlignment="Top" Width="73" Foreground="#FF6CB548" Visibility="Collapsed" />
         <Button Content="GSync" Height="23" HorizontalAlignment="Left" Margin="226,11,0,0" Name="syncButton" VerticalAlignment="Top" Width="75" Foreground="#FF62B43A" FontWeight="Bold" Click="syncButton_Click" />
-        <TextBox Height="145" HorizontalAlignment="Left" Margin="12,40,0,0" Name="helpBox" VerticalAlignment="Top" Width="479" Visibility="Collapsed" IsEnabled="True" IsReadOnly="True" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto" />
     </Grid>
 </Window>
