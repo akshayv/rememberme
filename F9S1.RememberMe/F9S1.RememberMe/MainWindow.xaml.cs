@@ -163,6 +163,14 @@ namespace F9S1.RememberMe
             }
             return true;
         }*/
+        private void displayHelp()
+        {
+            dataGrid1.Visibility = System.Windows.Visibility.Collapsed;
+            helpLabel.Visibility = System.Windows.Visibility.Visible;
+            labelButton.Visibility = System.Windows.Visibility.Visible;
+            inputBox.Text = "";
+            helpLabel.Content = "hahahahaahhaa";
+        }
         private int numberOfSemiColon(String text)
         {
             // Debug.Assert(text == null); 
@@ -360,6 +368,7 @@ namespace F9S1.RememberMe
 
         private void inputBox_KeyDown(object sender, KeyEventArgs e)
         {
+            string input = inputBox.Text.ToString();
             if (e.Key == Key.Enter)
             {
                 if (inputBox.Text.Trim() == "")
@@ -368,9 +377,15 @@ namespace F9S1.RememberMe
                     dispatch.Status = Controller.State.normal;
                     displayBox.Content = "";
                 }
+                
+                else if (input.Length >= 4 && input.Substring(0, 4).ToLower() == "help")
+                {
+                    displayHelp();
+                    return;
+                }
                 else
                 {
-                    string input = inputBox.Text.ToString();
+                    
                     lastInput = input;
                     List<string> output = new List<string>(dispatch.UserDispatch(input));
                     if (output.Count > 0 && output[0] == Utility.ERROR)
@@ -378,6 +393,7 @@ namespace F9S1.RememberMe
                         inputBox.Text = input;
                         displayBox.Content = input + "\n" + output[1];
                     }
+                    
                     else
                     {
                         inputBox.Text = "";
@@ -616,6 +632,14 @@ namespace F9S1.RememberMe
         private void dataGrid1_BeginningEdit(object sender, DataGridBeginningEditEventArgs e)
         {
             displayBox.Content = "";
+        }
+
+        private void labelButton_Click(object sender, RoutedEventArgs e)
+        {
+            labelButton.Visibility = System.Windows.Visibility.Collapsed;
+            helpLabel.Visibility = System.Windows.Visibility.Collapsed;
+            dataGrid1.Visibility = System.Windows.Visibility.Visible;
+            SetDisplay();
         }
 
     }
