@@ -1,1 +1,4 @@
-alarm ~~ 03 Nov 2011 04:13 ~~  others ~~ False ~~ True ~~ 00:00:00
+new meeting ~~ 03 Nov 2011 17:38 ~~  others ~~ False ~~ True ~~ 00:00:00
+new meeting 03-Nov-11 5:32PM ~~ 31 Dec 9999 23:59 ~~  others ~~ False ~~ False ~~ 00:00:00
+meeting ~~ 03 Nov 2011 17:32 ~~  others ~~ False ~~ True ~~ 00:00:00
+quit n ~~ 31 Dec 9999 23:59 ~~  others ~~ False ~~ False ~~ 00:00:00

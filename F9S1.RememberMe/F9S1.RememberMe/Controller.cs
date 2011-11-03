@@ -103,6 +103,8 @@ namespace F9S1.RememberMe
 
                     case "delete":
                         {
+                            if (parsedInput.Count < 1)
+                                break;
                             isModified = taskData.DeleteTask(parsedInput[0]);
                             if (!isModified)
                             {
@@ -114,6 +116,8 @@ namespace F9S1.RememberMe
 
                     case "edit":
                         {
+                            if (parsedInput.Count < 1)
+                                break;
                             string editOut = taskData.MoveTaskToEnd(parsedInput[0]);
                             if (editOut != "")
                                 isModified = true;
@@ -131,6 +135,8 @@ namespace F9S1.RememberMe
                         }
                     case "archive":
                         {
+                            if (parsedInput.Count < 1)
+                                break;
                             isModified = taskData.ArchiveTask(parsedInput[0]);
 
                             if (!isModified)
