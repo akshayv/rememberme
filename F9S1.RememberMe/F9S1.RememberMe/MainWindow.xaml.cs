@@ -582,7 +582,7 @@ namespace F9S1.RememberMe
             String newData;
             Task updatedTask = dispatch.GetTasks().ElementAt(0);//create a temp task
             //  var newData;
-
+            int selectedRowNumber;
             String taskName = (new Task(e.Row.Item.ToString())).Details;
             Task deletedTask = null;// = dispatch.GetTasks().ElementAt(0); //to initialse
             List<Task> updatedList = dispatch.GetTasks();
@@ -602,7 +602,7 @@ namespace F9S1.RememberMe
                 element = dataGrid1.Columns[3].GetCellContent(e.Row);
                 newData = ((TextBox)element).Text;
                 updatedTask = new Task(((Task)(e.Row.Item)).ToString());
-                command = "add " + updatedTask.Details + " @" + updatedTask.Deadline + " #" + newData + " ";
+                command = "add " + updatedTask.Details + " @" + updatedTask.Deadline.ToString(Utility.DATE_FORMAT) + " #" + newData + " ";
             }
             if (currentHeader.Equals("Deadline"))
             {
@@ -617,13 +617,14 @@ namespace F9S1.RememberMe
             if (output.Count > 0 && output[0] == Utility.ERROR)
             {
                 displayBox.Content = output[1];
-                command = "add " + deletedTask.Details + " @" + deletedTask.Deadline + " #" + deletedTask.Labels.Trim() + " ";
+                command = "add " + deletedTask.Details + " @" + deletedTask.Deadline.ToString(Utility.DATE_FORMAT) + " #" + deletedTask.Labels.Trim() + " ";
                 if (updatedTask.IsStarred)
                     command += Utility.STARRED;
                 output = dispatch.UserDispatch(command);
 
             }
             SetDisplay();
+            dataGrid1.SelectedItem = updatedTask;
             return;
         }
 

@@ -38,7 +38,7 @@
         <TextBox Height="145" HorizontalAlignment="Left" Margin="12,42,0,0" Name="helpBox" VerticalAlignment="Top" Width="479" Visibility="Collapsed" IsEnabled="True" IsReadOnly="True" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto" />
         <Label Margin="12,0,12,12" Name="displayBox" Foreground="#FFEB1919" FontWeight="Bold" Height="49" VerticalAlignment="Bottom" />
         <TextBox Margin="12,0,12,65" Name="inputBox" KeyDown="inputBox_KeyDown" Foreground="#FF19580E" TextChanged="inputBox_TextChanged" PreviewKeyDown="inputBox_PreviewKeyDown" Height="52" VerticalAlignment="Bottom" IsUndoEnabled="False" GotFocus="inputBox_GotFocus" />
-        <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding}" Margin="12,40,12,126" Name="dataGrid1" Foreground="Black" BorderBrush="Black" CanUserDeleteRows="False" GridLinesVisibility="None" CellEditEnding="dataGrid1_CellEditEnding" BeginningEdit="dataGrid1_BeginningEdit">
+        <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding}" Margin="12,40,12,126" Name="dataGrid1" Foreground="Black" BorderBrush="Black" CanUserDeleteRows="False" GridLinesVisibility="None" CellEditEnding="dataGrid1_CellEditEnding" BeginningEdit="dataGrid1_BeginningEdit" >
             <DataGrid.Columns>
                 <DataGridTemplateColumn Header="  ">
                     <DataGridTemplateColumn.CellTemplate>
@@ -48,10 +48,10 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn Header="Details" Binding="{Binding Details}" IsReadOnly="True" MinWidth="190"/>
+                <DataGridTextColumn Header="Details" Binding="{Binding Details}" IsReadOnly="True" MinWidth="230"/>
                 <DataGridTextColumn Header="Deadline" Binding="{Binding DisplayDeadline}" MinWidth="60"/>
-                <DataGridTextColumn Header="Label" Binding="{Binding Labels}" MinWidth="40"/>
-                <DataGridCheckBoxColumn Header="Archived" Binding="{Binding IsArchived}" />
+                <DataGridTextColumn Header="Label" Binding="{Binding Labels}" MinWidth="60"/>
+               <!-- <DataGridCheckBoxColumn Header="Archived" Binding="{Binding IsArchived}" />-->
                 <DataGridTemplateColumn Header="    ">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
