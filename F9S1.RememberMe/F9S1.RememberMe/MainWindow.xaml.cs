@@ -346,7 +346,7 @@ namespace F9S1.RememberMe
 
                 getCommand = inputBox.Text.Substring(0, inputBox.Text.IndexOf(';')).ToLower().Trim();
                 int count = numberOfSemiColon(inputBox.Text);
-                if (inputBox.Text[inputBox.Text.Length - 1] == ';' && (getCommand.Equals("add") || getCommand.Equals("edit:")) && numberBackSpace == 0)
+                if (inputBox.Text[inputBox.Text.Length - 1] == ';' && (getCommand.Equals("add") || getCommand.Equals("edit")) && numberBackSpace == 0)
                 {
                     if (Keyboard.IsKeyDown(Key.Back))
                         numberBackSpace = 1;
@@ -397,7 +397,6 @@ namespace F9S1.RememberMe
                 if (inputBox.Text.Trim() == "")
                 {
                     SetOutputBox(dispatch.UserDispatch("display"));
-                    dispatch.Status = Controller.State.normal;
                     displayBox.Content = "";
                 }
 
@@ -429,7 +428,6 @@ namespace F9S1.RememberMe
             else if (e.Key == Key.Escape)
             {
                 inputBox.Clear();
-                dispatch.Status = Controller.State.normal;
                 displayBox.Content = "";
             }
             if (inputBox.Text != "" && e.Key == Key.Tab)

@@ -35,8 +35,6 @@ namespace F9S1.RememberMe
             {
                 case "edit":
                     return Command.edit;
-                case "edit:":
-                    return Command.edit;
                 case "delete":
                     return Command.delete;
                 case "clear":
@@ -90,7 +88,21 @@ namespace F9S1.RememberMe
                 if (temp.Length < 2)
                 {
                     parsedInput.Add(Utility.ERROR);
-                    parsedInput.Add(Utility.ADD_INPUT_ERROR);
+                    parsedInput.Add(Utility.INPUT_ERROR);
+                    return parsedInput;
+                }
+                else
+                    betaInput = temp[1];
+            }
+
+            if (betaParse[0].Trim().ToLower().Equals("edit"))
+            {
+                commandName = "edit";
+                string[] temp = betaInput.Split(new Char[] { ' ', ';' }, 2);
+                if (temp.Length < 2)
+                {
+                    parsedInput.Add(Utility.ERROR);
+                    parsedInput.Add(Utility.INPUT_ERROR);
                     return parsedInput;
                 }
                 else
@@ -102,11 +114,12 @@ namespace F9S1.RememberMe
                 addSemiCol(ref input);
                 addSemiCol(ref betaInput);
                 List<string> toBeChecked =  ColonParse(betaInput, labels);
+                toBeChecked[0] = commandName;
                 if (toBeChecked[1].Length == 0)
                 {
                     logger.Info("No name entered");
                     parsedInput.Add(Utility.ERROR);
-                    parsedInput.Add(Utility.ADD_INPUT_ERROR);
+                    parsedInput.Add(Utility.INPUT_ERROR);
                     return parsedInput;
                 }
                 if (toBeChecked[2] == Utility.DEFAULT_ERROR_DATE.ToString(Utility.DATE_FORMAT))
@@ -201,7 +214,7 @@ namespace F9S1.RememberMe
             if (taskDetails == null || taskDetails == "")
             {
                 parsedInput.Add(Utility.ERROR);
-                parsedInput.Add(Utility.ADD_INPUT_ERROR);
+                parsedInput.Add(Utility.INPUT_ERROR);
                 return parsedInput;
             }
 
@@ -353,7 +366,7 @@ namespace F9S1.RememberMe
             
             Command inputCommand = ToCommand(input.Trim().Split(new char[] { ' ', ';' })[0].ToLower());
             List<string> parsedInput = new List<string>();
-            if (inputCommand == Command.add)
+            if (inputCommand == Command.add || inputCommand == Command.edit)
             {
                 parsedInput = SymbolParse(input, labels);
             }

@@ -16,13 +16,8 @@ namespace F9S1.RememberMe
             {
                 return new List<Task>(taskList);
             }
-            set
-            {
-                taskList = value;
-            }
         }
-        Stack<string> undoStack, redoStack;
-        int initundocount=2;
+        Stack<List<Task>> undoStack, redoStack;
         public Register(List<string> stringListTasks)
         {
             taskList = new List<Task>();
@@ -30,17 +25,9 @@ namespace F9S1.RememberMe
             {
                 taskList.Add(new Task(stringListTasks[i]));
             }
-            undoStack = new Stack<string>();
-            redoStack = new Stack<string>();
-
-            
-            for (int i = 0; i < taskList.Count; i++)
-            {
-                undoStack.Push(taskList[i].ToString());
-                initundocount++;
-            }
-            undoStack.Push(";");
-    
+            undoStack = new Stack<List<Task>>();
+            redoStack = new Stack<List<Task>>();
+            undoStack.Push(new List<Task>(taskList));
         }
         public void UpdateTasks()
         {
@@ -50,69 +37,35 @@ namespace F9S1.RememberMe
             }
             else
             {
-               
-                for (int i = 0; i < taskList.Count; i++)
-                    undoStack.Push(taskList[i].ToString());
-                undoStack.Push(";");
-
+                undoStack.Push(new List<Task>(taskList));
+                redoStack.Clear();
             }
         }
 
         public bool UndoAction()
         {
-
-            if (undoStack.Count > initundocount-1)
+            if (undoStack.Count > 1)
             {
-
-                taskList.Clear();
-
                 redoStack.Push(undoStack.Pop());
-                while (undoStack.Peek() != ";")
-
-                    redoStack.Push(undoStack.Pop());
-
-                redoStack.Push(undoStack.Pop());
-                
-                Task temp;
-                while (undoStack.Count >0 && undoStack.Peek() != ";")
-                {
-                    temp = new Task(undoStack.Pop());
-
-                    taskList.Add(temp);
-                }
-
-                return true;
+                taskList = new List<Task>(undoStack.Peek());
+//                return true;
             }
-
-            logger.Info("No more undos");
+            else
+                logger.Info("No more undos");
             return false;
         }
         public bool RedoAction()
         {
-            if (redoStack.Count > 1)
+            if (redoStack.Count > 0)
             {
-                taskList.Clear();
-
-                redoStack.Pop();
-                Task temp;
-                while (redoStack.Count > 0 && redoStack.Peek() != ";")
-                {
-                    temp = new Task(redoStack.Pop());
-
-                    taskList.Add(temp);
-                }
-
-                redoStack.Pop();
-                return true;
+                undoStack.Push(redoStack.Pop());
+                taskList = new List<Task>(undoStack.Peek());
+//                return true;
             }
-
-            logger.Info("No more redos");
-
+            else
+                logger.Info("No more redos");
             return false;
         }
-        //public void SetTasks(List<string> stringList)
-        //{
-        //}
         public List<string> GetList()
         {
             List<string> stringListTasks = new List<string>();
@@ -122,7 +75,6 @@ namespace F9S1.RememberMe
             }
             return stringListTasks;
         }
-
         public bool DeleteLabel(string newLabel, ref List<string> labels)
         {
             for (int i = 0; i < labels.Count; i++)
@@ -132,7 +84,7 @@ namespace F9S1.RememberMe
                     return true;
                 }
             return false;
-        }
+        }      
         public bool AddLabel(string newLabel,ref List<string> labels)
         {
             for (int i = 0; i < labels.Count; i++)
@@ -142,14 +94,12 @@ namespace F9S1.RememberMe
             
             return true;
         }
-
         public bool AddTask(List<string> newTask)
         {
             newTask[0] = CheckIfDuplicate(newTask[0]);
             taskList.Add(new Task(newTask));
             return true;
         }
-
         string CheckIfDuplicate(string taskDetails)
         {
             int count = 0;
@@ -173,7 +123,6 @@ namespace F9S1.RememberMe
                 logger.Info("Task with same name exists");
             return newDetails;
         }
-
         public bool DeleteTask(string taskDetails)
         {
             Task foundTask = SearchTask(taskDetails);
@@ -209,49 +158,18 @@ namespace F9S1.RememberMe
             taskList.Clear();
             return true;
         }
-        public string MoveTaskToEnd(string taskDetails)
-        {
-            Task foundTask = SearchTask(taskDetails);
-            if (foundTask != null)
-            {
-                taskList.Remove(foundTask);
-                taskList.Add(foundTask);
-                return foundTask.Details;
-            }
-            return "";
-        }
-
         public bool EditTask(List<string> editInput)
         {
             if (editInput.Count < 5)
                 return false;
-            if (editInput[0] != null && editInput[0] != "")
+            Task foundTask = SearchTask(editInput[0]);
+            if (foundTask != null)
             {
-                editInput[0] = CheckIfDuplicate(editInput[0]);
-                taskList[taskList.Count - 1].Details = editInput[0];
+                taskList.Remove(foundTask);
             }
-            if (editInput[1] != null && editInput[1] != "")
-            {
-                taskList[taskList.Count - 1].Deadline = DateTime.Parse(editInput[1]);
-            }
-            if (editInput[2] != null && editInput[2] != "")
-            {
-                taskList[taskList.Count - 1].Labels = editInput[2];
-            }
-            if (editInput[3] != null && editInput[3] != "")
-            {
-                if (editInput[3] == Utility.STARRED)
-                {
-                    taskList[taskList.Count - 1].IsStarred = true;
-                }
-                else if (editInput[3] == Utility.UNSTARRED)
-                {
-                    taskList[taskList.Count - 1].IsStarred = false;
-                }
-            }
+            taskList.Add(new Task(editInput));
             return true;
         }
-
         public Task SearchTask(string taskDetails)
         {
             Task toBeFound = null;
@@ -266,8 +184,6 @@ namespace F9S1.RememberMe
             logger.Info("Task not found");
             return toBeFound;
         }
-
-        
         public List<string> Display()
         {
             List<string> taskDetails = new List<string>();
@@ -276,7 +192,6 @@ namespace F9S1.RememberMe
                     taskDetails.Add(taskList[i].ToString());
             return taskDetails;
         }
-
         private int findNumHits(Task check, string keyword)
         {
             int hitcount = 0;
@@ -304,24 +219,5 @@ namespace F9S1.RememberMe
 
             return hitcount;
         }
-
-        
-        //public bool viewByLabel(ref List<Task> taskList, string parameter, List<Task> currentList)
-        //{
-        //    int numWithLabel = 0;
-        //    for (int i = 0; i < currentList.Count; i++)
-        //    {
-        //        if (currentList[i].getLabel().ToLower() == parameter.ToLower())
-        //        {
-        //            taskList.Add(currentList[i]);
-        //            numWithLabel++;
-        //        }
-        //    }
-        //    if (numWithLabel == 0)
-        //        return false;
-        //    else
-        //        return true;
-        //}
-
     }
 }

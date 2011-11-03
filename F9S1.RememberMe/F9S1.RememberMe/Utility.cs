@@ -22,7 +22,7 @@ namespace F9S1.RememberMe
         public const string ERROR = "Error";
         public const string LABEL_UNDEFINED_ERROR = "Undefined label error. Add new labels using \"label add <newlabel>\"";
         public const string LABEL_INPUT_ERROR = "Input error. The correct way of adding/deleting a label is \"label add/delete <label name>\"";
-        public const string ADD_INPUT_ERROR = "Add error. Input missing";
+        public const string INPUT_ERROR = "Input missing";
 
         public const string DATE_FORMAT = "dd MMM yyyy HH:mm";
         public const string SHORT_DATE_FORMAT = "hh:mm tt dd MMM yy";
