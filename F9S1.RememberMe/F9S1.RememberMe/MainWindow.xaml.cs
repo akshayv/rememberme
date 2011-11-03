@@ -449,8 +449,8 @@ namespace F9S1.RememberMe
                         inputBox.Text = "";
                     
                 }
-                inputBox.Focus();
-                inputBox.SelectionStart = inputBox.Text.Length;
+             /*  inputBox.Focus();
+                inputBox.SelectionStart = inputBox.Text.Length;*/
                 e.Handled = true;
             }
             if (e.Key == Key.Escape)
@@ -724,7 +724,7 @@ namespace F9S1.RememberMe
                     {
                         AtomEntry task = allTasks.Entries[i];
                         task.Delete();
-                        task.Update();
+                       // task.Update();
                     }
 
                     for (int i = 0; i < taskList.Count; i++)
@@ -767,6 +767,7 @@ namespace F9S1.RememberMe
             else
             {
                 SetSyncItemsVisible();
+                userBox.Focus();
             }
         }
         void SetSyncItemsVisible()
@@ -796,6 +797,13 @@ namespace F9S1.RememberMe
             if (SyncItemsVisible())
                 SetSyncItemsCollapsed();
         }
+
+        private void userBox_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Tab)
+                passwordBox1.Focus();
+        }
+
     }
 }
 

@@ -73,10 +73,10 @@
             </DataGrid.Columns>
         </DataGrid>
         <Button Content="Done" Height="23" HorizontalAlignment="Left" Margin="210,210,0,0" Name="helpButton" VerticalAlignment="Top" Width="75" Click="labelButton_Click" />
-        <PasswordBox Height="23" HorizontalAlignment="Left" Margin="382,12,0,0" Name="passwordBox1" VerticalAlignment="Top" Width="109" Visibility="Collapsed" />
-        <Label Content="Password" FontSize="13" FontWeight="Bold" Height="26" HorizontalAlignment="Right" Margin="0,9,127,0" Name="passwordLabel" VerticalAlignment="Top" Width="69" VerticalContentAlignment="Center" Foreground="#FF5BB82D" Visibility="Collapsed" />
-        <TextBox Height="23" HorizontalAlignment="Right" Margin="0,12,292,0" Name="userBox" VerticalAlignment="Top" Width="122" Visibility="Collapsed" />
+        <PasswordBox Height="23" HorizontalAlignment="Left" Margin="286,12,0,0" Name="passwordBox1" VerticalAlignment="Top" Width="109" Visibility="Collapsed" />
+        <Label Content="Password" FontSize="13" FontWeight="Bold" Height="26" HorizontalAlignment="Right" Margin="0,9,218,0" Name="passwordLabel" VerticalAlignment="Top" Width="69" VerticalContentAlignment="Center" Foreground="#FF5BB82D" Visibility="Collapsed" />
+        <TextBox Height="23" HorizontalAlignment="Left" Margin="89,12,0,0" Name="userBox" VerticalAlignment="Top" Width="122" Visibility="Collapsed" PreviewKeyDown="userBox_PreviewKeyDown" />
         <Label Content="Username" FontSize="13" FontWeight="Bold" Height="26" HorizontalAlignment="Left" Margin="12,9,0,0" Name="userLabel" VerticalAlignment="Top" Width="73" Foreground="#FF6CB548" Visibility="Collapsed" />
-        <Button Content="GSync" Height="23" HorizontalAlignment="Left" Margin="226,11,0,0" Name="syncButton" VerticalAlignment="Top" Width="75" Foreground="#FF62B43A" FontWeight="Bold" Click="syncButton_Click" />
+        <Button Content="GSync" Height="23" HorizontalAlignment="Left" Margin="416,12,0,0" Name="syncButton" VerticalAlignment="Top" Width="75" Foreground="#FF62B43A" FontWeight="Bold" Click="syncButton_Click" />
     </Grid>
 </Window>
