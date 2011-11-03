@@ -7,31 +7,12 @@ namespace F9S1.RememberMe
 {
     class Controller
     {
-        public enum State
-        {
-            normal,
-            edit
-        };
-
-        State status;
-        public State Status
-        {
-            get
-            {
-                return status;
-            }
-            set
-            {
-                status = value;
-            }
-        }
         Parser parse;
         Storage store;
         List<string> labels;
         Register taskData;
         public Controller()
         {
-            status = State.normal;
             parse = new Parser();
             store = new Storage();
             taskData = new Register(store.ReadTasks());
@@ -43,21 +24,9 @@ namespace F9S1.RememberMe
         {
             return taskData.TaskList;
         }
-      /*  public void SetTasks(List<Task> newTaskList)
-        {
-            taskData.TaskList = newTaskList;
-        }*/
-     
-
-//        public List<string> CallSearch(string input)
-//        {
-//            List<string> tobeDisplayed = taskData.InstantSearch(input);
-//            return tobeDisplayed;
-//        }
-
         public void WriteToFile(List<Task> taskList)
         {
-            taskData.TaskList = taskList;
+         //   taskData.TaskList = taskList;
             store.WriteTasks(taskData.GetList(),labels);
         }
 
@@ -68,6 +37,7 @@ namespace F9S1.RememberMe
                 if (input.Trim().ToLower().Equals("exit") ||
                     input.Trim().ToLower().Equals("quit"))
                 {
+                    store.WriteTasks(taskData.GetList(), labels);
                     Environment.Exit(0);
                 }
             }
@@ -77,8 +47,6 @@ namespace F9S1.RememberMe
             if (commandName != Utility.ERROR)
                 parsedInput.RemoveAt(0);
            
-            if (status.Equals(State.normal))
-            {
                 switch (commandName)
                 {
 
@@ -116,16 +84,8 @@ namespace F9S1.RememberMe
 
                     case "edit":
                         {
-                            if (parsedInput.Count < 1)
-                                break;
-                            string editOut = taskData.MoveTaskToEnd(parsedInput[0]);
-                            if (editOut != "")
-                                isModified = true;
-                            if (isModified)
-                            {
-                                status = State.edit;
-                                output.Add(Utility.EDIT_PRINT + editOut);
-                            }
+                            taskData.EditTask(parsedInput);
+                            isModified = true;
                             if (!isModified)
                             {
                                 output.Add(Utility.ERROR);
@@ -167,20 +127,6 @@ namespace F9S1.RememberMe
                             break;
                         }
                 }
-            }
-            else if (status == State.edit)
-            {
-                taskData.EditTask(parsedInput);
-                isModified = true;
-                status = State.normal;
-
-                if (!isModified)
-                {
-                    output.Add(Utility.ERROR);
-                    output.Add(Utility.EDIT_ERROR);
-                }
-            }
-
             if (isModified)
             {
                 store.WriteTasks(taskData.GetList(),labels);
