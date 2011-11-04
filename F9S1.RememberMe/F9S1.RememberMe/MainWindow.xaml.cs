@@ -582,45 +582,29 @@ namespace F9S1.RememberMe
             //  var newData;
             int selectedRowNumber;
             String taskName = (new Task(e.Row.Item.ToString())).Details;
-            Task deletedTask = null;// = dispatch.GetTasks().ElementAt(0); //to initialse
-            List<Task> updatedList = dispatch.GetTasks();
-            for (int i = 0; i < updatedList.Count; i++)
-            {
-                if (updatedList[i].Details == taskName) //delete the task before edit
-                {
-                    deletedTask = updatedList.ElementAt(i);
-                    break;
-                }
-            }
-            string command = "delete " + deletedTask.Details;
-            List<String> output = dispatch.UserDispatch(command);
-            
+            string command = "";
             if (currentHeader.Equals("Label"))
             {
                 element = dataGrid1.Columns[3].GetCellContent(e.Row);
                 newData = ((TextBox)element).Text;
                 updatedTask = new Task(((Task)(e.Row.Item)).ToString());
-                command = "add " + updatedTask.Details + " @" + updatedTask.Deadline.ToString(Utility.DATE_FORMAT) + " #" + newData + " ";
+                command = "edit " + updatedTask.Details + " @" + updatedTask.Deadline.ToString(Utility.DATE_FORMAT) + " #" + newData + " ";
             }
             if (currentHeader.Equals("Deadline"))
             {
                 element = dataGrid1.Columns[2].GetCellContent(e.Row);
                 newData = ((TextBox)element).Text;
                 updatedTask = new Task(((Task)(e.Row.Item)).ToString());
-                command = "add " + updatedTask.Details + " @" + newData + " #" + updatedTask.Labels.Trim() + " ";
+                command = "edit " + updatedTask.Details + " @" + newData + " #" + updatedTask.Labels.Trim() + " ";
             }
             if (updatedTask.IsStarred)
                 command += Utility.STARRED;
-            output = dispatch.UserDispatch(command);
+            List<string> output = dispatch.UserDispatch(command);
             if (output.Count > 0 && output[0] == Utility.ERROR)
             {
                 displayBox.Content = output[1];
-                command = "add " + deletedTask.Details + " @" + deletedTask.Deadline.ToString(Utility.DATE_FORMAT) + " #" + deletedTask.Labels.Trim() + " ";
-                if (updatedTask.IsStarred)
-                    command += Utility.STARRED;
                 output = dispatch.UserDispatch(command);
-
-            }
+           }
             SetDisplay();
             dataGrid1.SelectedItem = updatedTask;
             return;
@@ -642,8 +626,6 @@ namespace F9S1.RememberMe
                     break;
                 }
             }
-            command = "delete " + UpdatedTask.Details;
-            dispatch.UserDispatch(command);
             ToggleButton button = (ToggleButton)e.OriginalSource;
             if ((bool)button.IsChecked)
             {
@@ -653,7 +635,7 @@ namespace F9S1.RememberMe
             {
                 UpdatedTask.IsStarred = false;
             }
-            command = "add " + UpdatedTask.Details + " @" + UpdatedTask.Deadline + " #" + UpdatedTask.Labels.Trim() + " ";
+            command = "edit " + UpdatedTask.Details + " @" + UpdatedTask.Deadline.ToString(Utility.DATE_FORMAT) + " #" + UpdatedTask.Labels.Trim() + " ";
             if (UpdatedTask.IsStarred)
                 command += Utility.STARRED;
             List<string> output = dispatch.UserDispatch(command);
