@@ -1,2 +1,3 @@
 test ~~ 31 Dec 9999 23:59 ~~  others ~~ False ~~ False ~~ 00:00:00
 test inian ~~ 05 Nov 2011 00:00 ~~  others ~~ True ~~ False ~~ 00:00:00
+aaja ~~ 31 Dec 9999 23:59 ~~  hi ~~ False ~~ False ~~ 00:00:00

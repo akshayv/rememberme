@@ -9,14 +9,12 @@ namespace F9S1.RememberMe
     {
         Parser parse;
         Storage store;
-        List<string> labels;
         Register taskData;
         public Controller()
         {
             parse = new Parser();
             store = new Storage();
-            taskData = new Register(store.ReadTasks());
-            labels = store.ReadLabels();
+            taskData = new Register(store.ReadTasks(),store.ReadLabels());
             AlarmCheck checkAlarm = new AlarmCheck(this);
         }
 
@@ -24,10 +22,15 @@ namespace F9S1.RememberMe
         {
             return taskData.TaskList;
         }
+
+        public List<string> GetLabels()
+        {
+            return taskData.Labels;
+        }
         public void WriteToFile(List<Task> taskList)
         {
          //   taskData.TaskList = taskList;
-            store.WriteTasks(taskData.GetList(),labels);
+            store.WriteTasks(taskData.GetList(),taskData.GetLabels());
         }
 
         public List<string> UserDispatch(string input)
@@ -37,11 +40,11 @@ namespace F9S1.RememberMe
                 if (input.Trim().ToLower().Equals("exit") ||
                     input.Trim().ToLower().Equals("quit"))
                 {
-                    store.WriteTasks(taskData.GetList(), labels);
+                    store.WriteTasks(taskData.GetList(), taskData.GetLabels());
                     Environment.Exit(0);
                 }
             }
-            List<string> parsedInput = parse.InputParse(input, labels), output = new List<string>();
+            List<string> parsedInput = parse.InputParse(input, taskData.GetLabels()), output = new List<string>();
             bool isModified = false;
             string commandName = parsedInput[0];
             if (commandName != Utility.ERROR)
@@ -53,9 +56,9 @@ namespace F9S1.RememberMe
                     case "label":
                         {
                             if(parsedInput[0]=="add")
-                                isModified = taskData.AddLabel(parsedInput[1],ref labels);
+                                isModified = taskData.AddLabel(parsedInput[1]);
                             else if(parsedInput[0]=="delete")
-                                isModified = taskData.DeleteLabel(parsedInput[1],ref labels);
+                                isModified = taskData.DeleteLabel(parsedInput[1]);
                             break;
                         }
                     case "add":
@@ -129,7 +132,7 @@ namespace F9S1.RememberMe
                 }
             if (isModified)
             {
-                store.WriteTasks(taskData.GetList(),labels);
+                store.WriteTasks(taskData.GetList(), taskData.GetLabels());
                 taskData.UpdateTasks();
             }
 
