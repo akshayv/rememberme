@@ -190,6 +190,7 @@ namespace F9S1.RememberMe
                 int _hash = betaInput.IndexOf('#');
                 int length = betaInput.Length;
                 taskTime = betaInput.Substring(_at + 1, ((_hash - _at > 0) ? _hash - _at - 1: length - _at - 1));
+                taskTime = taskTime.Trim();
                 taskInterval = GetRepeat(taskTime).ToString();
                 if (taskTime.Contains('%'))
                    taskTime = taskTime.Replace(taskTime.Substring(taskTime.IndexOf('%')).Split(' ', ';')[0], "");
