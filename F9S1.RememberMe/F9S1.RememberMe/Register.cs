@@ -10,6 +10,8 @@ namespace F9S1.RememberMe
         
         private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
         List<Task> taskList;
+        List<string> labels;
+
         public List<Task> TaskList
         {
             get
@@ -17,13 +19,27 @@ namespace F9S1.RememberMe
                 return new List<Task>(taskList);
             }
         }
+
+        public List<string> Labels
+        {
+            get
+            {
+                return labels;
+            }
+        }
+        
         Stack<List<Task>> undoStack, redoStack;
-        public Register(List<string> stringListTasks)
+        public Register(List<string> stringListTasks,List<string> labelList)
         {
             taskList = new List<Task>();
+            labels = new List<string>();
             for (int i = 0; i < stringListTasks.Count; i++)
             {
                 taskList.Add(new Task(stringListTasks[i]));
+            }
+            for (int i = 0; i < labelList.Count;i++ )
+            {
+                labels.Add(labelList[i]);
             }
             undoStack = new Stack<List<Task>>();
             redoStack = new Stack<List<Task>>();
@@ -66,6 +82,18 @@ namespace F9S1.RememberMe
                 logger.Info("No more redos");
             return false;
         }
+
+        public List<string> GetLabels()
+        {
+            List<string> LabelList = new List<string>();
+            for (int i = 0; i < labels.Count; i++)
+            {
+                LabelList.Add(labels[i]);
+            }
+            return LabelList;
+        }
+        
+
         public List<string> GetList()
         {
             List<string> stringListTasks = new List<string>();
@@ -75,7 +103,7 @@ namespace F9S1.RememberMe
             }
             return stringListTasks;
         }
-        public bool DeleteLabel(string newLabel, ref List<string> labels)
+        public bool DeleteLabel(string newLabel)
         {
             for (int i = 0; i < labels.Count; i++)
                 if (labels[i].ToLower() == newLabel.ToLower())
@@ -85,7 +113,7 @@ namespace F9S1.RememberMe
                 }
             return false;
         }      
-        public bool AddLabel(string newLabel,ref List<string> labels)
+        public bool AddLabel(string newLabel)
         {
             for (int i = 0; i < labels.Count; i++)
                 if (labels[i].ToLower() == newLabel.ToLower())

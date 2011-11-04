@@ -72,3 +72,7 @@ C:\Users\inian\Documents\Visual Studio 2010\Projects\rememberme v0.2\remembermef
 C:\Users\inian\Documents\Visual Studio 2010\Projects\rememberme v0.2\remembermef9s1\F9S1.RememberMe\F9S1.RememberMe\bin\Debug\Google.GData.Calendar.dll
 C:\Users\inian\Documents\Visual Studio 2010\Projects\rememberme v0.2\remembermef9s1\F9S1.RememberMe\F9S1.RememberMe\bin\Debug\Google.GData.Client.dll
 C:\Users\inian\Documents\Visual Studio 2010\Projects\rememberme v0.2\remembermef9s1\F9S1.RememberMe\F9S1.RememberMe\bin\Debug\Google.GData.Extensions.dll
+C:\Users\Akshay.Akshay-PC\Documents\Visual Studio 2010\Projects\Remem1\remembermef9s1\F9S1.RememberMe\F9S1.RememberMe\bin\Debug\Google.GData.AccessControl.dll
+C:\Users\Akshay.Akshay-PC\Documents\Visual Studio 2010\Projects\Remem1\remembermef9s1\F9S1.RememberMe\F9S1.RememberMe\bin\Debug\Google.GData.Calendar.dll
+C:\Users\Akshay.Akshay-PC\Documents\Visual Studio 2010\Projects\Remem1\remembermef9s1\F9S1.RememberMe\F9S1.RememberMe\bin\Debug\Google.GData.Client.dll
+C:\Users\Akshay.Akshay-PC\Documents\Visual Studio 2010\Projects\Remem1\remembermef9s1\F9S1.RememberMe\F9S1.RememberMe\bin\Debug\Google.GData.Extensions.dll
