@@ -62,7 +62,6 @@ namespace F9S1.RememberMe
             }
             inputBox.Focus();
             helpBox.Visibility = System.Windows.Visibility.Collapsed;
-            helpButton.Visibility = System.Windows.Visibility.Collapsed;
             SetDisplay();
             }
         void initialiseNotificationIcon()
@@ -124,8 +123,8 @@ namespace F9S1.RememberMe
         {
             dataGrid1.Visibility = System.Windows.Visibility.Collapsed;
             helpBox.Visibility = System.Windows.Visibility.Visible;
-            helpButton.Visibility = System.Windows.Visibility.Visible;
             inputBox.Visibility = System.Windows.Visibility.Collapsed;
+            displayBox.Visibility = System.Windows.Visibility.Collapsed;
             inputBox.Text = "";
             helpBox.Focus();
             helpBox.Text = "Help...\nThis is to test Scrolling" +
@@ -568,7 +567,6 @@ namespace F9S1.RememberMe
         private void ToggleButton_Click(object sender, RoutedEventArgs e)
         {
             DataGridRow selectedRow = (DataGridRow)(dataGrid1.ItemContainerGenerator.ContainerFromIndex(dataGrid1.SelectedIndex));
-          //  int taskNameLength = selectedRow.Item.ToString().IndexOf(Utility.FILE_SEPARATER);
             String details = new Task(selectedRow.Item.ToString()).Details;
             List<Task> updatedList = dispatch.GetTasks();
             String command = selectedRow.Item.ToString();
@@ -602,21 +600,17 @@ namespace F9S1.RememberMe
             displayBox.Content = "";
         }
 
-        private void labelButton_Click(object sender, RoutedEventArgs e)
-        {
-            helpButton.Visibility = System.Windows.Visibility.Collapsed;
-            helpBox.Visibility = System.Windows.Visibility.Collapsed;
-            dataGrid1.Visibility = System.Windows.Visibility.Visible;
-            inputBox.Visibility = System.Windows.Visibility.Visible;
-            inputBox.Focus();
-            SetDisplay();
-        }
         private void syncButton_Click(object sender, RoutedEventArgs e)
         {
             if (SyncItemsVisible())
             {
                 try
                 {
+                    if (userBox.Text == "" || passwordBox1.Password == "")
+                    {
+                        SetSyncItemsCollapsed();
+                        return;
+                    }
                     CalendarService Gcal = new CalendarService("remMe");
                     Gcal.setUserCredentials(userBox.Text, passwordBox1.Password);
                     //get tasks from google
@@ -670,6 +664,8 @@ namespace F9S1.RememberMe
         }
         void SetSyncItemsVisible()
         {
+            helpButton.Visibility = System.Windows.Visibility.Collapsed;
+            settingsButton.Visibility = System.Windows.Visibility.Collapsed;
             userLabel.Visibility = System.Windows.Visibility.Visible;
             userBox.Visibility = System.Windows.Visibility.Visible;
             passwordLabel.Visibility = System.Windows.Visibility.Visible;
@@ -677,6 +673,8 @@ namespace F9S1.RememberMe
         }
         void SetSyncItemsCollapsed()
         {
+            helpButton.Visibility = System.Windows.Visibility.Visible;
+            settingsButton.Visibility = System.Windows.Visibility.Visible;
             userLabel.Visibility = System.Windows.Visibility.Collapsed;
             userBox.Visibility = System.Windows.Visibility.Collapsed;
             passwordLabel.Visibility = System.Windows.Visibility.Collapsed;
@@ -696,13 +694,33 @@ namespace F9S1.RememberMe
             if (SyncItemsVisible())
                 SetSyncItemsCollapsed();
         }
-
         private void userBox_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Tab)
                 passwordBox1.Focus();
         }
-
+        private void doneButton_Click(object sender, RoutedEventArgs e)
+        {
+            helpBox.Visibility = System.Windows.Visibility.Collapsed;
+            dataGrid1.Visibility = System.Windows.Visibility.Visible;
+            inputBox.Visibility = System.Windows.Visibility.Visible;
+            inputBox.Focus();
+            SetDisplay();
+        }
+        private void helpButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (displayBox.Visibility == System.Windows.Visibility.Visible)
+                displayHelp();
+            else
+            {
+                helpBox.Visibility = System.Windows.Visibility.Collapsed;
+                dataGrid1.Visibility = System.Windows.Visibility.Visible;
+                inputBox.Visibility = System.Windows.Visibility.Visible;
+                displayBox.Visibility = System.Windows.Visibility.Visible;
+                inputBox.Focus();
+                SetDisplay();
+            }
+        }
     }
 }
 
