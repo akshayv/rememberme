@@ -1,2 +1,1 @@
-stupid dumb ass ~~ 31 Dec 9999 23:59 ~~  ~~ False ~~ False ~~ 00:00:00
-asas ~~ 31 Dec 9999 23:59 ~~  workothers ~~ False ~~ False ~~ 00:00:00
+hi ~~ 12:00 AM 07 Nov 2011 ~~  others ~~ False ~~ False ~~ 00:00:00

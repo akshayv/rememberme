@@ -31,7 +31,7 @@ namespace F9S1.RememberMe
             minutes.Text = "5";
             taskName = name;
             label1.Content = taskName + " : ";
-            label1.Content += deadline.ToString(Utility.DATE_FORMAT);
+            label1.Content += deadline.ToString(Utility.SHORT_DATE_FORMAT);
         }
         public void setTime()
         {

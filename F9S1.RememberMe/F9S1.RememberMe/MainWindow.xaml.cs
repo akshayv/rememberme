@@ -189,7 +189,7 @@ namespace F9S1.RememberMe
             }
             try
             {
-                if (check.Deadline.ToString(Utility.DATE_FORMAT).Contains(DateTime.Parse(keyword).ToString(Utility.DATE_FORMAT)))
+                if (check.Deadline.ToString(Utility.SHORT_DATE_FORMAT).Contains(DateTime.Parse(keyword).ToString(Utility.SHORT_DATE_FORMAT)))
                 {
                     hitcount++;
                 }

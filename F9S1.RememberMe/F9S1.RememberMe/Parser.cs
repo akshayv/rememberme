@@ -125,7 +125,7 @@ namespace F9S1.RememberMe
                     parsedInput.Add(Utility.INPUT_ERROR);
                     return parsedInput;
                 }
-                if (toBeChecked[2] == Utility.DEFAULT_ERROR_DATE.ToString(Utility.DATE_FORMAT))
+                if (toBeChecked[2] == Utility.DEFAULT_ERROR_DATE.ToString(Utility.SHORT_DATE_FORMAT))
                 {
                     logger.Info("Incorrect Date format");
             
@@ -210,7 +210,7 @@ namespace F9S1.RememberMe
                     return parsedInput;
                 }
                 else
-                    taskTime = deadline.ToString(Utility.DATE_FORMAT);
+                    taskTime = deadline.ToString(Utility.SHORT_DATE_FORMAT);
             }
 
             if (taskDetails == null || taskDetails == "")
@@ -326,7 +326,7 @@ namespace F9S1.RememberMe
                
             try
                 {
-                    parsedInput.Add(ToDate(betaInput[1].Trim().ToLower()).ToString(Utility.DATE_FORMAT));          //Deadline
+                    parsedInput.Add(ToDate(betaInput[1].Trim().ToLower()).ToString(Utility.SHORT_DATE_FORMAT));          //Deadline
                 }
             catch (Exception e)
             {
