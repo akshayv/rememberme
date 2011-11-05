@@ -200,12 +200,12 @@ namespace F9S1.RememberMe
             if (editInput.Count < 5)
                 return false;
             Task foundTask = SearchTask(editInput[0], ref n);
-            if (!(input.Contains('@')))
-                editInput[1] = foundTask.Deadline.ToString(Utility.SHORT_DATE_FORMAT);
-            if (!(input.Contains('#')))
-                editInput[2] = foundTask.Labels.ToString(); 
             if (foundTask != null)
             {
+                if (!(input.Contains('@')))
+                    editInput[1] = foundTask.Deadline.ToString(Utility.SHORT_DATE_FORMAT);
+                if (!(input.Contains('#')))
+                    editInput[2] = foundTask.Labels.ToString();
                 taskList[n] = new Task(editInput);
                 return true;
             }
