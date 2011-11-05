@@ -454,7 +454,8 @@ namespace F9S1.RememberMe
                 DateTime tempTime;
                 try
                 {
-                    tempTime = DateTime.Parse(toBeConverted.Split(' ')[1]);
+                    string[] temp = toBeConverted.Split(new Char[] { ' ' }, 2);
+                    tempTime = DateTime.Parse(temp[1]); 
                     tempDate = updateTime(ref tempDate, tempTime);
                 }
                 catch (Exception e)

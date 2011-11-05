@@ -252,20 +252,19 @@ namespace F9S1.RememberMe
             {
                 hitcount++;
             }
-            try
+           try
             {
-                DateTime.Parse(keyword).ToString(Utility.DATE_FORMAT);
-                if (check.Deadline.ToString(Utility.DATE_FORMAT).Contains(DateTime.Parse(keyword).ToString(Utility.DATE_FORMAT)))
+               if (check.Deadline.ToString(Utility.DATE_FORMAT).Contains(DateTime.Parse(keyword).ToString(Utility.DATE_FORMAT)))
                 {
                     hitcount++;
                 }
-
+            
             }
             catch (Exception e)
             {
 
             }
-
+            
             return hitcount;
         }
 
