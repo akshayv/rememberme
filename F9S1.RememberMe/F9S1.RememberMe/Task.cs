@@ -115,6 +115,7 @@ namespace F9S1.RememberMe
 
         public Task(List<string> values)
         {
+            Debug.Assert(values != null);
             Details = values[0];
             if (values[1] == Utility.DEFAULT_NO_TIME)
                 Deadline = Utility.DEFAULT_UNDEFINED_DATE;
@@ -127,6 +128,7 @@ namespace F9S1.RememberMe
         }
         public Task(string line)
         {
+            Debug.Assert(line != null);
             List<string> values = FromString(line);
             Details = values[0];
             if (values[1] == Utility.DEFAULT_NO_TIME)
@@ -147,6 +149,7 @@ namespace F9S1.RememberMe
 */
         private List<string> FromString(string line)
         {
+            Debug.Assert(line != null);
             return new List<string>(line.Split(new string[]{Utility.FILE_SEPARATER},StringSplitOptions.None));
         }
 

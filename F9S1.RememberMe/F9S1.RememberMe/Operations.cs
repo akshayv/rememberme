@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Diagnostics;
 using System.Text;
 
 namespace F9S1.RememberMe
@@ -31,6 +32,7 @@ namespace F9S1.RememberMe
         Stack<List<Task>> undoStack, redoStack;
         public Operations(List<string> stringListTasks,List<string> labelList)
         {
+            Debug.Assert(stringListTasks != null);
             taskList = new List<Task>();
             labels = new List<string>();
             for (int i = 0; i < stringListTasks.Count; i++)
@@ -103,6 +105,7 @@ namespace F9S1.RememberMe
         }
         public bool DeleteLabel(string newLabel)
         {
+            Debug.Assert(newLabel != null);
             for (int i = 0; i < labels.Count; i++)
                 if (labels[i].ToLower() == newLabel.ToLower())
                 {
@@ -113,6 +116,7 @@ namespace F9S1.RememberMe
         }      
         public bool AddLabel(string newLabel)
         {
+            Debug.Assert(newLabel != null);
             for (int i = 0; i < labels.Count; i++)
                 if (labels[i].ToLower() == newLabel.ToLower())
                     return false;
@@ -122,12 +126,14 @@ namespace F9S1.RememberMe
         }
         public bool AddTask(List<string> newTask)
         {
+            Debug.Assert(newTask != null);
             newTask[0] = CheckIfDuplicate(newTask[0]);
             taskList.Add(new Task(newTask));
             return true;
         }
         string CheckIfDuplicate(string taskDetails)
         {
+            Debug.Assert(taskDetails != null);
             int count = 0;
             string newDetails = taskDetails;
             bool isModified = true;
@@ -151,6 +157,7 @@ namespace F9S1.RememberMe
         }
         public bool DeleteTask(string taskDetails)
         {
+            Debug.Assert(taskDetails != null);
             Task foundTask = SearchTask(taskDetails);
             Task Temp = foundTask;
             if (foundTask != null)
@@ -163,6 +170,7 @@ namespace F9S1.RememberMe
         }
         public bool ArchiveTask(string taskDetails)
         {
+            Debug.Assert(taskDetails != null);
             Task foundTask = SearchTask(taskDetails);
             Task temp = foundTask;
             if (foundTask != null && !foundTask.IsArchived) //archive how?
@@ -186,6 +194,8 @@ namespace F9S1.RememberMe
         }
         public bool EditTask(List<string> editInput, string input)
         {
+            Debug.Assert(input != null);
+            Debug.Assert(editInput != null);
             int n = -1;
             if (editInput.Count < 5)
                 return false;
@@ -203,6 +213,7 @@ namespace F9S1.RememberMe
         }
         public Task SearchTask(string taskDetails)
         {
+            Debug.Assert(taskDetails != null);
             Task toBeFound = null;
             for (int i = 0; i < taskList.Count; i++)
             {
@@ -217,6 +228,8 @@ namespace F9S1.RememberMe
         }
         public Task SearchTask(string taskDetails, ref int k)
         {
+            Debug.Assert(taskDetails != null);
+            Debug.Assert(k != null);
             Task toBeFound = null;
             for (int i = 0; i < taskList.Count; i++)
             {
