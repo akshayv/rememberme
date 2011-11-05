@@ -474,14 +474,21 @@ namespace F9S1.RememberMe
             for (int i = 0; i < output.Count; i++)
                 outputBox.Items.Add(output[i]);
         */
-            List<Task> displayList = new List<Task>();
-            foreach (string item in output)
+            if (output.Count > 0 && output[0] == Utility.ERROR)
             {
-                displayList.Add(new Task(item));
+                displayBox.Content = output[1];
             }
+            else
+            {
+                List<Task> displayList = new List<Task>();
+                foreach (string item in output)
+                {
+                    displayList.Add(new Task(item));
+                }
 
-            dataGrid1.DataContext = displayList;
-            dataGrid1.Items.Refresh();
+                dataGrid1.DataContext = displayList;
+                dataGrid1.Items.Refresh();
+            }
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -583,7 +590,7 @@ namespace F9S1.RememberMe
             {
                 UpdatedTask.IsStarred = false;
             }
-            command = "edit " + UpdatedTask.Details + " @" + UpdatedTask.Deadline.ToString(Utility.DATE_FORMAT) + " #" + UpdatedTask.Labels.Trim() + " ";
+            command = "edit " + UpdatedTask.Details;
             if (UpdatedTask.IsStarred)
                 command += Utility.STARRED;
             List<string> output = dispatch.UserDispatch(command);

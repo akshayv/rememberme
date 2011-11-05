@@ -150,21 +150,18 @@ namespace F9S1.RememberMe
             
             if (betaInput.Contains('#'))
             {
-                if (betaParse.Contains("#"))
+                if (!(betaParse.Contains("#")))
                 {
-                    parsedInput.Add(Utility.ERROR);
-                    parsedInput.Add(Utility.LABEL_ERROR);
-                    return parsedInput;
-                }
-                for (int i = 0; i < betaParse.Count; )
-                {
-                    if (betaParse[i].Contains('#'))         //last words
+                    for (int i = 0; i < betaParse.Count; )
                     {
+                        if (betaParse[i].Contains('#'))         //last words
+                        {
                             inputLabels.Add(betaParse[i].Substring(1));
                             betaParse.RemoveAt(i);
+                        }
+                        else
+                            i++;
                     }
-                    else
-                        i++;
                 }
             }
 
