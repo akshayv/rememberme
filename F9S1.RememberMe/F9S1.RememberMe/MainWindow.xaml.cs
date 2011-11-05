@@ -81,6 +81,7 @@ namespace F9S1.RememberMe
         {
             m_notifyIcon.Dispose();
             m_notifyIcon = null;
+            dispatch.UserDispatch(QUIT_COMMAND);
         }
 
         private WindowState m_storedWindowState = WindowState.Normal;

@@ -31,7 +31,7 @@ namespace F9S1.RememberMe
                 else
                 {
                     string temp = deadline.ToString(Utility.SHORT_DATE_FORMAT);
-                    if (temp == "11:59 PM 31 Dec 99")
+                    if (temp == "11:59 PM 31 Dec 9999")
                         temp = "";
                     return temp;
                 }
