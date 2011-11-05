@@ -53,6 +53,9 @@ namespace F9S1.RememberMe
             TimeSpan difference = new TimeSpan(time[0], time[1], time[2], 0);
             DateTime updatedDate = DateTime.Now.Add(difference);
             taskList[i].Deadline = updatedDate;
+            string command = "edit " + taskList[i].Details + " @" + updatedDate;
+            dispatch.UserDispatch(command);
+            dispatch.UserDispatch("display");
         }
           
     }

@@ -26,7 +26,7 @@ namespace F9S1.RememberMe
         public const string LABEL_ERROR = "Label error. Correct way is #<label name>";
 
         public const string DATE_FORMAT = "dd MMM yyyy HH:mm";
-        public const string SHORT_DATE_FORMAT = "hh:mm tt dd MMM yy";
+        public const string SHORT_DATE_FORMAT = "hh:mm tt dd MMM yyyy";
 
         public const string DEFAULT_LABEL = "others";
         public const string DEFAULT_NO_TIME = "undefined";
