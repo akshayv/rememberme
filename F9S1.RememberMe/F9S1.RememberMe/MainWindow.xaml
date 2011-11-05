@@ -59,10 +59,10 @@
         <Grid.Background>
             <ImageBrush ImageSource="/F9S1.RememberMe;component/Images/large_Abstract_Dark_Gray_Paper_Rape_Wallpaper_86207.jpg" />
         </Grid.Background>
-        <TextBox Height="273" HorizontalAlignment="Left" Margin="12,51,0,0" Name="helpBox" VerticalAlignment="Top" Width="479" Visibility="Collapsed" IsEnabled="True" IsReadOnly="True" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto" />
+        <TextBox Height="220" HorizontalAlignment="Left" Margin="12,51,0,0" Name="helpBox" VerticalAlignment="Top" Width="479" Visibility="Collapsed" IsEnabled="True" IsReadOnly="True" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Auto" />
         <Label Margin="12,0,12,12" Name="displayBox" Foreground="#FFEB1919" FontWeight="Bold" Height="49" VerticalAlignment="Bottom" />
-        <TextBox Margin="12,0,12,65" Name="inputBox" KeyDown="inputBox_KeyDown" Foreground="#FF19580E" TextChanged="inputBox_TextChanged" PreviewKeyDown="inputBox_PreviewKeyDown" Height="52" VerticalAlignment="Bottom" IsUndoEnabled="False" GotFocus="inputBox_GotFocus" Opacity="0.4" />
-        <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding}" Margin="12,51,12,124" Name="dataGrid1" Foreground="Black" BorderBrush="Black" CanUserDeleteRows="False" GridLinesVisibility="None" CellEditEnding="dataGrid1_CellEditEnding" BeginningEdit="dataGrid1_BeginningEdit" Opacity="0.4">
+        <TextBox Margin="12,0,12,65" Name="inputBox" KeyDown="inputBox_KeyDown" Foreground="#FF19580E" TextChanged="inputBox_TextChanged" PreviewKeyDown="inputBox_PreviewKeyDown" Height="52" VerticalAlignment="Bottom" IsUndoEnabled="False" GotFocus="inputBox_GotFocus" Opacity="0.7" />
+        <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding}" Margin="12,51,12,124" Name="dataGrid1" Foreground="Black" BorderBrush="Black" CanUserDeleteRows="False" GridLinesVisibility="None" CellEditEnding="dataGrid1_CellEditEnding" BeginningEdit="dataGrid1_BeginningEdit" Opacity="0.7">
             <DataGrid.Columns>
                 <DataGridTemplateColumn Header="  ">
                     <DataGridTemplateColumn.CellTemplate>
@@ -115,5 +115,6 @@
                 <ImageBrush ImageSource="/F9S1.RememberMe;component/Images/settings.png" />
             </Button.Background>
         </Button>
+        <Button Content="Done" Height="23" HorizontalAlignment="Left" Margin="229,288,0,0" Name="doneButton" VerticalAlignment="Top" Width="75" Visibility="Collapsed" Click="doneButton_Click" />
     </Grid>
 </Window>
