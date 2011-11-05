@@ -20,6 +20,7 @@ namespace F9S1.RememberMe
             find,
             display,
             archive,
+            sync,
             label
         };
 
@@ -49,6 +50,8 @@ namespace F9S1.RememberMe
                     return Command.search;
                 case "find":
                     return Command.find;
+                case "sync":
+                    return Command.sync;
                 case "label":
                     return Command.label;
                 case "archive":
@@ -265,7 +268,7 @@ namespace F9S1.RememberMe
         public List<string> CommandParse(string input)
         {
             char[] splitter = new char[] { ' ' , ';'};
-            List<string> parsedInput = new List<string>(input.Split(splitter, 2, StringSplitOptions.RemoveEmptyEntries));
+            List<string> parsedInput = new List<string>(input.Split(splitter, StringSplitOptions.RemoveEmptyEntries));
             parsedInput[0] = parsedInput[0].ToLower();
             return parsedInput;
         }

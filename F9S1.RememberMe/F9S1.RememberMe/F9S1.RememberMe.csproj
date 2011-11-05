@@ -74,6 +74,7 @@
       <DependentUpon>Alarm.xaml</DependentUpon>
     </Compile>
     <Compile Include="AlarmCheck.cs" />
+    <Compile Include="Export.cs" />
     <Compile Include="Hotkey.cs" />
     <Compile Include="Operations.cs" />
     <Compile Include="Tester.cs" />

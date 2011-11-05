@@ -96,9 +96,9 @@
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
-        <PasswordBox Height="23" Margin="311,9,0,0" Name="passwordBox1" VerticalAlignment="Top" Visibility="Collapsed" HorizontalAlignment="Left" Width="142" />
+        <PasswordBox Height="23" Margin="311,9,0,0" Name="passwordBox1" VerticalAlignment="Top" Visibility="Collapsed" HorizontalAlignment="Left" Width="142" IsTabStop="False" />
         <Label Content="Password" FontSize="13" FontWeight="Bold" Height="26" Margin="236,5,198,0" Name="passwordLabel" VerticalAlignment="Top" VerticalContentAlignment="Center" Foreground="#FF5BB82D" Visibility="Collapsed" />
-        <TextBox Height="23" HorizontalAlignment="Left" Margin="88,9,0,0" Name="userBox" VerticalAlignment="Top" Width="142" Visibility="Collapsed" PreviewKeyDown="userBox_PreviewKeyDown" />
+        <TextBox Height="23" HorizontalAlignment="Left" Margin="88,9,0,0" Name="userBox" VerticalAlignment="Top" Width="142" Visibility="Collapsed" PreviewKeyDown="userBox_PreviewKeyDown" IsTabStop="False" />
         <Label Content="Username" FontSize="13" FontWeight="Bold" Height="26" HorizontalAlignment="Left" Margin="12,6,0,0" Name="userLabel" VerticalAlignment="Top" Width="73" Foreground="#FF6CB548" Visibility="Collapsed" />
         <Button Style="{StaticResource NoMouseOverNoBorder}" Height="40" HorizontalAlignment="Right" Margin="0,5,6,0" Name="syncButton" VerticalAlignment="Top" Width="40" Foreground="#FF62B43A" FontWeight="Bold" Click="syncButton_Click">
             <Button.Background>

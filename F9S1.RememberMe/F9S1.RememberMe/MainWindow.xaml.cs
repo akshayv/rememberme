@@ -16,10 +16,6 @@ using System.ComponentModel;
 using System.IO;
 using System.Diagnostics;
 using System.Windows.Controls.Primitives;
-using Google.GData.AccessControl;
-using Google.GData.Calendar;
-using Google.GData.Client;
-using Google.GData.Extensions;
 
 namespace F9S1.RememberMe
 {
@@ -357,9 +353,16 @@ namespace F9S1.RememberMe
                     SetDisplay();
                 }
 
-                else if (input.Length >= 4 && input.Substring(0, 4).ToLower() == "help")
+                else if (input.Trim().ToLower() == "help")
                 {
+                    inputBox.Text = "";
                     displayHelp();
+                    return;
+                }
+                else if (input.Trim().ToLower() == "sync")
+                {
+                    inputBox.Text = ""; 
+                    DisplaySync();
                     return;
                 }
                 else
@@ -611,6 +614,10 @@ namespace F9S1.RememberMe
 
         private void syncButton_Click(object sender, RoutedEventArgs e)
         {
+            DisplaySync();
+        }
+        private void DisplaySync()
+        {
             if (SyncItemsVisible())
             {
                 try
@@ -620,42 +627,8 @@ namespace F9S1.RememberMe
                         SetSyncItemsCollapsed();
                         return;
                     }
-                    CalendarService Gcal = new CalendarService("remMe");
-                    Gcal.setUserCredentials(userBox.Text, passwordBox1.Password);
-                    //get tasks from google
-
-                    EventQuery query = new EventQuery("https://www.google.com/calendar/feeds/default/private/full");
-                    EventFeed feed = Gcal.Query(query);
-
-                    List<Task> taskList = dispatch.GetTasks();
-
-
-                    //delete all RM tasks
-                    query.Query = "[RM!]";
-                    EventFeed allTasks = Gcal.Query(query);
-                    for (int i = 0; i < allTasks.Entries.Count; i++)
-                    {
-                        AtomEntry task = allTasks.Entries[i];
-                        task.Delete();
-                    }
-
-                    for (int i = 0; i < taskList.Count; i++)
-                    {
-                        {
-                            EventEntry entry = new EventEntry();
-                            entry.Title.Text = "[RM!]" + taskList[i].Details;
-                            entry.Content.Content = "Label = " + taskList[i].Labels;
-                            if (taskList[i].Deadline.Year != DateTime.MaxValue.Year)
-                            {
-                                When eventTime = new When(taskList[i].Deadline, taskList[i].Deadline.AddHours(1));
-                                entry.Times.Add(eventTime);
-                            }
-                            Uri postUri = new Uri("https://www.google.com/calendar/feeds/default/private/full");
-                            AtomEntry insertedEntry = Gcal.Insert(postUri, entry);
-                            displayBox.Content = "Success";
-                            syncButton.Foreground = new SolidColorBrush(Colors.Green);
-                        }
-                    }
+                    dispatch.UserDispatch("sync;" + userBox.Text + ";" + passwordBox1.Password);
+                    displayBox.Content = "Success";
                 }
                 catch
                 {
