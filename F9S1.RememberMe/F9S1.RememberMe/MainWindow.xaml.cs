@@ -48,6 +48,9 @@ namespace F9S1.RememberMe
         string[] userPrompts = { "", "details", "deadline", "label", "priority" };
         public MainWindow()
         {
+            Tester fileTest = new Tester();
+            //fileTest.GetOutputFile();
+            fileTest.Test();
             initialiseNotificationIcon();
             dispatch = new Controller(this);
             taskInfo = dispatch.GetTasks();
