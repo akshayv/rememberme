@@ -11,7 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Threading;
-
+using System.Diagnostics;
 namespace F9S1.RememberMe
 {
     /// <summary>
@@ -25,6 +25,8 @@ namespace F9S1.RememberMe
         public delegate void timeCheck();
         public Alarm(String name, DateTime deadline)
         {
+            Debug.Assert(name != null);
+            Debug.Assert(deadline != null);
             InitializeComponent();
             days.Text = "0";
             hours.Text = "0";

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Diagnostics;
 using System.Text;
 
 namespace F9S1.RememberMe
@@ -32,6 +33,7 @@ namespace F9S1.RememberMe
         }
         private Command ToCommand(string input)
         {
+            Debug.Assert(input != null);
             switch (input)
             {
                 case "edit":
@@ -63,6 +65,7 @@ namespace F9S1.RememberMe
 
         private void addSemiCol(ref string input)
         {
+            Debug.Assert(input != null);
             int count = 0;
                 for (int i = 0; i < input.Length; i++)
                 {
@@ -78,6 +81,9 @@ namespace F9S1.RememberMe
 
         public List<string> SymbolParse(string input, List<string> labels)
         {
+
+            Debug.Assert(input != null);
+            Debug.Assert(labels != null);
             List<string> parsedInput = new List<string>(), inputLabels = new List<string>(), betaParse = new List<string>(input.Split(new Char[] { ' ', ';' }, StringSplitOptions.RemoveEmptyEntries)); ;
             string commandName, taskInterval, taskDetails, taskTime, betaInput = new string(input.ToCharArray());
             DateTime deadline;
@@ -117,6 +123,7 @@ namespace F9S1.RememberMe
                 addSemiCol(ref input);
                 addSemiCol(ref betaInput);
                 List<string> toBeChecked =  ColonParse(betaInput, labels);
+                Debug.Assert(toBeChecked != null);
                 toBeChecked[0] = commandName;
                 if (toBeChecked[1].Length == 0)
                 {
@@ -183,6 +190,7 @@ namespace F9S1.RememberMe
                 taskTime = Utility.DEFAULT_NO_TIME;
                 taskInterval = Utility.NO_INTERVAL.ToString();
                 taskDetails = betaInput.Split('@', '#')[0].Trim();
+                Debug.Assert(taskDetails != null);
             }
             else
             {
@@ -193,9 +201,12 @@ namespace F9S1.RememberMe
                 taskTime = betaInput.Substring(_at + 1, ((_hash - _at > 0) ? _hash - _at - 1: length - _at - 1));
                 taskTime = taskTime.Trim();
                 taskInterval = GetRepeat(taskTime).ToString();
+                Debug.Assert(taskInterval != null);
                 if (taskTime.Contains('%'))
-                   taskTime = taskTime.Replace(taskTime.Substring(taskTime.IndexOf('%')).Split(' ', ';')[0], "");
+                    taskTime = taskTime.Replace(taskTime.Substring(taskTime.IndexOf('%')).Split(' ', ';')[0], "");
+                Debug.Assert(taskTime != null);
                 deadline = ToDate(taskTime);
+                Debug.Assert(deadline != null);
                 if (deadline.Equals(Utility.DEFAULT_ERROR_DATE))
                 {
                     logger.Info("Incorrect Date Format");
@@ -231,6 +242,9 @@ namespace F9S1.RememberMe
 
         private bool CheckLabels(string input, List<string> labels)
         {
+
+            Debug.Assert(input != null);
+            Debug.Assert(labels != null);
             string[] inputSplit = input.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
             foreach (string item in inputSplit)
             {
@@ -241,6 +255,9 @@ namespace F9S1.RememberMe
         }
         private bool CheckLabels(List<string> input, List<string> labels)
         {
+
+            Debug.Assert(input != null);
+            Debug.Assert(labels != null);
             foreach (string item in input)
             {
                 if (!labels.Contains(item))
@@ -251,6 +268,9 @@ namespace F9S1.RememberMe
 
         public List<string> LabelParse(string input, List<string> labels)
         {
+
+            Debug.Assert(input != null);
+            Debug.Assert(labels != null);
             char[] splitter = new char[] { ' ' , ';'};
             List<string> parsedInput = new List<string>(), betaParse = new List<string>(input.Split(splitter, StringSplitOptions.RemoveEmptyEntries));
             if (betaParse.Count < 3 || (betaParse[1] != "add" && betaParse[1] != "delete"))
@@ -267,6 +287,8 @@ namespace F9S1.RememberMe
 
         public List<string> CommandParse(string input)
         {
+
+            Debug.Assert(input != null);
             List<string> parsedInput = new List<string>();
             if (input.Contains(';'))
             {
@@ -284,6 +306,8 @@ namespace F9S1.RememberMe
 
         private TimeSpan GetRepeat(string dateInput)
         {
+
+            Debug.Assert(dateInput != null);
             TimeSpan interval;
             if (dateInput.Contains('%'))
             {
@@ -311,6 +335,8 @@ namespace F9S1.RememberMe
 
         public List<string> ColonParse(string input, List<string> labels)
         {
+            Debug.Assert(input != null);
+            Debug.Assert(labels != null);
             List<string> betaInput = new List<string>(input.Split(';')), parsedInput = new List<string>();
             
                 parsedInput.Add("add");
@@ -374,9 +400,12 @@ namespace F9S1.RememberMe
 
         public List<string> InputParse(string input, List<string> labels)
         {
-            
+
+            Debug.Assert(input != null);
+            Debug.Assert(labels != null);   
             Command inputCommand = ToCommand(input.Trim().Split(new char[] { ' ', ';' })[0].ToLower());
             List<string> parsedInput = new List<string>();
+            Debug.Assert(inputCommand != null);
             if (inputCommand == Command.add || inputCommand == Command.edit)
             {
                 parsedInput = SymbolParse(input, labels);
@@ -389,11 +418,13 @@ namespace F9S1.RememberMe
             {
                 parsedInput = CommandParse(input);
             }
+            Debug.Assert(parsedInput != null);
             return parsedInput;
         }
 
         public string ToDayValid(string day)
         {
+            Debug.Assert(day != null);
             if (day.Contains("monday") || day.Contains("mon"))
                 return "monday";
             else if (day.Contains("tuesay") || day.Contains("tue"))
@@ -419,6 +450,7 @@ namespace F9S1.RememberMe
         }
         private DayOfWeek toDay(string day)
         {
+            Debug.Assert(day != null);
             day = day.Trim();
             if (day == "monday" || day == "mon")
                 return DayOfWeek.Monday;
@@ -441,6 +473,7 @@ namespace F9S1.RememberMe
         }
         private int NumberOfDays(string day)
         {
+            Debug.Assert(day != null);
             DayOfWeek deadline = toDay(day);
             DayOfWeek curDay = System.DateTime.Today.DayOfWeek;
             if (deadline >= curDay)
@@ -459,6 +492,8 @@ namespace F9S1.RememberMe
 
         private string RemoveDay(string date, string day)
         {
+            Debug.Assert(day != null);
+            Debug.Assert(date != null);
             day = day.Substring(0, 3);
             string[] dateParse = date.Split(new char[] {' '}, StringSplitOptions.RemoveEmptyEntries);
             for (int i = 0; i < dateParse.Length; i++)
@@ -468,6 +503,7 @@ namespace F9S1.RememberMe
         }
         public DateTime ToDate(string toBeConverted)
         {
+            Debug.Assert(toBeConverted != null);
             if (toBeConverted.Length == 0)
                 return Utility.DEFAULT_UNDEFINED_DATE;
             DateTime tempDate = new DateTime();

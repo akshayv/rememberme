@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Diagnostics;
 using System.Text;
 
 namespace F9S1.RememberMe
@@ -49,6 +50,7 @@ namespace F9S1.RememberMe
             }
             List<string> parsedInput = parse.InputParse(input, taskData.GetLabels()), output = new List<string>();
             bool isModified = false;
+            Debug.Assert(parsedInput != null);
             string commandName = parsedInput[0];
             if (commandName != Utility.ERROR)
                 parsedInput.RemoveAt(0);
@@ -95,8 +97,9 @@ namespace F9S1.RememberMe
 
                 case "edit":
                     {
-                        taskData.EditTask(parsedInput, input);
-                        isModified = true;
+
+                        isModified = taskData.EditTask(parsedInput, input);
+                        
                         if (!isModified)
                         {
                             output.Add(Utility.ERROR);
@@ -109,7 +112,6 @@ namespace F9S1.RememberMe
                         if (parsedInput.Count < 1)
                             break;
                         isModified = taskData.ArchiveTask(parsedInput[0]);
-
                         if (!isModified)
                         {
                             output.Add(Utility.ERROR);
