@@ -1,7 +1,7 @@
 ﻿<Window x:Class="F9S1.RememberMe.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Remember Me" Height="352" Width="525" Loaded="Window_Loaded" Closing="OnClose" StateChanged="OnStateChanged" IsVisibleChanged="OnIsVisibleChanged" Icon="/F9S1.RememberMe;component/Logo1.png" WindowStyle="SingleBorderWindow" ResizeMode="CanResize">
+        Title="Remember Me" Height="375" Width="524" Loaded="Window_Loaded" Closing="OnClose" StateChanged="OnStateChanged" IsVisibleChanged="OnIsVisibleChanged" Icon="/F9S1.RememberMe;component/Logo1.png" WindowStyle="SingleBorderWindow" ResizeMode="CanResize">
     <Window.CommandBindings>
         <CommandBinding Command="Undo"
                         CanExecute="CommandBinding_CanExecute"
@@ -35,10 +35,10 @@
         <Grid.Background>
             <ImageBrush ImageSource="/F9S1.RememberMe;component/Images/large_Abstract_Dark_Gray_Paper_Rape_Wallpaper_86207.jpg" />
         </Grid.Background>
-        <TextBox Height="259" HorizontalAlignment="Left" Margin="12,42,0,0" Name="helpBox" VerticalAlignment="Top" Width="479" Visibility="Collapsed" IsEnabled="True" IsReadOnly="True" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto" />
+        <TextBox Height="273" HorizontalAlignment="Left" Margin="12,51,0,0" Name="helpBox" VerticalAlignment="Top" Width="479" Visibility="Collapsed" IsEnabled="True" IsReadOnly="True" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto" />
         <Label Margin="12,0,12,12" Name="displayBox" Foreground="#FFEB1919" FontWeight="Bold" Height="49" VerticalAlignment="Bottom" />
         <TextBox Margin="12,0,12,65" Name="inputBox" KeyDown="inputBox_KeyDown" Foreground="#FF19580E" TextChanged="inputBox_TextChanged" PreviewKeyDown="inputBox_PreviewKeyDown" Height="52" VerticalAlignment="Bottom" IsUndoEnabled="False" GotFocus="inputBox_GotFocus" />
-        <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding}" Margin="12,42,12,124" Name="dataGrid1" Foreground="Black" BorderBrush="Black" CanUserDeleteRows="False" GridLinesVisibility="None" CellEditEnding="dataGrid1_CellEditEnding" BeginningEdit="dataGrid1_BeginningEdit" >
+        <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding}" Margin="12,51,12,124" Name="dataGrid1" Foreground="Black" BorderBrush="Black" CanUserDeleteRows="False" GridLinesVisibility="None" CellEditEnding="dataGrid1_CellEditEnding" BeginningEdit="dataGrid1_BeginningEdit" >
             <DataGrid.Columns>
                 <DataGridTemplateColumn Header="  ">
                     <DataGridTemplateColumn.CellTemplate>
@@ -72,12 +72,24 @@
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
-        <PasswordBox Height="23" HorizontalAlignment="Left" Margin="291,9,0,0" Name="passwordBox1" VerticalAlignment="Top" Width="109" Visibility="Collapsed" />
-        <Label Content="Password" FontSize="13" FontWeight="Bold" Height="26" Margin="216,9,218,0" Name="passwordLabel" VerticalAlignment="Top" VerticalContentAlignment="Center" Foreground="#FF5BB82D" Visibility="Collapsed" />
-        <TextBox Height="23" HorizontalAlignment="Left" Margin="88,9,0,0" Name="userBox" VerticalAlignment="Top" Width="122" Visibility="Collapsed" PreviewKeyDown="userBox_PreviewKeyDown" />
-        <Label Content="Username" FontSize="13" FontWeight="Bold" Height="26" HorizontalAlignment="Left" Margin="12,9,0,0" Name="userLabel" VerticalAlignment="Top" Width="73" Foreground="#FF6CB548" Visibility="Collapsed" />
-        <Button Content="GSync" Height="23" HorizontalAlignment="Left" Margin="416,9,0,0" Name="syncButton" VerticalAlignment="Top" Width="75" Foreground="#FF62B43A" FontWeight="Bold" Click="syncButton_Click" />
-        <Button Content="Help" Height="23" HorizontalAlignment="Left" Margin="335,9,0,0" Name="helpButton" VerticalAlignment="Top" Width="75" Foreground="#FF42B72D" FontWeight="Bold" Visibility="Visible" Click="helpButton_Click" />
-        <Button Content="Settings" Height="23" HorizontalAlignment="Left" Margin="254,9,0,0" Name="settingsButton" VerticalAlignment="Top" Width="75" Foreground="#FF3AAB25" FontWeight="Bold" Visibility="Visible" />
+        <PasswordBox Height="23" Margin="311,9,0,0" Name="passwordBox1" VerticalAlignment="Top" Visibility="Collapsed" HorizontalAlignment="Left" Width="142" />
+        <Label Content="Password" FontSize="13" FontWeight="Bold" Height="26" Margin="236,5,198,0" Name="passwordLabel" VerticalAlignment="Top" VerticalContentAlignment="Center" Foreground="#FF5BB82D" Visibility="Collapsed" />
+        <TextBox Height="23" HorizontalAlignment="Left" Margin="88,9,0,0" Name="userBox" VerticalAlignment="Top" Width="142" Visibility="Collapsed" PreviewKeyDown="userBox_PreviewKeyDown" />
+        <Label Content="Username" FontSize="13" FontWeight="Bold" Height="26" HorizontalAlignment="Left" Margin="12,6,0,0" Name="userLabel" VerticalAlignment="Top" Width="73" Foreground="#FF6CB548" Visibility="Collapsed" />
+        <Button Height="40" HorizontalAlignment="Left" Margin="456,5,0,0" Name="syncButton" VerticalAlignment="Top" Width="40" Foreground="#FF62B43A" FontWeight="Bold" Click="syncButton_Click">
+            <Button.Background>
+                <ImageBrush ImageSource="/F9S1.RememberMe;component/Images/google.jpg" />
+            </Button.Background>
+        </Button>
+        <Button Height="40" HorizontalAlignment="Left" Margin="406,5,0,0" Name="helpButton" VerticalAlignment="Top" Width="40" Foreground="#FF42B72D" FontWeight="Bold" Visibility="Visible" Click="helpButton_Click">
+            <Button.Background>
+                <ImageBrush ImageSource="/F9S1.RememberMe;component/Images/images.jpg" />
+            </Button.Background>
+        </Button>
+        <Button Height="40" HorizontalAlignment="Left" Margin="356,5,0,0" Name="settingsButton" VerticalAlignment="Top" Width="40" Foreground="#FF3AAB25" FontWeight="Bold" Visibility="Visible">
+            <Button.Background>
+                <ImageBrush ImageSource="/F9S1.RememberMe;component/Images/settings.jpg" />
+            </Button.Background>
+        </Button>
     </Grid>
 </Window>
