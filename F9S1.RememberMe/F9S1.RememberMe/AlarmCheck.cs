@@ -39,7 +39,7 @@ namespace F9S1.RememberMe
                         taskInfo[i].IsArchived = true;
                         string command = "archive;" + taskInfo[i].Details;
                         dispatch.UserDispatch(command);
-                        dispatch.updateDisplay();
+                        dispatch.UpdateDisplay();
                     }
                     else
                     {
@@ -47,7 +47,7 @@ namespace F9S1.RememberMe
                         updateDeadline(ref taskInfo, time, i);
                         string command = "edit " + taskInfo[i].Details + " @" + taskInfo[i].Deadline;
                         dispatch.UserDispatch(command);
-                        dispatch.updateDisplay();
+                        dispatch.UpdateDisplay();
                     }
                  }
             }

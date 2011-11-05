@@ -6,38 +6,74 @@ using System.Text;
 
 namespace F9S1.RememberMe
 {
+    /// <summary>
+    /// The head function of the Logic Layer, it manages interaction between various classes in Logic as well as interactions with other Layers.
+    /// </summary>
     class Controller
     {
         Parser parse;
-        Export GSync;
+        Export gSync;
         Storage store;
         Operations taskData;
         MainWindow startWindow;
+        bool isModified;
+        List<string> output, parsedInput;
+        string input, commandName;
+
+        /// <summary>
+        /// Initializes the objects for many other classes. Also contains a reference to the current instance of MainWindow.
+        /// </summary>
+        /// <param name="appWindow">The object for which the reference is created.</param>
         public Controller(MainWindow appWindow)
         {
+            Initialize();
             startWindow = appWindow;
-            GSync = new Export();
-            parse = new Parser();
-            store = new Storage();
-            taskData = new Operations(store.ReadTasks(), store.ReadLabels());
             AlarmCheck checkAlarm = new AlarmCheck(this);
         }
+        
+        /// <summary>
+        /// Initializes the objects for many other classes.
+        /// </summary>
         public Controller()
         {
+            Initialize();
+        }
+        private void Initialize()
+        {
+            gSync = new Export();
             parse = new Parser();
             store = new Storage();
             taskData = new Operations(store.ReadTasks(), store.ReadLabels());
         }
-        public void updateDisplay()
-        {
-            startWindow.SetDisplay();
-        }
 
-        public List<Task> GetTasks()
+        /// <summary>
+        /// Sends the input to parser, checks the parsed input and depending on the task calls the corresponding function in operations.
+        /// </summary>
+        /// <param name="userInput">The input given.</param>
+        /// <returns>The output to be displayed.</returns>
+        public List<string> UserDispatch(string userInput)
         {
-            return taskData.TaskList;
+            output = new List<string>();
+            isModified = false;
+            input = userInput;
+            CheckClose(input);
+            
+            parsedInput = parse.InputParse(input, taskData.GetLabels());
+            Debug.Assert(parsedInput != null);
+
+            SwitchDispatch();
+            
+            if (isModified)
+            {
+                store.WriteTasks(taskData.GetList(), taskData.GetLabels());
+                taskData.UpdateTasks();
+            }
+
+            if (output.Count == 0)
+                output = taskData.Display();
+            return output;
         }
-        public List<string> UserDispatch(string input)
+        private void CheckClose(string input)
         {
             if (input.Trim().Length > 3)
             {
@@ -48,10 +84,10 @@ namespace F9S1.RememberMe
                     Environment.Exit(0);
                 }
             }
-            List<string> parsedInput = parse.InputParse(input, taskData.GetLabels()), output = new List<string>();
-            bool isModified = false;
-            Debug.Assert(parsedInput != null);
-            string commandName = parsedInput[0];
+        }
+        private void SwitchDispatch()
+        {
+            commandName = parsedInput[0];
             if (commandName != Utility.ERROR)
                 parsedInput.RemoveAt(0);
 
@@ -60,63 +96,34 @@ namespace F9S1.RememberMe
 
                 case "label":
                     {
-                        if (parsedInput[0] == "add")
-                            isModified = taskData.AddLabel(parsedInput[1]);
-                        else if (parsedInput[0] == "delete")
-                            isModified = taskData.DeleteLabel(parsedInput[1]);
+                        LabelDispatch();
                         break;
                     }
                 case "sync":
                     {
-                        GSync.Synchronize(parsedInput[0], parsedInput[1], taskData.TaskList);
+                        gSync.Synchronize(parsedInput[0], parsedInput[1], taskData.TaskList);
                         break;
                     }
                 case "add":
                     {
-                        isModified = taskData.AddTask(parsedInput);
-                        if (!isModified)
-                        {
-                            output.Add(Utility.ERROR);
-                            output.Add(Utility.ADD_ERROR);
-                        }
+                        AddDispatch();
                         break;
                     }
 
                 case "delete":
                     {
-                        if (parsedInput.Count < 1)
-                            break;
-                        isModified = taskData.DeleteTask(parsedInput[0]);
-                        if (!isModified)
-                        {
-                            output.Add(Utility.ERROR);
-                            output.Add(Utility.DELETE_ERROR);
-                        }
+                        DeleteDispatch();
                         break;
                     }
 
                 case "edit":
                     {
-
-                        isModified = taskData.EditTask(parsedInput, input);
-                        
-                        if (!isModified)
-                        {
-                            output.Add(Utility.ERROR);
-                            output.Add(Utility.EDIT_ERROR);
-                        }
+                        EditDispatch();
                         break;
                     }
                 case "archive":
                     {
-                        if (parsedInput.Count < 1)
-                            break;
-                        isModified = taskData.ArchiveTask(parsedInput[0]);
-                        if (!isModified)
-                        {
-                            output.Add(Utility.ERROR);
-                            output.Add(Utility.ARCHIVE_ERROR);
-                        }
+                        ArchiveDispatch();
                         break;
                     }
                 case "undo":
@@ -140,15 +147,68 @@ namespace F9S1.RememberMe
                         break;
                     }
             }
-            if (isModified)
+        }
+        private void LabelDispatch()
+        {
+            if (parsedInput[0] == "add")
+                isModified = taskData.AddLabel(parsedInput[1]);
+            else if (parsedInput[0] == "delete")
+                isModified = taskData.DeleteLabel(parsedInput[1]);
+        }
+        private void AddDispatch()
+        {
+            isModified = taskData.AddTask(parsedInput);
+            if (!isModified)
             {
-                store.WriteTasks(taskData.GetList(), taskData.GetLabels());
-                taskData.UpdateTasks();
+                output.Add(Utility.ERROR);
+                output.Add(Utility.ADD_ERROR);
             }
+        }
+        private void DeleteDispatch()
+        {
+            if (!(parsedInput.Count < 1))
+                isModified = taskData.DeleteTask(parsedInput[0]);
+            if (!isModified)
+            {
+                output.Add(Utility.ERROR);
+                output.Add(Utility.DELETE_ERROR);
+            }
+        }
+        private void EditDispatch()
+        {
+            isModified = taskData.EditTask(parsedInput, input);
+            if (!isModified)
+            {
+                output.Add(Utility.ERROR);
+                output.Add(Utility.EDIT_ERROR);
+            }
+        }
+        private void ArchiveDispatch()
+        {
+            if (!(parsedInput.Count < 1))
+                isModified = taskData.ArchiveTask(parsedInput[0]);
+            if (!isModified)
+            {
+                output.Add(Utility.ERROR);
+                output.Add(Utility.ARCHIVE_ERROR);
+            }
+        }
+        
+        /// <summary>
+        /// Updates the display in the mainwindow.
+        /// </summary>
+        public void UpdateDisplay()
+        {
+            startWindow.SetDisplay();
+        }
 
-            if (output.Count == 0)
-                output = taskData.Display();
-            return output;
+        /// <summary>
+        /// Obtains a copy of the list of tasks from Operations
+        /// </summary>
+        /// <returns>List of Tasks</returns>
+        public List<Task> GetTasks()
+        {
+            return taskData.TaskList;
         }
     }
 }
