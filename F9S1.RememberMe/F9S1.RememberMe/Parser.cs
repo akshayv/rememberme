@@ -267,8 +267,17 @@ namespace F9S1.RememberMe
 
         public List<string> CommandParse(string input)
         {
-            char[] splitter = new char[] { ' ' , ';'};
-            List<string> parsedInput = new List<string>(input.Split(splitter, StringSplitOptions.RemoveEmptyEntries));
+            List<string> parsedInput = new List<string>();
+            if (input.Contains(';'))
+            {
+                char[] splitter = new char[] { ';' };
+                parsedInput = new List<string>(input.Split(splitter, StringSplitOptions.RemoveEmptyEntries));
+            }
+            else
+            {
+                char[] splitter = new char[] { ' ' };
+                parsedInput = new List<string>(input.Split(splitter, 2, StringSplitOptions.RemoveEmptyEntries));                
+            }
             parsedInput[0] = parsedInput[0].ToLower();
             return parsedInput;
         }

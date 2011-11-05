@@ -53,11 +53,14 @@ namespace F9S1.RememberMe
                             "\n" +
                             "\nArchiving a task:" +
                             "\nDone with a task? Just click on the ‘Tick’ mark next to it to do so." +
-                            "\nDon’t want to click? Just type in ‘archive;’ and allow the instant search to help you out every time you type in a letter. Once the task is printed on top, press <Tab> to get the complete task name in the Textbox and just press enter to archive the task." +
+                            "\nDon’t want to click? Just type in ‘archive;’ and allow the instant search to help you out every\n"+
+                            "time you type in a letter. Once the task is printed on top, press <Tab> to get the complete task name\n"+ 
+                            "in the Textbox and just press enter to archive the task." +
                             "\n" +
                             "\nDeleting a task:" +
                             "\nWant to delete a task? Again, we have two options. Click the ’X’ mark next to it to do so." +
-                            "\nYou can also type in delete; and again use the instant search to find the appropriate task. Either type in the full name or press <Tab> followed by enter." +
+                            "\nYou can also type in delete; and again use the instant search to find the appropriate task. Either type\n"+
+                            " in the full name or press <Tab> followed by enter." +
                             "\n" +
                             "\nEdit a task:" +
                             "\nYou can go ahead and modify a task by either modifying the data directly in the output or type in ‘edit;’ and utilize the instant search to select the task. Once this is done, just specify which value you want to change alone with the changed value to edit the task." +
