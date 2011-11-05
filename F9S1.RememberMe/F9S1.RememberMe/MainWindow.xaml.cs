@@ -718,6 +718,8 @@ namespace F9S1.RememberMe
                             // Set the title and content of the entry.
                             //        if (!taskList[i].Details.Contains("[RM!]"))
                             entry.Title.Text = "[RM!]" + taskList[i].Details;
+                            entry.Content.Content = "Label = "+taskList[i].Labels;
+                            
                             //    else
                             //      entry.Title.Text = taskList[i].Details;
                             //entry.Content.Content = taskList[i].getDesc();
