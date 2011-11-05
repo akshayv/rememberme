@@ -190,9 +190,9 @@ namespace F9S1.RememberMe
                 return false;
             Task foundTask = SearchTask(editInput[0]);
             if (!(input.Contains('@')))
-                editInput.Insert(1, foundTask.Deadline.ToString());
+                editInput[1] = foundTask.Deadline.ToString();
             if (!(input.Contains('#')))
-                editInput.Insert(1, foundTask.Labels.ToString()); 
+                editInput[2] = foundTask.Labels.ToString(); 
             if (foundTask != null)
             {
                 taskList.Remove(foundTask);
@@ -221,33 +221,6 @@ namespace F9S1.RememberMe
                 if(taskList[i].IsArchived==false)
                     taskDetails.Add(taskList[i].ToString());
             return taskDetails;
-        }
-        private int findNumHits(Task check, string keyword)
-        {
-            int hitcount = 0;
-            if (check.Details.Contains(keyword))
-            {
-                hitcount++;
-            }
-            if (check.Labels.Contains(keyword))
-            {
-                hitcount++;
-            }
-            try
-            {
-                DateTime.Parse(keyword).ToString(Utility.DATE_FORMAT);
-                if (check.Deadline.ToString(Utility.DATE_FORMAT).Contains(DateTime.Parse(keyword).ToString(Utility.DATE_FORMAT)))
-                {
-                    hitcount++;
-                }
-
-            }
-            catch (Exception e)
-            {
-
-            }
-
-            return hitcount;
         }
     }
 }
