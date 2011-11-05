@@ -95,8 +95,7 @@ namespace F9S1.RememberMe
 
                 case "edit":
                     {
-                        taskData.EditTask(parsedInput, input);
-                        isModified = true;
+                        isModified = taskData.EditTask(parsedInput, input);
                         if (!isModified)
                         {
                             output.Add(Utility.ERROR);
