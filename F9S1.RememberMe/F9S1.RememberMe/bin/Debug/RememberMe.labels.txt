@@ -1,0 +1,6 @@
+others
+work
+home
+stats
+study
+school
