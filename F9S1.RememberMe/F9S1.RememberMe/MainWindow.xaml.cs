@@ -197,9 +197,9 @@ namespace F9S1.RememberMe
             }
             catch (Exception e)
             {
-
+                return hitcount;
             }
-
+            
             return hitcount;
         }
 
@@ -244,7 +244,7 @@ namespace F9S1.RememberMe
             {
                 for (int j = 0; j < keywords.Count; j++)
                 {
-                    hitcount[i] = findHits(keywords[j], taskList[i], command);
+                    hitcount[i] += findHits(keywords[j], taskList[i], command);
                     if (hitcount[i] > maxhits)
                         maxhits = hitcount[i];
                 }
@@ -441,7 +441,7 @@ namespace F9S1.RememberMe
             {
                 for (int j = 0; j < keywords.Count; j++)
                 {
-                    hitcount[i] = findHits(keywords[j], contents[i], command);
+                    hitcount[i] += findHits(keywords[j], contents[i], command);
                     if (hitcount[i] > maxhits)
                     {
                         maxhits = hitcount[i];
