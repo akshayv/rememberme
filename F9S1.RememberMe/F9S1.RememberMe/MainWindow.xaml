@@ -76,19 +76,19 @@
         <Label Content="Password" FontSize="13" FontWeight="Bold" Height="26" Margin="236,5,198,0" Name="passwordLabel" VerticalAlignment="Top" VerticalContentAlignment="Center" Foreground="#FF5BB82D" Visibility="Collapsed" />
         <TextBox Height="23" HorizontalAlignment="Left" Margin="88,9,0,0" Name="userBox" VerticalAlignment="Top" Width="142" Visibility="Collapsed" PreviewKeyDown="userBox_PreviewKeyDown" />
         <Label Content="Username" FontSize="13" FontWeight="Bold" Height="26" HorizontalAlignment="Left" Margin="12,6,0,0" Name="userLabel" VerticalAlignment="Top" Width="73" Foreground="#FF6CB548" Visibility="Collapsed" />
-        <Button Height="40" HorizontalAlignment="Left" Margin="456,5,0,0" Name="syncButton" VerticalAlignment="Top" Width="40" Foreground="#FF62B43A" FontWeight="Bold" Click="syncButton_Click">
+        <Button Height="40" HorizontalAlignment="Left" Margin="456,5,0,0" Name="syncButton" VerticalAlignment="Top" Width="40" Foreground="#FF62B43A" FontWeight="Bold" Click="syncButton_Click" BorderBrush="{x:Null}">
             <Button.Background>
-                <ImageBrush ImageSource="/F9S1.RememberMe;component/Images/google.jpg" />
+                <ImageBrush ImageSource="/F9S1.RememberMe;component/Images/g_normal.png" />
             </Button.Background>
         </Button>
         <Button Height="40" HorizontalAlignment="Left" Margin="406,5,0,0" Name="helpButton" VerticalAlignment="Top" Width="40" Foreground="#FF42B72D" FontWeight="Bold" Visibility="Visible" Click="helpButton_Click">
             <Button.Background>
-                <ImageBrush ImageSource="/F9S1.RememberMe;component/Images/images.jpg" />
+                <ImageBrush ImageSource="/F9S1.RememberMe;component/Images/help.png" />
             </Button.Background>
         </Button>
         <Button Height="40" HorizontalAlignment="Left" Margin="356,5,0,0" Name="settingsButton" VerticalAlignment="Top" Width="40" Foreground="#FF3AAB25" FontWeight="Bold" Visibility="Visible">
             <Button.Background>
-                <ImageBrush ImageSource="/F9S1.RememberMe;component/Images/settings.jpg" />
+                <ImageBrush ImageSource="/F9S1.RememberMe;component/Images/settings.png" />
             </Button.Background>
         </Button>
     </Grid>
