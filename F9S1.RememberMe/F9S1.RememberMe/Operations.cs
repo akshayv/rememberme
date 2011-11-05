@@ -186,19 +186,20 @@ namespace F9S1.RememberMe
         }
         public bool EditTask(List<string> editInput, string input)
         {
+            int n = -1;
             if (editInput.Count < 5)
                 return false;
-            Task foundTask = SearchTask(editInput[0]);
+            Task foundTask = SearchTask(editInput[0], ref n);
             if (!(input.Contains('@')))
                 editInput[1] = foundTask.Deadline.ToString();
             if (!(input.Contains('#')))
                 editInput[2] = foundTask.Labels.ToString(); 
             if (foundTask != null)
             {
-                taskList.Remove(foundTask);
+                taskList[n] = new Task(editInput);
+                return true;
             }
-            taskList.Add(new Task(editInput));
-            return true;
+            return false;
         }
         public Task SearchTask(string taskDetails)
         {
@@ -208,6 +209,21 @@ namespace F9S1.RememberMe
                 if (taskList[i].Details.Equals(taskDetails))
                 {
                     toBeFound = taskList[i];
+                }
+            }
+
+            logger.Info("Task not found");
+            return toBeFound;
+        }
+        public Task SearchTask(string taskDetails, ref int k)
+        {
+            Task toBeFound = null;
+            for (int i = 0; i < taskList.Count; i++)
+            {
+                if (taskList[i].Details.Equals(taskDetails))
+                {
+                    toBeFound = taskList[i];
+                    k = i;
                 }
             }
 
