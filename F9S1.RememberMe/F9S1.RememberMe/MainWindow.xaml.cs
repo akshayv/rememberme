@@ -31,7 +31,7 @@ namespace F9S1.RememberMe
     {
 
         private System.Windows.Forms.NotifyIcon m_notifyIcon;
-        
+
         Controller dispatch;
         List<Task> taskInfo;
         List<string> taskDetails;
@@ -63,7 +63,7 @@ namespace F9S1.RememberMe
             inputBox.Focus();
             helpBox.Visibility = System.Windows.Visibility.Collapsed;
             SetDisplay();
-            }
+        }
         void initialiseNotificationIcon()
         {
             m_notifyIcon = new System.Windows.Forms.NotifyIcon();
@@ -168,7 +168,7 @@ namespace F9S1.RememberMe
             else if (input.Length < EDIT_COMMAND.Length && input.StartsWith("e") && input.Equals(EDIT_COMMAND.Substring(0, input.Length)))
                 AutoComplete(input, EDIT_COMMAND);
             else if (input.Length < QUIT_COMMAND.Length && input.StartsWith("q") && input.Equals(QUIT_COMMAND.Substring(0, input.Length)))
-              AutoComplete(input, QUIT_COMMAND);
+                AutoComplete(input, QUIT_COMMAND);
             else if (input.Length < DELETE_COMMAND.Length && input.StartsWith("d") && input.Equals(DELETE_COMMAND.Substring(0, input.Length)))
                 AutoComplete(input, DELETE_COMMAND);
             else if (input.Length < CLEAR_COMMAND.Length && input.StartsWith("c") && input.Equals(CLEAR_COMMAND.Substring(0, input.Length)))
@@ -393,10 +393,10 @@ namespace F9S1.RememberMe
                     }
                     else
                         inputBox.Text = "";
-                    
+
                 }
-             /*  inputBox.Focus();
-                inputBox.SelectionStart = inputBox.Text.Length;*/
+                /*  inputBox.Focus();
+                   inputBox.SelectionStart = inputBox.Text.Length;*/
                 e.Handled = true;
             }
             if (e.Key == Key.Escape)
@@ -418,7 +418,7 @@ namespace F9S1.RememberMe
             inputBox.Text = "";
             SetDisplay();
             displayBox.Content = "Action undone";
-         }
+        }
 
         private void redoExecuted(object sender, ExecutedRoutedEventArgs e)
         {
@@ -426,7 +426,7 @@ namespace F9S1.RememberMe
             inputBox.Text = "";
             SetDisplay();
             displayBox.Content = "Action redone";
-           }
+        }
         public string autoCompleteSearch(string input, string command)
         {
             List<Task> contents = taskInfo;
@@ -542,7 +542,7 @@ namespace F9S1.RememberMe
                 element = dataGrid1.Columns[3].GetCellContent(e.Row);
                 newData = ((TextBox)element).Text;
                 updatedTask = new Task(((Task)(e.Row.Item)).ToString());
-                command = "edit " + updatedTask.Details +" #" + newData.Trim();
+                command = "edit " + updatedTask.Details + " #" + newData.Trim();
             }
             if (currentHeader.Equals("Deadline"))
             {
@@ -558,7 +558,7 @@ namespace F9S1.RememberMe
             {
                 displayBox.Content = output[1];
                 output = dispatch.UserDispatch(command);
-           }
+            }
             SetDisplay();
             dataGrid1.SelectedItem = updatedTask;
             return;
@@ -619,7 +619,7 @@ namespace F9S1.RememberMe
                     EventFeed feed = Gcal.Query(query);
 
                     List<Task> taskList = dispatch.GetTasks();
-                    
+
 
                     //delete all RM tasks
                     query.Query = "[RM!]";
@@ -635,7 +635,7 @@ namespace F9S1.RememberMe
                         {
                             EventEntry entry = new EventEntry();
                             entry.Title.Text = "[RM!]" + taskList[i].Details;
-                            entry.Content.Content = "Label = "+taskList[i].Labels;
+                            entry.Content.Content = "Label = " + taskList[i].Labels;
                             if (taskList[i].Deadline.Year != DateTime.MaxValue.Year)
                             {
                                 When eventTime = new When(taskList[i].Deadline, taskList[i].Deadline.AddHours(1));
@@ -646,14 +646,12 @@ namespace F9S1.RememberMe
                             displayBox.Content = "Success";
                             syncButton.Foreground = new SolidColorBrush(Colors.Green);
                         }
-                        }
+                    }
                 }
                 catch
                 {
 
                     displayBox.Content = "Authentication Error / Internet is too slow";
-                    syncButton.Foreground = new SolidColorBrush(Colors.DarkRed);
-                    
                 }
             }
             else
@@ -680,7 +678,7 @@ namespace F9S1.RememberMe
             passwordLabel.Visibility = System.Windows.Visibility.Collapsed;
             passwordBox1.Visibility = System.Windows.Visibility.Collapsed;
         }
-        bool SyncItemsVisible() 
+        bool SyncItemsVisible()
         {
             return (userBox.Visibility == System.Windows.Visibility.Visible ||
                     userLabel.Visibility == System.Windows.Visibility.Visible ||
