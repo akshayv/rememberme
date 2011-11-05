@@ -383,21 +383,29 @@ namespace F9S1.RememberMe
             return parsedInput;
         }
 
-        public bool isDayValid(string day)
+        public string ToDayValid(string day)
         {
-            if (day.Contains("monday") || day.Contains("mon")
-                || day.Contains("tuesay") || day.Contains("tue")
-                || day.Contains("wednesday") || day.Contains("wed")
-                || day.Contains("thursday") || day.Contains("thur")
-                || day.Contains("friday") || day.Contains("fri")
-                || day.Contains("saturday") || day.Contains("sat")
-                || day.Contains("sunday") || day.Contains("sun")
-                || day.Contains("today")
-                || day.Contains("tomorrow"))
-                return true;
+            if (day.Contains("monday") || day.Contains("mon"))
+                return "monday";
+            else if (day.Contains("tuesay") || day.Contains("tue"))
+                return "tuesday";
+            else if (day.Contains("wednesday") || day.Contains("wed"))
+                return "wednesday";
+            else if (day.Contains("thursday") || day.Contains("thu") || day.Contains("thurs"))
+                return "thursday";
+            else if (day.Contains("friday") || day.Contains("fri"))
+                return "friday";
+            else if (day.Contains("saturday") || day.Contains("sat"))
+                return "saturday";
+            else if (day.Contains("sunday") || day.Contains("sun"))
+                return "sunday";
+            else if (day.Contains("today"))
+                return "today";
+            else if (day.Contains("tomorrow") || day.Contains("tom"))
+                return "tomorrow";
             else
             {
-                return false;
+                return "nil";
             }
         }
         private DayOfWeek toDay(string day)
@@ -424,14 +432,13 @@ namespace F9S1.RememberMe
         }
         private int NumberOfDays(string day)
         {
-            DayOfWeek deadline = toDay(day.Split(' ')[0]);
+            DayOfWeek deadline = toDay(day);
             DayOfWeek curDay = System.DateTime.Today.DayOfWeek;
             if (deadline >= curDay)
                 return (deadline - curDay);
             else
                 return deadline - curDay + 7;
         }
-
 
         private DateTime updateTime(ref DateTime Template, DateTime containsTime)
         {
@@ -441,21 +448,31 @@ namespace F9S1.RememberMe
             return Template;
         }
 
+        private string RemoveDay(string date, string day)
+        {
+            day = day.Substring(0, 3);
+            string[] dateParse = date.Split(new char[] {' '}, StringSplitOptions.RemoveEmptyEntries);
+            for (int i = 0; i < dateParse.Length; i++)
+                if (dateParse[i].Contains(day))
+                    dateParse[i] = "";
+            return String.Concat(dateParse);
+        }
         public DateTime ToDate(string toBeConverted)
         {
             if (toBeConverted.Length == 0)
                 return Utility.DEFAULT_UNDEFINED_DATE;
             DateTime tempDate = new DateTime();
-            
-            if (isDayValid(toBeConverted.ToLower().Trim()))
+            string day = ToDayValid(toBeConverted.ToLower().Trim());
+            if (day != "nil")
             {
                 tempDate = System.DateTime.Today.Date;
-                int x = NumberOfDays(toBeConverted);
+                int x = NumberOfDays(day);
                 tempDate = tempDate.AddDays(x * 1.0);
+                toBeConverted = RemoveDay(toBeConverted, day);
                 DateTime tempTime;
                 try
                 {
-                    tempTime = DateTime.Parse(toBeConverted.Split(' ')[1]);
+                    tempTime = DateTime.Parse(toBeConverted);
                     tempDate = updateTime(ref tempDate, tempTime);
                 }
                 catch (Exception e)
