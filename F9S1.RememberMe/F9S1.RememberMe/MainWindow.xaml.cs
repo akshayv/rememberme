@@ -120,27 +120,14 @@ namespace F9S1.RememberMe
         }
         private void displayHelp()
         {
+            doneButton.Visibility = System.Windows.Visibility.Visible;
             dataGrid1.Visibility = System.Windows.Visibility.Collapsed;
             helpBox.Visibility = System.Windows.Visibility.Visible;
             inputBox.Visibility = System.Windows.Visibility.Collapsed;
             displayBox.Visibility = System.Windows.Visibility.Collapsed;
             inputBox.Text = "";
             helpBox.Focus();
-            helpBox.Text = "Help...\nThis is to test Scrolling" +
-                                    "\nThis is to test Scrolling" +
-                                    "\nThis is to test Scrolling" +
-                                    "\nThis is to test Scrolling" +
-                                    "\nThis is to test Scrolling" +
-                                    "\nThis is to test Scrolling" +
-                                    "\nThis is to test Scrolling" +
-                                    "\nThis is to test Scrolling" +
-                                    "\nThis is to test Scrolling" +
-                                    "\nThis is to test Scrolling" +
-                                    "\nThis is to test Scrolling" +
-                                    "\nThis is to test Scrolling" +
-                                    "\nThis is to test Scrolling" +
-                                    "\nThis is to test Scrolling" +
-                                    "\nThis is to test Scrolling";
+            helpBox.Text = Utility.HELP;
         }
         private int numberOfSemiColon(String text)
         {
@@ -301,7 +288,7 @@ namespace F9S1.RememberMe
                     {
 
                         int countSemiColon = numberOfSemiColon(inputBox.Text);
-                        
+
                         if (countSemiColon < 5)  //total number of ';'s for add/edit
                         {
                             if (getCommand.Equals("add"))
@@ -309,7 +296,6 @@ namespace F9S1.RememberMe
                             else if (getCommand.Equals("edit"))
                                 if (countSemiColon != 1)
                                     inputBox.Text += userPrompts[countSemiColon];
-                            inputBox.Text += userPrompts[countSemiColon];
                             int semicolonIndex = inputBox.Text.LastIndexOf(';');
                             inputBox.Select(semicolonIndex + 1, inputBox.Text.Length - semicolonIndex);
                         }
@@ -361,7 +347,7 @@ namespace F9S1.RememberMe
                 }
                 else if (input.Trim().ToLower() == "sync")
                 {
-                    inputBox.Text = ""; 
+                    inputBox.Text = "";
                     DisplaySync();
                     return;
                 }
@@ -628,12 +614,15 @@ namespace F9S1.RememberMe
                         return;
                     }
                     dispatch.UserDispatch("sync;" + userBox.Text + ";" + passwordBox1.Password);
+                    SetSyncItemsCollapsed();
                     displayBox.Content = "Success";
+                    inputBox.Focus();
                 }
                 catch
                 {
-
+                    SetSyncItemsCollapsed();
                     displayBox.Content = "Authentication Error / Internet is too slow";
+                    inputBox.Focus();
                 }
             }
             else
@@ -644,6 +633,8 @@ namespace F9S1.RememberMe
         }
         void SetSyncItemsVisible()
         {
+            dataGrid1.Opacity = 0.2;
+            inputBox.Opacity = 0.2;
             helpButton.Visibility = System.Windows.Visibility.Collapsed;
             settingsButton.Visibility = System.Windows.Visibility.Collapsed;
             userLabel.Visibility = System.Windows.Visibility.Visible;
@@ -653,6 +644,8 @@ namespace F9S1.RememberMe
         }
         void SetSyncItemsCollapsed()
         {
+            dataGrid1.Opacity = 0.7;
+            inputBox.Opacity = 0.7;
             helpButton.Visibility = System.Windows.Visibility.Visible;
             settingsButton.Visibility = System.Windows.Visibility.Visible;
             userLabel.Visibility = System.Windows.Visibility.Collapsed;
@@ -671,8 +664,6 @@ namespace F9S1.RememberMe
         private void inputBox_GotFocus(object sender, RoutedEventArgs e)
         {
             dataGrid1.SelectedIndex = -1;
-            if (SyncItemsVisible())
-                SetSyncItemsCollapsed();
         }
         private void userBox_PreviewKeyDown(object sender, KeyEventArgs e)
         {
@@ -681,11 +672,7 @@ namespace F9S1.RememberMe
         }
         private void doneButton_Click(object sender, RoutedEventArgs e)
         {
-            helpBox.Visibility = System.Windows.Visibility.Collapsed;
-            dataGrid1.Visibility = System.Windows.Visibility.Visible;
-            inputBox.Visibility = System.Windows.Visibility.Visible;
-            inputBox.Focus();
-            SetDisplay();
+            RemoveHelp();
         }
         private void helpButton_Click(object sender, RoutedEventArgs e)
         {
@@ -693,14 +680,20 @@ namespace F9S1.RememberMe
                 displayHelp();
             else
             {
-                helpBox.Visibility = System.Windows.Visibility.Collapsed;
-                dataGrid1.Visibility = System.Windows.Visibility.Visible;
-                inputBox.Visibility = System.Windows.Visibility.Visible;
-                displayBox.Visibility = System.Windows.Visibility.Visible;
-                inputBox.Focus();
-                SetDisplay();
+                RemoveHelp();
             }
         }
+        private void RemoveHelp()
+        {
+            doneButton.Visibility = System.Windows.Visibility.Collapsed;
+            helpBox.Visibility = System.Windows.Visibility.Collapsed;
+            dataGrid1.Visibility = System.Windows.Visibility.Visible;
+            inputBox.Visibility = System.Windows.Visibility.Visible;
+            displayBox.Visibility = System.Windows.Visibility.Visible;
+            inputBox.Focus();
+            SetDisplay();
+        }
+
     }
 }
 

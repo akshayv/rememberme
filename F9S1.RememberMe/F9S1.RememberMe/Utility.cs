@@ -43,6 +43,30 @@ namespace F9S1.RememberMe
         public const string OUTPUT_FILE = "RememberMe.testoutput.txt";
         public const string CONTENT_FILE_NAME = "RememberMe.content.txt";
         public const string LABEL_FILE_NAME = "RememberMe.labels.txt";
+
+        public const string HELP = "Adding a task:" +
+                            "\nHave a pending task? Just go ahead and add it into your to-do manager ‘Remember Me!’" +
+                            "\nYou can to this by adding the task into the given box. This can be added in the following way:" +
+                            "\nadd;<Task name + details>;<Deadline>;<Label>" +
+                            "\n                            	                            	(or)" +
+                            "\nadd <Task name + details> @<Deadline> #<Label>" +
+                            "\n" +
+                            "\nArchiving a task:" +
+                            "\nDone with a task? Just click on the ‘Tick’ mark next to it to do so." +
+                            "\nDon’t want to click? Just type in ‘archive;’ and allow the instant search to help you out every time you type in a letter. Once the task is printed on top, press <Tab> to get the complete task name in the Textbox and just press enter to archive the task." +
+                            "\n" +
+                            "\nDeleting a task:" +
+                            "\nWant to delete a task? Again, we have two options. Click the ’X’ mark next to it to do so." +
+                            "\nYou can also type in delete; and again use the instant search to find the appropriate task. Either type in the full name or press <Tab> followed by enter." +
+                            "\n" +
+                            "\nEdit a task:" +
+                            "\nYou can go ahead and modify a task by either modifying the data directly in the output or type in ‘edit;’ and utilize the instant search to select the task. Once this is done, just specify which value you want to change alone with the changed value to edit the task." +
+                            "\n" +
+                            "\nUndo an event:" +
+                            "\nMade a mistake? Just type in ‘undo’ or press <Ctrl + Z> to undo it." +
+                            "\n" +
+                            "\nRedo an event:" +
+                            "\nWrong undo? Type in ‘redo’ or press <Ctrl + Y> to redo it.";
         
 
     }
