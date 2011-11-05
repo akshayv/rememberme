@@ -76,6 +76,7 @@
     <Compile Include="AlarmCheck.cs" />
     <Compile Include="Hotkey.cs" />
     <Compile Include="Operations.cs" />
+    <Compile Include="Tester.cs" />
     <Compile Include="Utility.cs" />
     <Compile Include="Parser.cs" />
     <Compile Include="Controller.cs" />

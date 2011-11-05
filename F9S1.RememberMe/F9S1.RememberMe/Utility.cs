@@ -38,5 +38,9 @@ namespace F9S1.RememberMe
         public static TimeSpan NO_INTERVAL = new TimeSpan(0, 0, 0, 0);
         public static DateTime DEFAULT_ERROR_DATE = DateTime.MinValue;
         public static DateTime DEFAULT_UNDEFINED_DATE = DateTime.MaxValue;
+
+        public const string INPUT_FILE = "RememberMe.testinput.txt";
+        public const string OUTPUT_FILE = "RememberMe.testoutput.txt";
+
     }
 }

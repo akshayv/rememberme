@@ -19,6 +19,12 @@ namespace F9S1.RememberMe
             taskData = new Operations(store.ReadTasks(), store.ReadLabels());
             AlarmCheck checkAlarm = new AlarmCheck(this);
         }
+        public Controller()
+        {
+            parse = new Parser();
+            store = new Storage();
+            taskData = new Operations(store.ReadTasks(), store.ReadLabels());
+        }
         public void updateDisplay()
         {
             startWindow.SetDisplay();
