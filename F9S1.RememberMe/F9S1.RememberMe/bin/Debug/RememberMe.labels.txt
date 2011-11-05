@@ -1,3 +1,4 @@
 others
 work
 home
+stats

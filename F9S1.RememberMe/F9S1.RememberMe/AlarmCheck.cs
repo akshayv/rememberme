@@ -36,15 +36,19 @@ namespace F9S1.RememberMe
                     if (time == null)
                     {
                         taskInfo[i].IsArchived = true;
+                        string command = "archive;" + taskInfo[i].Details;
+                        dispatch.UserDispatch(command);
+                        dispatch.updateDisplay();
                     }
                     else
                     {
                         //Debug.Assert(taskInfo != null);
                         updateDeadline(ref taskInfo, time, i);
+                        string command = "edit " + taskInfo[i].Details + " @" + taskInfo[i].Deadline;
+                        dispatch.UserDispatch(command);
+                        dispatch.updateDisplay();
                     }
-                    dispatch.WriteToFile(taskInfo);
-                    //SetDisplay();
-                }
+                 }
             }
             newAlarm.Dispatcher.BeginInvoke(DispatcherPriority.SystemIdle, new timeCheck(SetAlarm));
         }

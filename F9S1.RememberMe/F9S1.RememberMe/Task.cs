@@ -115,12 +115,11 @@ namespace F9S1.RememberMe
 
         public Task(List<string> values)
         {
-                Details = values[0];
+            Details = values[0];
             if (values[1] == Utility.DEFAULT_NO_TIME)
                 Deadline = Utility.DEFAULT_UNDEFINED_DATE;
             else
                 Deadline = DateTime.Parse(values[1]);
-             
             Labels = values[2];
             IsStarred = Boolean.Parse(values[3]);
             IsArchived = false;
