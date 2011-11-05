@@ -39,10 +39,8 @@ namespace F9S1.RememberMe
         const string FIND_COMMAND = "find";
         const string ADD_COMMAND = "add";
         const string EDIT_COMMAND = "edit";
-        // const string SORT_COMMAND = "sort";
+        const string QUIT_COMMAND = "quit";
         const string DELETE_COMMAND = "delete";
-        // const string SORT_PRIORITY = "priority";
-        // const string DEADLINE = "deadline";
         const string ARCHIVE_COMMAND = "archive";
         const string CLEAR_COMMAND = "clear";
         private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
@@ -218,8 +216,8 @@ namespace F9S1.RememberMe
                 AutoComplete(input, ADD_COMMAND);
             else if (input.Length < EDIT_COMMAND.Length && input.StartsWith("e") && input.Equals(EDIT_COMMAND.Substring(0, input.Length)))
                 AutoComplete(input, EDIT_COMMAND);
-            //else if (input.Length < SORT_COMMAND.Length && input.StartsWith("s") && input.Equals(SORT_COMMAND.Substring(0, input.Length)))
-            //  AutoComplete(input, SORT_COMMAND);
+            else if (input.Length < QUIT_COMMAND.Length && input.StartsWith("q") && input.Equals(QUIT_COMMAND.Substring(0, input.Length)))
+              AutoComplete(input, QUIT_COMMAND);
             else if (input.Length < DELETE_COMMAND.Length && input.StartsWith("d") && input.Equals(DELETE_COMMAND.Substring(0, input.Length)))
                 AutoComplete(input, DELETE_COMMAND);
             else if (input.Length < CLEAR_COMMAND.Length && input.StartsWith("c") && input.Equals(CLEAR_COMMAND.Substring(0, input.Length)))
@@ -254,7 +252,6 @@ namespace F9S1.RememberMe
             }
             try
             {
-                DateTime.Parse(keyword).ToString(Utility.DATE_FORMAT);
                 if (check.Deadline.ToString(Utility.DATE_FORMAT).Contains(DateTime.Parse(keyword).ToString(Utility.DATE_FORMAT)))
                 {
                     hitcount++;

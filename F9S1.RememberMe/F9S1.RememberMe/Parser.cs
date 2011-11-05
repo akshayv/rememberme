@@ -75,7 +75,7 @@ namespace F9S1.RememberMe
 
         public List<string> SymbolParse(string input, List<string> labels)
         {
-            List<string> parsedInput = new List<string>(), inputLabels = new List<string>(), betaParse = new List<string>(input.Split(new Char[] { ' ', ';' })); ;
+            List<string> parsedInput = new List<string>(), inputLabels = new List<string>(), betaParse = new List<string>(input.Split(new Char[] { ' ', ';' }, StringSplitOptions.RemoveEmptyEntries)); ;
             string commandName, taskInterval, taskDetails, taskTime, betaInput = new string(input.ToCharArray());
             DateTime deadline;
             bool hasStars = betaInput.Contains("**");
@@ -155,6 +155,12 @@ namespace F9S1.RememberMe
                 inputLabels.Add(Utility.DEFAULT_LABEL);
             else
             {
+                if (betaParse.Contains("#"))
+                {
+                    parsedInput.Add(Utility.ERROR);
+                    parsedInput.Add(Utility.LABEL_ERROR);
+                    return parsedInput;
+                }
                 for (int i = 0; i < betaParse.Count; )
                 {
                     if (betaParse[i].Contains('#'))         //last words
@@ -190,6 +196,7 @@ namespace F9S1.RememberMe
                 int _hash = betaInput.IndexOf('#');
                 int length = betaInput.Length;
                 taskTime = betaInput.Substring(_at + 1, ((_hash - _at > 0) ? _hash - _at - 1: length - _at - 1));
+                taskTime = taskTime.Trim();
                 taskInterval = GetRepeat(taskTime).ToString();
                 if (taskTime.Contains('%'))
                    taskTime = taskTime.Replace(taskTime.Substring(taskTime.IndexOf('%')).Split(' ', ';')[0], "");

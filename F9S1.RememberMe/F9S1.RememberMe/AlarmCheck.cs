@@ -16,12 +16,12 @@ namespace F9S1.RememberMe
         public AlarmCheck(Controller dispatch)
         {
             this.dispatch = dispatch;
-            taskInfo = dispatch.GetTasks();
             newAlarm.Dispatcher.BeginInvoke(DispatcherPriority.SystemIdle, new timeCheck(SetAlarm));
         }
         public void SetAlarm()
         {
-             bool isLabelNotArchive;
+            taskInfo = dispatch.GetTasks();
+            bool isLabelNotArchive;
             bool isDeadlineReached;
             for (int i = 0; i < taskInfo.Count; i++)
             {
