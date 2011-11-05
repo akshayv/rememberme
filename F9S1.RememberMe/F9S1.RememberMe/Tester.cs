@@ -10,7 +10,7 @@ namespace F9S1.RememberMe
     class Tester
     {
         Controller testDispatch;
-        List<string> testCases, testResults, expectedResults;
+        List<string> testCases, testResults, expectedResults, storeContents, storeLabels;
         
         public Tester()
         {
@@ -19,6 +19,8 @@ namespace F9S1.RememberMe
             testCases = new List<string>();
             testResults = new List<string>();
             expectedResults = new List<string>();
+            storeContents = new List<string>();
+            storeLabels = new List<string>();
         }
 
         /// <summary>
@@ -43,9 +45,13 @@ namespace F9S1.RememberMe
         /// </summary>
         public void Test()
         {
+            storeContents = ReadLines(Utility.CONTENT_FILE_NAME);
+            storeLabels = ReadLines(Utility.LABEL_FILE_NAME);
             testCases = ReadLines(Utility.INPUT_FILE);
             expectedResults = ReadLines(Utility.OUTPUT_FILE);
             RunTests();
+            WriteLines(Utility.LABEL_FILE_NAME, storeLabels);
+            WriteLines(Utility.CONTENT_FILE_NAME, storeContents);
             if (!AreResultsCorrect())
                 AssertResults();
         }
@@ -77,11 +83,6 @@ namespace F9S1.RememberMe
                 testResults.Add(ListToString(testDispatch.UserDispatch(line)));
         }
 
-        /// <summary>
-        /// Takes in a list of strings and concatenates them into a single string.
-        /// </summary>
-        /// <param name="lines">Strings to be concatenated</param>
-        /// <returns>The concatenated result</returns>
         private string ListToString(List<string> lines)
         {
             string singleLine = "";
@@ -117,9 +118,21 @@ namespace F9S1.RememberMe
             testCases = ReadLines(Utility.INPUT_FILE);
             Debug.Assert(File.Exists(Utility.INPUT_FILE));
             Debug.Assert(File.Exists(Utility.OUTPUT_FILE));
-            using (TextWriter testStream = new StreamWriter(Utility.OUTPUT_FILE))
-                foreach (string line in testCases)
-                    testStream.WriteLine(ListToString(testDispatch.UserDispatch(line)));
+            RunTests();
+            WriteLines(Utility.OUTPUT_FILE, testResults);
+        }
+
+        /// <summary>
+        /// Writes the list of strings to the given file.
+        /// </summary>
+        /// <param name="fileName">The file to write to.</param>
+        /// <returns>The contents to be written.</returns>
+        private void WriteLines(string fileName, List<string> contents)
+        {
+            Debug.Assert(File.Exists(fileName));
+            using (StreamWriter writer = new StreamWriter(fileName))
+                foreach (string line in contents)
+                    writer.WriteLine(line);
         }
     }
 }

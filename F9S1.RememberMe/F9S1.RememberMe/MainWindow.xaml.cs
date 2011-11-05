@@ -50,7 +50,7 @@ namespace F9S1.RememberMe
         {
             Tester fileTest = new Tester();
             //fileTest.GetOutputFile();
-            fileTest.Test();
+            //fileTest.Test();
             initialiseNotificationIcon();
             dispatch = new Controller(this);
             taskInfo = dispatch.GetTasks();
@@ -303,10 +303,16 @@ namespace F9S1.RememberMe
                         numberBackSpace = 1;
                     if (numberBackSpace == 0)
                     {
-                        int countSemiColon = numberOfSemiColon(inputBox.Text);
 
-                        if (countSemiColon < 5) //does this reduce the readablity of the code? - inian
+                        int countSemiColon = numberOfSemiColon(inputBox.Text);
+                        
+                        if (countSemiColon < 5)  //total number of ';'s for add/edit
                         {
+                            if (getCommand.Equals("add"))
+                                inputBox.Text += userPrompts[countSemiColon];
+                            else if (getCommand.Equals("edit"))
+                                if (countSemiColon != 1)
+                                    inputBox.Text += userPrompts[countSemiColon];
                             inputBox.Text += userPrompts[countSemiColon];
                             int semicolonIndex = inputBox.Text.LastIndexOf(';');
                             inputBox.Select(semicolonIndex + 1, inputBox.Text.Length - semicolonIndex);

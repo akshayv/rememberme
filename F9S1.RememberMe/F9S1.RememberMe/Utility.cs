@@ -41,6 +41,9 @@ namespace F9S1.RememberMe
 
         public const string INPUT_FILE = "RememberMe.testinput.txt";
         public const string OUTPUT_FILE = "RememberMe.testoutput.txt";
+        public const string CONTENT_FILE_NAME = "RememberMe.content.txt";
+        public const string LABEL_FILE_NAME = "RememberMe.labels.txt";
+        
 
     }
 }
