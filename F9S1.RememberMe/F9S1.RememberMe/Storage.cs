@@ -11,22 +11,19 @@ namespace F9S1.RememberMe
     class Storage
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
-        string contentFileName = "RememberMe.content.txt";
-        string labelFileName = "RememberMe.labels.txt";
         public Storage()
         {
-            
-            if (!File.Exists(contentFileName))
+            if (!File.Exists(Utility.CONTENT_FILE_NAME))
             {
                 logger.Warn("Contents file did not exist");
-                StreamWriter contentStream = new StreamWriter(contentFileName);
+                StreamWriter contentStream = new StreamWriter(Utility.CONTENT_FILE_NAME);
                 contentStream.Close();
             }
-            
-            if (!File.Exists(labelFileName))
+
+            if (!File.Exists(Utility.LABEL_FILE_NAME))
             {
                 logger.Warn("Label file did not exist");
-                StreamWriter labelStream = new StreamWriter(labelFileName);
+                StreamWriter labelStream = new StreamWriter(Utility.LABEL_FILE_NAME);
                 labelStream.WriteLine("others");
                 labelStream.WriteLine("work");
                 labelStream.WriteLine("home");
@@ -36,7 +33,7 @@ namespace F9S1.RememberMe
 
         public void WriteLabels(List<string> labels)
         {
-            TextWriter writer = new StreamWriter(labelFileName);
+            TextWriter writer = new StreamWriter(Utility.LABEL_FILE_NAME);
             for (int i = 0; i < labels.Count; i++)
             {
                 writer.WriteLine(labels[i]);
@@ -49,7 +46,7 @@ namespace F9S1.RememberMe
             try
             {
                 List<string> labels = new List<string>();
-                using (StreamReader reader = new StreamReader(labelFileName))
+                using (StreamReader reader = new StreamReader(Utility.LABEL_FILE_NAME))
                 {
                     string line;
                     while ((line = reader.ReadLine()) != null)
@@ -62,8 +59,8 @@ namespace F9S1.RememberMe
             catch (FileNotFoundException e)
             {
                 logger.Error("Label File not found");
-           
-                File.Create(labelFileName);
+
+                File.Create(Utility.LABEL_FILE_NAME);
 
             }
             catch (Exception e)
@@ -88,7 +85,7 @@ namespace F9S1.RememberMe
             }
             try
             {
-                TextWriter writer = new StreamWriter(contentFileName);
+                TextWriter writer = new StreamWriter(Utility.CONTENT_FILE_NAME);
                 for (int i = 0; i < contents.Count; i++)
                 {
                     writer.WriteLine(contents[i]);
@@ -98,7 +95,7 @@ namespace F9S1.RememberMe
             catch (FileNotFoundException e)
             {
                 logger.Error("Label File not found");
-                File.Create(contentFileName);
+                File.Create(Utility.CONTENT_FILE_NAME);
 
             }
             catch (Exception e)
@@ -113,7 +110,7 @@ namespace F9S1.RememberMe
             try
             {
                 List<string> contents = new List<string>();
-                using (StreamReader reader = new StreamReader(contentFileName))
+                using (StreamReader reader = new StreamReader(Utility.CONTENT_FILE_NAME))
                 {
 
                     string line;
@@ -128,7 +125,7 @@ namespace F9S1.RememberMe
             catch (FileNotFoundException e)
             {
                 logger.Error("Contents File not found");
-                File.Create(contentFileName);
+                File.Create(Utility.CONTENT_FILE_NAME);
 
             }
             catch (Exception e)
