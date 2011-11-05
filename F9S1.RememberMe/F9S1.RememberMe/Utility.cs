@@ -28,7 +28,6 @@ namespace F9S1.RememberMe
         public const string DATE_FORMAT = "dd MMM yyyy HH:mm";
         public const string SHORT_DATE_FORMAT = "hh:mm tt dd MMM yyyy";
 
-        public const string DEFAULT_LABEL = "others";
         public const string DEFAULT_NO_TIME = "undefined";
         public const string FILE_SEPARATER = " ~~ ";
         public const string STARRED = "**";

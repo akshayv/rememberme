@@ -25,10 +25,9 @@ namespace F9S1.RememberMe
             
             if (!File.Exists(labelFileName))
             {
-
                 logger.Warn("Label file did not exist");
                 StreamWriter labelStream = new StreamWriter(labelFileName);
-                labelStream.WriteLine(Utility.DEFAULT_LABEL);
+                labelStream.WriteLine("others");
                 labelStream.WriteLine("work");
                 labelStream.WriteLine("home");
                 labelStream.Close();

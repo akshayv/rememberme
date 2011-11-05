@@ -9,30 +9,25 @@ namespace F9S1.RememberMe
     {
         Parser parse;
         Storage store;
-        Register taskData;
-        public Controller()
+        Operations taskData;
+        MainWindow startWindow;
+        public Controller(MainWindow appWindow)
         {
+            startWindow = appWindow;
             parse = new Parser();
             store = new Storage();
-            taskData = new Register(store.ReadTasks(),store.ReadLabels());
+            taskData = new Operations(store.ReadTasks(), store.ReadLabels());
             AlarmCheck checkAlarm = new AlarmCheck(this);
+        }
+        public void updateDisplay()
+        {
+            startWindow.SetDisplay();
         }
 
         public List<Task> GetTasks()
         {
             return taskData.TaskList;
         }
-
-        public List<string> GetLabels()
-        {
-            return taskData.Labels;
-        }
-        public void WriteToFile(List<Task> taskList)
-        {
-         //   taskData.TaskList = taskList;
-            store.WriteTasks(taskData.GetList(),taskData.GetLabels());
-        }
-
         public List<string> UserDispatch(string input)
         {
             if (input.Trim().Length > 3)
@@ -49,87 +44,87 @@ namespace F9S1.RememberMe
             string commandName = parsedInput[0];
             if (commandName != Utility.ERROR)
                 parsedInput.RemoveAt(0);
-           
-                switch (commandName)
-                {
 
-                    case "label":
-                        {
-                            if(parsedInput[0]=="add")
-                                isModified = taskData.AddLabel(parsedInput[1]);
-                            else if(parsedInput[0]=="delete")
-                                isModified = taskData.DeleteLabel(parsedInput[1]);
-                            break;
-                        }
-                    case "add":
-                        {
-                            isModified = taskData.AddTask(parsedInput);
-                            if (!isModified)
-                            {
-                                output.Add(Utility.ERROR);
-                                output.Add(Utility.ADD_ERROR);
-                            }
-                            break;
-                        }
+            switch (commandName)
+            {
 
-                    case "delete":
+                case "label":
+                    {
+                        if (parsedInput[0] == "add")
+                            isModified = taskData.AddLabel(parsedInput[1]);
+                        else if (parsedInput[0] == "delete")
+                            isModified = taskData.DeleteLabel(parsedInput[1]);
+                        break;
+                    }
+                case "add":
+                    {
+                        isModified = taskData.AddTask(parsedInput);
+                        if (!isModified)
                         {
-                            if (parsedInput.Count < 1)
-                                break;
-                            isModified = taskData.DeleteTask(parsedInput[0]);
-                            if (!isModified)
-                            {
-                                output.Add(Utility.ERROR);
-                                output.Add(Utility.DELETE_ERROR);
-                            }
-                            break;
+                            output.Add(Utility.ERROR);
+                            output.Add(Utility.ADD_ERROR);
                         }
+                        break;
+                    }
 
-                    case "edit":
-                        {
-                            taskData.EditTask(parsedInput);
-                            isModified = true;
-                            if (!isModified)
-                            {
-                                output.Add(Utility.ERROR);
-                                output.Add(Utility.EDIT_ERROR);
-                            }
+                case "delete":
+                    {
+                        if (parsedInput.Count < 1)
                             break;
-                        }
-                    case "archive":
+                        isModified = taskData.DeleteTask(parsedInput[0]);
+                        if (!isModified)
                         {
-                            if (parsedInput.Count < 1)
-                                break;
-                            isModified = taskData.ArchiveTask(parsedInput[0]);
+                            output.Add(Utility.ERROR);
+                            output.Add(Utility.DELETE_ERROR);
+                        }
+                        break;
+                    }
 
-                            if (!isModified)
-                            {
-                                output.Add(Utility.ERROR);
-                                output.Add(Utility.ARCHIVE_ERROR);
-                            }
-                            break;
-                        }
-                    case "undo":
+                case "edit":
+                    {
+                        taskData.EditTask(parsedInput, input);
+                        isModified = true;
+                        if (!isModified)
                         {
-                            isModified = taskData.UndoAction();
-                            break;
+                            output.Add(Utility.ERROR);
+                            output.Add(Utility.EDIT_ERROR);
                         }
-                    case "redo":
+                        break;
+                    }
+                case "archive":
+                    {
+                        if (parsedInput.Count < 1)
+                            break;
+                        isModified = taskData.ArchiveTask(parsedInput[0]);
+
+                        if (!isModified)
                         {
-                            isModified = taskData.RedoAction();
-                            break;
+                            output.Add(Utility.ERROR);
+                            output.Add(Utility.ARCHIVE_ERROR);
                         }
-                    case "clear":
-                        {
-                            isModified = taskData.ClearTasks();
-                            break;
-                        }
-                    case Utility.ERROR:
-                        {
-                            output = parsedInput;
-                            break;
-                        }
-                }
+                        break;
+                    }
+                case "undo":
+                    {
+                        isModified = taskData.UndoAction();
+                        break;
+                    }
+                case "redo":
+                    {
+                        isModified = taskData.RedoAction();
+                        break;
+                    }
+                case "clear":
+                    {
+                        isModified = taskData.ClearTasks();
+                        break;
+                    }
+                case Utility.ERROR:
+                    {
+                        output = parsedInput;
+                        break;
+                    }
+            }
             if (isModified)
             {
                 store.WriteTasks(taskData.GetList(), taskData.GetLabels());

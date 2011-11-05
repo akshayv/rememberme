@@ -49,7 +49,7 @@ namespace F9S1.RememberMe
         public MainWindow()
         {
             initialiseNotificationIcon();
-            dispatch = new Controller();
+            dispatch = new Controller(this);
             taskInfo = dispatch.GetTasks();
             try
             {
@@ -63,11 +63,8 @@ namespace F9S1.RememberMe
             inputBox.Focus();
             helpBox.Visibility = System.Windows.Visibility.Collapsed;
             helpButton.Visibility = System.Windows.Visibility.Collapsed;
-            // SetDisplay();
-            // dataGrid1.DataContext = dispatch.GetTasks();
             SetDisplay();
-            // this.Dispatcher.BeginInvoke(DispatcherPriority.SystemIdle, new timeCheck(setAlarm));
-        }
+            }
         void initialiseNotificationIcon()
         {
             m_notifyIcon = new System.Windows.Forms.NotifyIcon();
@@ -123,52 +120,6 @@ namespace F9S1.RememberMe
                 this.Show();
             }
         }
-        /*   void updateDeadline(ref List<Task> taskList, int[] time, int i)
-           {
-               TimeSpan difference = new TimeSpan(time[0], time[1], time[2], 0);
-               DateTime updatedDate = DateTime.Now.Add(difference);
-               taskList[i].Deadline = updatedDate;
-           }
-           public void setAlarm()
-           {
-               bool isLabelNotArchive;
-               bool isDeadlineReached;
-
-               for (int i = 0; i < taskInfo.Count; i++)
-               {
-                   isLabelNotArchive = !taskInfo[i].IsArchived;
-                   isDeadlineReached = taskInfo[i].Deadline.CompareTo(DateTime.Now) < 0;
-                   if (isLabelNotArchive && isDeadlineReached)
-                   {
-                       int[] time = new int[3];
-                       Alarm showAlarm = new Alarm(taskInfo[i].Details, taskInfo[i].Deadline);
-                       maximiseWindow();
-                       showAlarm.ShowDialog();
-                       time = showAlarm.getTimeArray();
-                       if (time == null)
-                       {
-                           taskInfo[i].IsArchived = true;
-                       }
-                       else
-                       {
-                           //Debug.Assert(taskInfo != null);
-                           updateDeadline(ref taskInfo, time, i);
-                       }
-                       dispatch.WriteToFile(taskInfo);
-                       SetDisplay();
-                   }
-               }
-               this.Dispatcher.BeginInvoke(DispatcherPriority.SystemIdle, new timeCheck(setAlarm));
-           }*/
-        /* private bool checkIfZero(int[] array)
-         {
-             for (int i = 0; i < array.Length; i++)
-             {
-                 if (array[i] != 0)
-                     return false;
-             }
-             return true;
-         }*/
         private void displayHelp()
         {
             dataGrid1.Visibility = System.Windows.Visibility.Collapsed;
@@ -377,7 +328,7 @@ namespace F9S1.RememberMe
             if (inputBox.Text.Length <= getCommand.Length + 1)
                 SetDisplay();
         }
-        private void SetDisplay()
+        public void SetDisplay()
         {
             taskDetails = dispatch.UserDispatch("display");
             SetOutputBox(taskDetails);
@@ -389,13 +340,13 @@ namespace F9S1.RememberMe
 
         private void inputBox_KeyDown(object sender, KeyEventArgs e)
         {
+            displayBox.Content = "";
             string input = inputBox.Text.ToString();
             if (e.Key == Key.Enter)
             {
                 if (inputBox.Text.Trim() == "")
                 {
-                    SetOutputBox(dispatch.UserDispatch("display"));
-                    displayBox.Content = "";
+                    SetDisplay();
                 }
 
                 else if (input.Length >= 4 && input.Substring(0, 4).ToLower() == "help")
@@ -466,17 +417,17 @@ namespace F9S1.RememberMe
         {
             dispatch.UserDispatch("undo");
             inputBox.Text = "";
-            displayBox.Content = "Action undone";
             SetDisplay();
-        }
+            displayBox.Content = "Action undone";
+         }
 
         private void redoExecuted(object sender, ExecutedRoutedEventArgs e)
         {
             dispatch.UserDispatch("redo");
             inputBox.Text = "";
-            displayBox.Content = "Action redone";
             SetDisplay();
-        }
+            displayBox.Content = "Action redone";
+           }
         public string autoCompleteSearch(string input, string command)
         {
             List<Task> contents = taskInfo;
@@ -578,7 +529,6 @@ namespace F9S1.RememberMe
             String newData;
             Task updatedTask = dispatch.GetTasks().ElementAt(0);//create a temp task
             //  var newData;
-            int selectedRowNumber;
             String taskName = (new Task(e.Row.Item.ToString())).Details;
             string command = "";
             if (currentHeader.Equals("Label"))
@@ -586,14 +536,14 @@ namespace F9S1.RememberMe
                 element = dataGrid1.Columns[3].GetCellContent(e.Row);
                 newData = ((TextBox)element).Text;
                 updatedTask = new Task(((Task)(e.Row.Item)).ToString());
-                command = "edit " + updatedTask.Details + " @" + updatedTask.Deadline.ToString(Utility.DATE_FORMAT) + " #" + newData + " ";
+                command = "edit " + updatedTask.Details +" #" + newData.Trim();
             }
             if (currentHeader.Equals("Deadline"))
             {
                 element = dataGrid1.Columns[2].GetCellContent(e.Row);
                 newData = ((TextBox)element).Text;
                 updatedTask = new Task(((Task)(e.Row.Item)).ToString());
-                command = "edit " + updatedTask.Details + " @" + newData + " #" + updatedTask.Labels.Trim() + " ";
+                command = "edit " + updatedTask.Details + " @" + newData;
             }
             if (updatedTask.IsStarred)
                 command += Utility.STARRED;
@@ -658,43 +608,17 @@ namespace F9S1.RememberMe
         {
             if (SyncItemsVisible())
             {
-
-                //maximiseWindow()
-                //time = showAlarm.getTimeArray();
                 try
                 {
                     CalendarService Gcal = new CalendarService("remMe");
                     Gcal.setUserCredentials(userBox.Text, passwordBox1.Password);
                     //get tasks from google
 
-
-
-                    //EventQuery query = new EventQuery(feedUrl);
                     EventQuery query = new EventQuery("https://www.google.com/calendar/feeds/default/private/full");
                     EventFeed feed = Gcal.Query(query);
-                    // query.StartTime = new DateTime (DateTime.Now.Year,DateTime.Now.Month, DateTime.Now.Day);
-                    //EventFeed myResultsFeed = myService.Query(query);
-                    //if (feed.Entries.Count > 0)
-                    //{
-                    //    AtomEntry firstMatchEntry = feed.Entries[0];
-                    //    String myEntryTitle = firstMatchEntry.Title.Text;
-                    //    string check = feed.Entries[0].Title.Text;
 
-
-                    //}
-
-                    //for (int i = 0; i < feed.Entries.Count; i++)
-                    //{
-                    //    string check = feed.Entries[i].Title.Text;
-                    //}
-
-
-                    //write back to gcal
-
-
-                    List<Task> taskList = new List<Task>();
-                    Controller taskFetcher = new Controller();
-                    taskList = taskFetcher.GetTasks();
+                    List<Task> taskList = dispatch.GetTasks();
+                    
 
                     //delete all RM tasks
                     query.Query = "[RM!]";
@@ -703,38 +627,20 @@ namespace F9S1.RememberMe
                     {
                         AtomEntry task = allTasks.Entries[i];
                         task.Delete();
-                       // task.Update();
                     }
 
                     for (int i = 0; i < taskList.Count; i++)
                     {
-
-                        //if (!isTaskPresent(taskList[i], feed))
                         {
                             EventEntry entry = new EventEntry();
-
-                            // Set the title and content of the entry.
-                            //        if (!taskList[i].Details.Contains("[RM!]"))
                             entry.Title.Text = "[RM!]" + taskList[i].Details;
                             entry.Content.Content = "Label = "+taskList[i].Labels;
-                            
-                            //    else
-                            //      entry.Title.Text = taskList[i].Details;
-                            //entry.Content.Content = taskList[i].getDesc();
-
-
-
                             if (taskList[i].Deadline.Year != DateTime.MaxValue.Year)
                             {
                                 When eventTime = new When(taskList[i].Deadline, taskList[i].Deadline.AddHours(1));
                                 entry.Times.Add(eventTime);
                             }
-
-
-
                             Uri postUri = new Uri("https://www.google.com/calendar/feeds/default/private/full");
-
-                            // Send the request and receive the response:
                             AtomEntry insertedEntry = Gcal.Insert(postUri, entry);
                             displayBox.Content = "Success";
                             syncButton.Foreground = new SolidColorBrush(Colors.Green);
@@ -779,6 +685,7 @@ namespace F9S1.RememberMe
 
         private void inputBox_GotFocus(object sender, RoutedEventArgs e)
         {
+            dataGrid1.SelectedIndex = -1;
             if (SyncItemsVisible())
                 SetSyncItemsCollapsed();
         }

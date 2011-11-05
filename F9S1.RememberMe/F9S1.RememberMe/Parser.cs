@@ -136,11 +136,8 @@ namespace F9S1.RememberMe
                     parsedInput.Add(Utility.EARLY_DATE_ERROR);
                     return parsedInput;
 
-                } if (toBeChecked[3].Length == 0)
-                {   
-                    toBeChecked[3] = Utility.DEFAULT_LABEL;
                 }
-                else if (!CheckLabels(toBeChecked[3], labels))
+                if (!CheckLabels(toBeChecked[3], labels))
                 {
 
                     logger.Info("Label not found");
@@ -151,9 +148,7 @@ namespace F9S1.RememberMe
                 return toBeChecked;
             }
             
-            if (!(betaInput.Contains('#')))
-                inputLabels.Add(Utility.DEFAULT_LABEL);
-            else
+            if (betaInput.Contains('#'))
             {
                 if (betaParse.Contains("#"))
                 {
