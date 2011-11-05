@@ -736,6 +736,8 @@ namespace F9S1.RememberMe
 
                             // Send the request and receive the response:
                             AtomEntry insertedEntry = Gcal.Insert(postUri, entry);
+                            displayBox.Content = "Success";
+                            syncButton.Foreground = new SolidColorBrush(Colors.Green);
                         }
                         }
                 }
@@ -743,6 +745,8 @@ namespace F9S1.RememberMe
                 {
 
                     displayBox.Content = "Authentication Error / Internet is too slow";
+                    syncButton.Foreground = new SolidColorBrush(Colors.DarkRed);
+                    
                 }
             }
             else
