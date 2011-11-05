@@ -15,6 +15,30 @@
         <KeyBinding Command="Redo" Key="Y" Modifiers="Ctrl"/>
     </Window.InputBindings>
     <Window.Resources>
+        <!-- This style is used for buttons, to remove the WPF default 'animated' mouse over effect -->
+        <Style x:Key="NoMouseOverNoBorder" TargetType="Button">
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Name="border" 
+                            BorderThickness="4"
+                            Padding="4,2" 
+                            BorderBrush="Transparent"
+                            CornerRadius="3" 
+                            Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="BorderBrush" Value="Black" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
         <Style x:Name="toggle_style" TargetType="ToggleButton">
             <Setter Property="Template">
                 <Setter.Value>
@@ -37,8 +61,8 @@
         </Grid.Background>
         <TextBox Height="273" HorizontalAlignment="Left" Margin="12,51,0,0" Name="helpBox" VerticalAlignment="Top" Width="479" Visibility="Collapsed" IsEnabled="True" IsReadOnly="True" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto" />
         <Label Margin="12,0,12,12" Name="displayBox" Foreground="#FFEB1919" FontWeight="Bold" Height="49" VerticalAlignment="Bottom" />
-        <TextBox Margin="12,0,12,65" Name="inputBox" KeyDown="inputBox_KeyDown" Foreground="#FF19580E" TextChanged="inputBox_TextChanged" PreviewKeyDown="inputBox_PreviewKeyDown" Height="52" VerticalAlignment="Bottom" IsUndoEnabled="False" GotFocus="inputBox_GotFocus" />
-        <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding}" Margin="12,51,12,124" Name="dataGrid1" Foreground="Black" BorderBrush="Black" CanUserDeleteRows="False" GridLinesVisibility="None" CellEditEnding="dataGrid1_CellEditEnding" BeginningEdit="dataGrid1_BeginningEdit" >
+        <TextBox Margin="12,0,12,65" Name="inputBox" KeyDown="inputBox_KeyDown" Foreground="#FF19580E" TextChanged="inputBox_TextChanged" PreviewKeyDown="inputBox_PreviewKeyDown" Height="52" VerticalAlignment="Bottom" IsUndoEnabled="False" GotFocus="inputBox_GotFocus" Opacity="0.4" />
+        <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding}" Margin="12,51,12,124" Name="dataGrid1" Foreground="Black" BorderBrush="Black" CanUserDeleteRows="False" GridLinesVisibility="None" CellEditEnding="dataGrid1_CellEditEnding" BeginningEdit="dataGrid1_BeginningEdit" Opacity="0.4">
             <DataGrid.Columns>
                 <DataGridTemplateColumn Header="  ">
                     <DataGridTemplateColumn.CellTemplate>
@@ -55,7 +79,7 @@
                 <DataGridTemplateColumn Header="    ">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Background="Transparent" Width="20" BorderBrush="White" Click="Archive_Button_Click">
+                            <Button BorderThickness="0" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Background="Transparent" Width="20" BorderBrush="White" Click="Archive_Button_Click">
                                 <Image Source="/F9S1.RememberMe;component/big-tick.jpg" />
                             </Button>
                         </DataTemplate>
@@ -64,7 +88,7 @@
                 <DataGridTemplateColumn Header="    ">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Background="Transparent" Width="20" BorderBrush="White" Click="Delete_Button_Click">
+                            <Button BorderThickness="0" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Background="Transparent" Width="20" BorderBrush="White" Click="Delete_Button_Click">
                                 <Image Source="/F9S1.RememberMe;component/delete.jpg" />
                             </Button>
                         </DataTemplate>
@@ -76,17 +100,17 @@
         <Label Content="Password" FontSize="13" FontWeight="Bold" Height="26" Margin="236,5,198,0" Name="passwordLabel" VerticalAlignment="Top" VerticalContentAlignment="Center" Foreground="#FF5BB82D" Visibility="Collapsed" />
         <TextBox Height="23" HorizontalAlignment="Left" Margin="88,9,0,0" Name="userBox" VerticalAlignment="Top" Width="142" Visibility="Collapsed" PreviewKeyDown="userBox_PreviewKeyDown" />
         <Label Content="Username" FontSize="13" FontWeight="Bold" Height="26" HorizontalAlignment="Left" Margin="12,6,0,0" Name="userLabel" VerticalAlignment="Top" Width="73" Foreground="#FF6CB548" Visibility="Collapsed" />
-        <Button Height="40" HorizontalAlignment="Left" Margin="456,5,0,0" Name="syncButton" VerticalAlignment="Top" Width="40" Foreground="#FF62B43A" FontWeight="Bold" Click="syncButton_Click" BorderBrush="{x:Null}">
+        <Button Style="{StaticResource NoMouseOverNoBorder}" Height="40" HorizontalAlignment="Right" Margin="0,5,6,0" Name="syncButton" VerticalAlignment="Top" Width="40" Foreground="#FF62B43A" FontWeight="Bold" Click="syncButton_Click">
             <Button.Background>
                 <ImageBrush ImageSource="/F9S1.RememberMe;component/Images/g_normal.png" />
             </Button.Background>
         </Button>
-        <Button Height="40" HorizontalAlignment="Left" Margin="406,5,0,0" Name="helpButton" VerticalAlignment="Top" Width="40" Foreground="#FF42B72D" FontWeight="Bold" Visibility="Visible" Click="helpButton_Click">
+        <Button Style="{StaticResource NoMouseOverNoBorder}" Height="40" HorizontalAlignment="Right" Margin="0,5,56,0" Name="helpButton" VerticalAlignment="Top" Width="40" Foreground="#FF42B72D" FontWeight="Bold" Visibility="Visible" Click="helpButton_Click">
             <Button.Background>
                 <ImageBrush ImageSource="/F9S1.RememberMe;component/Images/help.png" />
             </Button.Background>
         </Button>
-        <Button Height="40" HorizontalAlignment="Left" Margin="356,5,0,0" Name="settingsButton" VerticalAlignment="Top" Width="40" Foreground="#FF3AAB25" FontWeight="Bold" Visibility="Visible">
+        <Button Style="{StaticResource NoMouseOverNoBorder}" Height="40" HorizontalAlignment="Right" Margin="0,5,106,0" Name="settingsButton" VerticalAlignment="Top" Width="40" Foreground="#FF3AAB25" FontWeight="Bold" Visibility="Visible">
             <Button.Background>
                 <ImageBrush ImageSource="/F9S1.RememberMe;component/Images/settings.png" />
             </Button.Background>

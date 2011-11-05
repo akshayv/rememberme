@@ -152,18 +152,6 @@
     <Resource Include="Logo1.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\Gsync.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\images.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\settings.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\google.jpg" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Images\g_normal.png" />
   </ItemGroup>
   <ItemGroup>
