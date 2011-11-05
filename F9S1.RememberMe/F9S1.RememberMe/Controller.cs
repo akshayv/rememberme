@@ -8,12 +8,14 @@ namespace F9S1.RememberMe
     class Controller
     {
         Parser parse;
+        Export GSync;
         Storage store;
         Operations taskData;
         MainWindow startWindow;
         public Controller(MainWindow appWindow)
         {
             startWindow = appWindow;
+            GSync = new Export();
             parse = new Parser();
             store = new Storage();
             taskData = new Operations(store.ReadTasks(), store.ReadLabels());
@@ -60,6 +62,11 @@ namespace F9S1.RememberMe
                             isModified = taskData.AddLabel(parsedInput[1]);
                         else if (parsedInput[0] == "delete")
                             isModified = taskData.DeleteLabel(parsedInput[1]);
+                        break;
+                    }
+                case "sync":
+                    {
+                        GSync.Synchronize(parsedInput[0], parsedInput[1], taskData.TaskList);
                         break;
                     }
                 case "add":
