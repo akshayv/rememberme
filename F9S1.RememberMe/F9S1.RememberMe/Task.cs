@@ -186,7 +186,7 @@ namespace F9S1.RememberMe
             string result = "";
             for (int i = 0; i < toConvert.Length; i++)
             {
-                result = String.Concat(result, " ", toConvert[i]);
+               result += " " + toConvert[i];
             }
             return result;
         }

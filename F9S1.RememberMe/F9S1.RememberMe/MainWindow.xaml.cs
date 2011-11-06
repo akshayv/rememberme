@@ -45,7 +45,6 @@ namespace F9S1.RememberMe
         public MainWindow()
         {
             Tester fileTest = new Tester();
-            //fileTest.GetOutputFile();
             fileTest.Test();
             initialiseNotificationIcon();
             dispatch = new Controller(this);
@@ -633,10 +632,7 @@ namespace F9S1.RememberMe
         }
         void SetSyncItemsVisible()
         {
-            dataGrid1.Opacity = 0.2;
-            inputBox.Opacity = 0.2;
             helpButton.Visibility = System.Windows.Visibility.Collapsed;
-            settingsButton.Visibility = System.Windows.Visibility.Collapsed;
             userLabel.Visibility = System.Windows.Visibility.Visible;
             userBox.Visibility = System.Windows.Visibility.Visible;
             passwordLabel.Visibility = System.Windows.Visibility.Visible;
@@ -644,10 +640,7 @@ namespace F9S1.RememberMe
         }
         void SetSyncItemsCollapsed()
         {
-            dataGrid1.Opacity = 0.7;
-            inputBox.Opacity = 0.7;
             helpButton.Visibility = System.Windows.Visibility.Visible;
-            settingsButton.Visibility = System.Windows.Visibility.Visible;
             userLabel.Visibility = System.Windows.Visibility.Collapsed;
             userBox.Visibility = System.Windows.Visibility.Collapsed;
             passwordLabel.Visibility = System.Windows.Visibility.Collapsed;
@@ -694,12 +687,12 @@ namespace F9S1.RememberMe
             SetDisplay();
         }
 
-        private void settingsButton_Click(object sender, RoutedEventArgs e)
-        {
-            int i =0;
-            i++;
-        }
 
+        private void dataGrid1_LoadingRow(object sender, DataGridRowEventArgs e)
+        {
+            e.Row.Background = null;
+        }
+        
     }
 }
 

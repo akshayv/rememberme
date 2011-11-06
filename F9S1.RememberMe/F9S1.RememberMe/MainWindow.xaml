@@ -39,6 +39,9 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <Style TargetType="{x:Type DataGridColumnHeader}">
+            <Setter Property="Background" Value="Transparent" />
+        </Style>
         <Style x:Name="toggle_style" TargetType="ToggleButton">
             <Setter Property="Template">
                 <Setter.Value>
@@ -54,6 +57,11 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <Style x:Key="myDataGridStyle">
+            <Style.Resources>
+                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#FF2175B7" />
+               </Style.Resources>
+        </Style>
     </Window.Resources>
     <Grid>
         <Grid.Background>
@@ -61,8 +69,17 @@
         </Grid.Background>
         <TextBox Height="220" HorizontalAlignment="Left" Margin="12,51,0,0" Name="helpBox" VerticalAlignment="Top" Width="479" Visibility="Collapsed" IsEnabled="True" IsReadOnly="True" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Auto" />
         <Label Margin="12,0,12,12" Name="displayBox" Foreground="#FFEB1919" FontWeight="Bold" Height="49" VerticalAlignment="Bottom" />
-        <TextBox Margin="12,0,12,65" Name="inputBox" KeyDown="inputBox_KeyDown" Foreground="#FF19580E" TextChanged="inputBox_TextChanged" PreviewKeyDown="inputBox_PreviewKeyDown" Height="52" VerticalAlignment="Bottom" IsUndoEnabled="False" GotFocus="inputBox_GotFocus" Opacity="0.7" />
-        <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding}" Margin="12,51,12,124" Name="dataGrid1" Foreground="Black" BorderBrush="Black" CanUserDeleteRows="False" GridLinesVisibility="None" CellEditEnding="dataGrid1_CellEditEnding" BeginningEdit="dataGrid1_BeginningEdit" Opacity="0.7">
+        <TextBox Margin="12,0,12,65" Name="inputBox" KeyDown="inputBox_KeyDown" Foreground="White" TextChanged="inputBox_TextChanged" PreviewKeyDown="inputBox_PreviewKeyDown" Height="52" VerticalAlignment="Bottom" IsUndoEnabled="False" GotFocus="inputBox_GotFocus" Opacity="1" FontWeight="Bold" SelectionBrush="#FFAAAAAA">
+            <TextBox.Background>
+                <SolidColorBrush />
+            </TextBox.Background>
+        </TextBox>
+        <DataGrid Style="{StaticResource myDataGridStyle}" AutoGenerateColumns="False" ItemsSource="{Binding}" Margin="12,51,12,124" Name="dataGrid1" Foreground="White" BorderBrush="Black" CanUserDeleteRows="False" GridLinesVisibility="None" CellEditEnding="dataGrid1_CellEditEnding" BeginningEdit="dataGrid1_BeginningEdit" Opacity="1" Background="{x:Null}" LoadingRow="dataGrid1_LoadingRow" HeadersVisibility="Column" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden" FontWeight="Normal">
+            <!--<DataGrid.ColumnHeaderStyle>
+                <Style TargetType="Control">
+                    <Setter Property="FontWeight" Value="Bold"/>
+                </Style>
+            </DataGrid.ColumnHeaderStyle>-->
             <DataGrid.Columns>
                 <DataGridTemplateColumn Header="  ">
                     <DataGridTemplateColumn.CellTemplate>
@@ -73,14 +90,14 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
                 <DataGridTextColumn Header="Details" Binding="{Binding Details}" IsReadOnly="True" MinWidth="230"/>
-                <DataGridTextColumn Header="Deadline" Binding="{Binding DisplayDeadline}" MinWidth="60"/>
+                <DataGridTextColumn Header="Deadline" Binding="{Binding DisplayDeadline}" MinWidth="130"/>
                 <DataGridTextColumn Header="Label" Binding="{Binding Labels}" MinWidth="60"/>
                <!-- <DataGridCheckBoxColumn Header="Archived" Binding="{Binding IsArchived}" />-->
                 <DataGridTemplateColumn Header="    ">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Button BorderThickness="0" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Background="Transparent" Width="20" BorderBrush="White" Click="Archive_Button_Click">
-                                <Image Source="/F9S1.RememberMe;component/big-tick.jpg" />
+                                <Image Source="/F9S1.RememberMe;component/archive.png" />
                             </Button>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
@@ -89,7 +106,7 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Button BorderThickness="0" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Background="Transparent" Width="20" BorderBrush="White" Click="Delete_Button_Click">
-                                <Image Source="/F9S1.RememberMe;component/delete.jpg" />
+                                <Image Source="/F9S1.RememberMe;component/delete.png" />
                             </Button>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
@@ -108,11 +125,6 @@
         <Button Style="{StaticResource NoMouseOverNoBorder}" Height="40" HorizontalAlignment="Right" Margin="0,5,56,0" Name="helpButton" VerticalAlignment="Top" Width="40" Foreground="#FF42B72D" FontWeight="Bold" Visibility="Visible" Click="helpButton_Click">
             <Button.Background>
                 <ImageBrush ImageSource="/F9S1.RememberMe;component/Images/help.png" />
-            </Button.Background>
-        </Button>
-        <Button Style="{StaticResource NoMouseOverNoBorder}" Height="40" HorizontalAlignment="Right" Margin="0,5,106,0" Name="settingsButton" VerticalAlignment="Top" Width="40" Foreground="#FF3AAB25" FontWeight="Bold" Visibility="Visible" Click="settingsButton_Click">
-            <Button.Background>
-                <ImageBrush ImageSource="/F9S1.RememberMe;component/Images/settings.png" />
             </Button.Background>
         </Button>
         <Button Content="Done" Height="23" HorizontalAlignment="Left" Margin="229,288,0,0" Name="doneButton" VerticalAlignment="Top" Width="75" Visibility="Collapsed" Click="doneButton_Click" />

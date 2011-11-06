@@ -292,7 +292,7 @@ namespace F9S1.RememberMe
             if (editInput.Count < 5)
                 return false;
             Task foundTask = SearchTask(editInput[0], ref n);
-            if (foundTask != null)
+            if (foundTask != null && foundTask.IsArchived == false)
             {
                 CheckEdit(ref editInput, input, foundTask);
                 taskList[n] = new Task(editInput);
