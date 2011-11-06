@@ -198,10 +198,10 @@ namespace F9S1.RememberMe
         }
         private void ExtractSymbols()
         {
+            ExtractPriority();
             ExtractLabels();
             ExtractDate();
-            ExtractPriority();
-        }
+            }
         private void ExtractLabels()
         {
             if (input.Contains('#'))
@@ -398,7 +398,7 @@ namespace F9S1.RememberMe
                 }
                 else if (Char.IsDigit(next[0]))
                 {
-                    interval = new TimeSpan(int.Parse(next), 0, 0, 0);
+                    interval = new TimeSpan(int.Parse(next[0].ToString()), 0, 0, 0);
                 }
                 else
                     interval = Utility.NO_INTERVAL;
