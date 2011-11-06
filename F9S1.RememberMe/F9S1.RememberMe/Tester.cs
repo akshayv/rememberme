@@ -7,6 +7,9 @@ using System.Diagnostics;
 
 namespace F9S1.RememberMe
 {
+    /// <summary>
+    /// Used for testing purposes. It can run tests against a standard output file, or create an output file given the input.
+    /// </summary>
     class Tester
     {
         Controller testDispatch;
@@ -106,7 +109,7 @@ namespace F9S1.RememberMe
         private void AssertResults()
         {
             for (int i = 0; i < testCases.Count; i++)
-                Debug.Assert(expectedResults[i] == testResults[i], "Input: " + testCases[i] + "\nOutput: " + testResults + "\nExpected: " + expectedResults[i]);
+                Debug.Assert(expectedResults[i] == testResults[i], "Input: " + testCases[i] + "\nOutput: " + testResults[i] + "\nExpected: " + expectedResults[i]);
         }
 
         /// <summary>

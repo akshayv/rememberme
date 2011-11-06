@@ -5,6 +5,9 @@ using System.Text;
 
 namespace F9S1.RememberMe
 {
+    /// <summary>
+    /// It contains common utilities; values which are used by more than one class and constant strings.
+    /// </summary>
     class Utility 
     {
         public Utility()
@@ -25,7 +28,6 @@ namespace F9S1.RememberMe
         public const string INPUT_ERROR = "Input missing";
         public const string LABEL_ERROR = "Label error. Correct way is #<label name>";
 
-      //  public const string DATE_FORMAT = "dd MMM yyyy HH:mm";
         public const string SHORT_DATE_FORMAT = "hh:mm tt dd MMM yyyy";
 
         public const string DEFAULT_NO_TIME = "undefined";
@@ -72,7 +74,5 @@ namespace F9S1.RememberMe
                             "\n" +
                             "\nRedo an event:" +
                             "\nWrong undo? Type in ‘redo’ or press <Ctrl + Y> to redo it.";
-        
-
     }
 }

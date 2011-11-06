@@ -40,7 +40,7 @@ namespace F9S1.RememberMe
                 var main = App.Current.MainWindow as MainWindow;
                 bool isActive = false;
                 foreach (var wnd in Application.Current.Windows.OfType<Window>())
-                    if (wnd.IsActive)  isActive = true;
+                    if (wnd.IsActive) isActive = true;
                 if (main.WindowState == WindowState.Normal && isActive)
                     main.WindowState = WindowState.Minimized;
                 else
@@ -50,7 +50,7 @@ namespace F9S1.RememberMe
                     main.Activate();
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
 
             }
