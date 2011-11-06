@@ -58,7 +58,7 @@ namespace F9S1.RememberMe
                 undoStack.Push(new List<Task>(taskList));
                 redoStack.Clear();
             }
-        }
+        }   
 
         public bool UndoAction()
         {
@@ -170,9 +170,10 @@ namespace F9S1.RememberMe
         }
         public bool ArchiveTask(string taskDetails)
         {
+            int n = -1;
             Debug.Assert(taskDetails != null);
-            Task foundTask = SearchTask(taskDetails);
-            Task temp = foundTask;
+            Task tempTask = SearchTask(taskDetails, ref n);
+            Task foundTask = new Task(tempTask.ToString());
             if (foundTask != null && !foundTask.IsArchived) //archive how?
             {
                 foundTask.IsArchived = true;
@@ -181,8 +182,13 @@ namespace F9S1.RememberMe
                     DeleteTask(taskDetails);
                     foundTask.Deadline = foundTask.Deadline.Add(foundTask.Interval);
                     foundTask.IsArchived = false;
-                    taskList.Add(foundTask);
+                    taskList.Insert(n, foundTask);
                 }
+                else
+                {
+                    taskList[n] = foundTask;
+                }
+
                 return true;
             }
             return false;
