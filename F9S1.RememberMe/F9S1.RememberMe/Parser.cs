@@ -6,6 +6,9 @@ using System.Text;
 
 namespace F9S1.RememberMe
 {
+    /// <summary>
+    /// It parses the user input based on the type of input, and returns back either the parsed input for further processing, or the error message to be displayed.
+    /// </summary>
     class Parser
     {
         enum Command
@@ -25,12 +28,54 @@ namespace F9S1.RememberMe
             label
         };
 
+        private static NLog.Logger logger;
+        List<string> parsedInput, inputLabels, betaParse, labels;
+        string taskInterval, taskDetails, taskTime, input, taskLabels, taskImportance;
+        Command commandName;
 
-        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+        /// <summary>
+        /// Initializes global variables;
+        /// </summary>
         public Parser()
         {
-
+            logger = NLog.LogManager.GetCurrentClassLogger();
         }
+        /// <summary>
+        /// The controller calls this function to parse the user input.
+        /// Depending on the type of input it calls the corresponding function to parse it.
+        /// </summary>
+        /// <param name="input">The input to be parsed.</param>
+        /// <param name="labels">The list of labels.</param>
+        /// <returns>The parsed input.</returns>
+        public List<string> InputParse(string userInput, List<string> userLabels)
+        {
+            Debug.Assert(userInput != null);
+            input = userInput;
+            Debug.Assert(userLabels != null);
+            labels = userLabels;
+            commandName = ToCommand(input.Trim().Split(new char[] { ' ', ';' })[0].ToLower());
+
+            if (commandName == Command.add || commandName == Command.edit)
+            {
+                SymbolParse();
+            }
+            else if (commandName == Command.label)
+            {
+                LabelParse(input, labels);
+            }
+            else
+            {
+                CommandParse(input);
+            }
+
+            Debug.Assert(parsedInput != null);
+            return parsedInput;
+        }
+        /// <summary>
+        /// Finds out which commmand the user has given
+        /// </summary>
+        /// <param name="input">The user input.</param>
+        /// <returns>The command to be executed. It is add by default.</returns>
         private Command ToCommand(string input)
         {
             Debug.Assert(input != null);
@@ -62,185 +107,210 @@ namespace F9S1.RememberMe
                     return Command.add;
             }
         }
-
-        private void addSemiCol(ref string input)
+        private void SymbolParse()
         {
-            Debug.Assert(input != null);
-            int count = 0;
-                for (int i = 0; i < input.Length; i++)
-                {
-                    if (input[i] == ';')
-                    {
-                        count++;
-                    }
-                }
-                int numOfSemi = 4;
-                for (int i = 0; i < numOfSemi - count; i++)
-                    input += ";";
-           }
-
-        public List<string> SymbolParse(string input, List<string> labels)
-        {
-
             Debug.Assert(input != null);
             Debug.Assert(labels != null);
-            List<string> parsedInput = new List<string>(), inputLabels = new List<string>(), betaParse = new List<string>(input.Split(new Char[] { ' ', ';' }, StringSplitOptions.RemoveEmptyEntries)); ;
-            string commandName, taskInterval, taskDetails, taskTime, betaInput = new string(input.ToCharArray());
-            DateTime deadline;
-            bool hasStars = betaInput.Contains("**");
-            betaInput = betaInput.Replace("**", "");
-            
-            commandName = "add";
-            if (betaParse[0].Trim().ToLower().Equals("add"))
-            {
-                string[] temp = betaInput.Split(new Char[] { ' ' , ';'}, 2);
-                if (temp.Length < 2)
-                {
-                    parsedInput.Add(Utility.ERROR);
-                    parsedInput.Add(Utility.INPUT_ERROR);
-                    return parsedInput;
-                }
-                else
-                    betaInput = temp[1];
-            }
 
-            if (betaParse[0].Trim().ToLower().Equals("edit"))
+            parsedInput = new List<string>();
+            inputLabels = new List<string>();
+            betaParse = new List<string>(input.Split(new Char[] { ' ', ';' }, StringSplitOptions.RemoveEmptyEntries));
+            inputLabels = new List<string>();
+            taskImportance = "";
+            taskTime = "";
+            taskDetails = "";
+            taskInterval = "";
+            taskLabels = "";
+            
+
+            if (commandName == Command.add)
             {
-                commandName = "edit";
-                string[] temp = betaInput.Split(new Char[] { ' ', ';' }, 2);
-                if (temp.Length < 2)
-                {
-                    parsedInput.Add(Utility.ERROR);
-                    parsedInput.Add(Utility.INPUT_ERROR);
-                    return parsedInput;
-                }
-                else
-                    betaInput = temp[1];
+                if (!IsAddValid(ref input))
+                    return;
+            }
+            else if (commandName == Command.edit)
+            {
+                if (!IsEditValid(ref input))
+                    return;
             }
 
             if (input.Contains(';'))
+                GetFields();
+            else
+                ExtractSymbols();
+
+            if (CheckFields())
+                SetParsedInput();
+        }
+        private bool IsAddValid(ref string input)
+        {
+            if (betaParse[0].Trim().ToLower().Equals("add"))
             {
-                addSemiCol(ref input);
-                addSemiCol(ref betaInput);
-                List<string> toBeChecked =  ColonParse(betaInput, labels);
-                Debug.Assert(toBeChecked != null);
-                toBeChecked[0] = commandName;
-                if (toBeChecked[1].Length == 0)
+                string[] temp = input.Split(new Char[] { ' ', ';' }, 2);
+                if (temp.Length < 2)
                 {
-                    logger.Info("No name entered");
                     parsedInput.Add(Utility.ERROR);
                     parsedInput.Add(Utility.INPUT_ERROR);
-                    return parsedInput;
+                    return false;
                 }
-                if (toBeChecked[2] == Utility.DEFAULT_ERROR_DATE.ToString(Utility.SHORT_DATE_FORMAT))
-                {
-                    logger.Info("Incorrect Date format");
-            
-                    parsedInput.Add(Utility.ERROR);
-                    parsedInput.Add(Utility.DATE_ERROR);
-                    return parsedInput;
-                }
-                if (DateTime.Parse(toBeChecked[2]) < System.DateTime.Now)
-                {
-                    parsedInput.Add(Utility.ERROR);
-                    parsedInput.Add(Utility.EARLY_DATE_ERROR);
-                    return parsedInput;
-
-                }
-                if (!CheckLabels(toBeChecked[3], labels))
-                {
-
-                    logger.Info("Label not found");
-                    parsedInput.Add(Utility.ERROR);
-                    parsedInput.Add(Utility.LABEL_UNDEFINED_ERROR);
-                    return parsedInput;
-                }
-                return toBeChecked;
+                else
+                    input = temp[1];
             }
-            
-            if (betaInput.Contains('#'))
+            return true;
+        }
+        private bool IsEditValid(ref string input)
+        {
+            if (betaParse[0].Trim().ToLower().Equals("edit"))
+            {
+                string[] temp = input.Split(new Char[] { ' ', ';' }, 2);
+                if (temp.Length < 2)
+                {
+                    parsedInput.Add(Utility.ERROR);
+                    parsedInput.Add(Utility.INPUT_ERROR);
+                    return false;
+                }
+                else
+                    input = temp[1];
+            }
+            return true;
+        }
+        private bool GetFields()
+        {
+            input = AddSemicolons(input);
+            FieldParse(input);
+            return true;
+        }
+        private string AddSemicolons(string input)
+        {
+            Debug.Assert(input != null);
+            int count = 0;
+            for (int i = 0; i < input.Length; i++)
+            {
+                if (input[i] == ';')
+                {
+                    count++;
+                }
+            }
+            int numOfSemi = 4;
+            for (int i = 0; i < numOfSemi - count; i++)
+                input += ";";
+            return input;
+        }
+        private void ExtractSymbols()
+        {
+            ExtractLabels();
+            ExtractDate();
+            ExtractPriority();
+        }
+        private void ExtractLabels()
+        {
+            if (input.Contains('#'))
             {
                 if (!(betaParse.Contains("#")))
-                {
                     for (int i = 0; i < betaParse.Count; )
-                    {
-                        if (betaParse[i].Contains('#'))         //last words
+                        if (betaParse[i].Contains('#'))
                         {
                             inputLabels.Add(betaParse[i].Substring(1));
                             betaParse.RemoveAt(i);
                         }
                         else
                             i++;
-                    }
-                }
             }
-
-            if (!CheckLabels(inputLabels, labels))
-            {
-                logger.Info("Label not found");
-                  
-                parsedInput.Add(Utility.ERROR);
-                parsedInput.Add(Utility.LABEL_UNDEFINED_ERROR);
-                return parsedInput;
-            }
-
-            if (!(betaInput.Contains('@')))
+        }
+        private void ExtractDate()
+        {
+            if (!(input.Contains('@')))
             {
                 char[] splitter = new char[] { ' ' };
                 taskTime = Utility.DEFAULT_NO_TIME;
                 taskInterval = Utility.NO_INTERVAL.ToString();
-                taskDetails = betaInput.Split('@', '#')[0].Trim();
+                taskDetails = input.Split('@', '#')[0].Trim();
                 Debug.Assert(taskDetails != null);
             }
             else
             {
-                taskDetails = betaInput.Split('@', '#')[0].Trim();
-                int _at = betaInput.IndexOf('@');
-                int _hash = betaInput.IndexOf('#');
-                int length = betaInput.Length;
-                taskTime = betaInput.Substring(_at + 1, ((_hash - _at > 0) ? _hash - _at - 1: length - _at - 1));
+                taskDetails = input.Split('@', '#')[0].Trim();
+                int _at = input.IndexOf('@');
+                int _hash = input.IndexOf('#');
+                int length = input.Length;
+                taskTime = input.Substring(_at + 1, ((_hash - _at > 0) ? _hash - _at - 1 : length - _at - 1));
                 taskTime = taskTime.Trim();
                 taskInterval = GetRepeat(taskTime).ToString();
                 Debug.Assert(taskInterval != null);
                 if (taskTime.Contains('%'))
                     taskTime = taskTime.Replace(taskTime.Substring(taskTime.IndexOf('%')).Split(' ', ';')[0], "");
                 Debug.Assert(taskTime != null);
-                deadline = ToDate(taskTime);
+                DateTime deadline = ToDate(taskTime);
                 Debug.Assert(deadline != null);
-                if (deadline.Equals(Utility.DEFAULT_ERROR_DATE))
-                {
-                    logger.Info("Incorrect Date Format");
-                    parsedInput.Add(Utility.ERROR);
-                    parsedInput.Add(Utility.DATE_ERROR);
-                    return parsedInput;
-                }
-                else if (deadline < System.DateTime.Now)
-                {
-                    parsedInput.Add(Utility.ERROR);
-                    parsedInput.Add(Utility.EARLY_DATE_ERROR);
-                    return parsedInput;
-                }
-                else
-                    taskTime = deadline.ToString(Utility.SHORT_DATE_FORMAT);
+                taskTime = deadline.ToString(Utility.SHORT_DATE_FORMAT);
             }
-
+        }
+        private void ExtractPriority()
+        {
+            taskImportance = input.Contains("**").ToString();
+            input = input.Replace("**", "");
+        }
+        private bool CheckFields()
+        {
+            return (CheckDetails() && CheckDeadline() && CheckLabels());
+        }
+        private bool CheckDetails()
+        {
             if (taskDetails == null || taskDetails == "")
             {
+                logger.Info("No details entered");
                 parsedInput.Add(Utility.ERROR);
                 parsedInput.Add(Utility.INPUT_ERROR);
-                return parsedInput;
+                return false;
             }
-
-            parsedInput.Add(commandName);
-            parsedInput.Add(taskDetails);
-            parsedInput.Add(taskTime);
-            parsedInput.Add(String.Concat(inputLabels));
-            parsedInput.Add(hasStars.ToString());
-            parsedInput.Add(taskInterval);
-            return parsedInput;
+            return true;
         }
-
-        private bool CheckLabels(string input, List<string> labels)
+        private bool CheckDeadline()
+        {
+            if (taskTime == Utility.DEFAULT_ERROR_DATE.ToString(Utility.SHORT_DATE_FORMAT))
+            {
+                logger.Info("Incorrect Date format");
+                parsedInput.Add(Utility.ERROR);
+                parsedInput.Add(Utility.DATE_ERROR);
+                return false;
+            }
+            DateTime deadline;
+            try
+            {
+                if (taskTime != Utility.DEFAULT_NO_TIME)
+                    deadline = DateTime.Parse(taskTime);
+                else
+                    deadline = Utility.DEFAULT_UNDEFINED_DATE;
+            }
+            catch
+            {
+                deadline = Utility.DEFAULT_ERROR_DATE;
+            }
+            if (deadline < System.DateTime.Now)
+            {
+                logger.Info("DateTime elapsed");
+                parsedInput.Add(Utility.ERROR);
+                parsedInput.Add(Utility.EARLY_DATE_ERROR);
+                return false;
+            }
+            return true;
+        }
+        private bool CheckLabels()
+        {
+            bool check;
+            if (inputLabels.Count == 0)
+                check = CheckLabels(taskLabels);
+            else
+                check = CheckLabels(inputLabels);
+            if (!check)
+            {
+                logger.Info("Label not found");
+                parsedInput.Add(Utility.ERROR);
+                parsedInput.Add(Utility.LABEL_UNDEFINED_ERROR);
+            }
+            return check;
+        }
+        private bool CheckLabels(string input)
         {
 
             Debug.Assert(input != null);
@@ -253,43 +323,50 @@ namespace F9S1.RememberMe
             }
             return true;
         }
-        private bool CheckLabels(List<string> input, List<string> labels)
+        private bool CheckLabels(List<string> inputLabels)
         {
-
-            Debug.Assert(input != null);
-            Debug.Assert(labels != null);
-            foreach (string item in input)
+            foreach (string item in inputLabels)
             {
                 if (!labels.Contains(item))
                     return false;
             }
             return true;
         }
-
-        public List<string> LabelParse(string input, List<string> labels)
+        private void SetParsedInput()
+        {
+            parsedInput.Add(commandName.ToString());
+            parsedInput.Add(taskDetails);
+            parsedInput.Add(taskTime);
+            if (taskLabels == "")
+                parsedInput.Add(String.Concat(inputLabels));
+            else
+                parsedInput.Add(taskLabels);
+            parsedInput.Add(taskImportance.ToString());
+            parsedInput.Add(taskInterval);
+        }
+        public void LabelParse(string input, List<string> labels)
         {
 
             Debug.Assert(input != null);
             Debug.Assert(labels != null);
-            char[] splitter = new char[] { ' ' , ';'};
-            List<string> parsedInput = new List<string>(), betaParse = new List<string>(input.Split(splitter, StringSplitOptions.RemoveEmptyEntries));
+            char[] splitter = new char[] { ' ', ';' };
+            parsedInput = new List<string>();
+            List<string> betaParse = new List<string>(input.Split(splitter, StringSplitOptions.RemoveEmptyEntries));
             if (betaParse.Count < 3 || (betaParse[1] != "add" && betaParse[1] != "delete"))
             {
                 parsedInput.Add(Utility.ERROR);
                 parsedInput.Add(Utility.LABEL_INPUT_ERROR);
-                return parsedInput;
+                return;
             }
             parsedInput.Add(betaParse[0].ToLower());
             parsedInput.Add(betaParse[1].ToLower());
             parsedInput.Add(betaParse[2].ToLower());
-            return parsedInput;
         }
-
-        public List<string> CommandParse(string input)
+        public void CommandParse(string input)
         {
 
             Debug.Assert(input != null);
-            List<string> parsedInput = new List<string>();
+            parsedInput = new List<string>();
             if (input.Contains(';'))
             {
                 char[] splitter = new char[] { ';' };
@@ -298,12 +375,10 @@ namespace F9S1.RememberMe
             else
             {
                 char[] splitter = new char[] { ' ' };
-                parsedInput = new List<string>(input.Split(splitter, 2, StringSplitOptions.RemoveEmptyEntries));                
+                parsedInput = new List<string>(input.Split(splitter, 2, StringSplitOptions.RemoveEmptyEntries));
             }
             parsedInput[0] = parsedInput[0].ToLower();
-            return parsedInput;
         }
-
         private TimeSpan GetRepeat(string dateInput)
         {
 
@@ -332,96 +407,17 @@ namespace F9S1.RememberMe
                 interval = Utility.NO_INTERVAL;
             return interval;
         }
-
-        public List<string> ColonParse(string input, List<string> labels)
+        public void FieldParse(string input)
         {
             Debug.Assert(input != null);
-            Debug.Assert(labels != null);
-            List<string> betaInput = new List<string>(input.Split(';')), parsedInput = new List<string>();
-            
-                parsedInput.Add("add");
-                try
-                {
-                    parsedInput.Add(betaInput[0].Trim());
-                }                                       //Task Details 
-                catch (Exception e)
-                {
-                    logger.Error("Details null");
-                    parsedInput.Add("");
-                }
-               
-            try
-                {
-                    parsedInput.Add(ToDate(betaInput[1].Trim().ToLower()).ToString(Utility.SHORT_DATE_FORMAT));          //Deadline
-                }
-            catch (Exception e)
-            {
-                parsedInput.Add("");
-                logger.Error("Deadline null");
-            }
-           
-            try
-                {
-                    parsedInput.Add(betaInput[2].Trim().ToLower());                             //Labels
-                }
-           
-               catch (Exception e)
-                {
-                   
-                    logger.Error("Label null");
-                    parsedInput.Add("");
-                }
-               try
-                {
-                    parsedInput.Add((betaInput[3].Trim().ToLower() == "high").ToString());      //Priority
-                }
-                 catch (Exception e)
-                {
-                     
-                    logger.Error("Priority null");
-                    parsedInput.Add("");
-                }
-               
-                try
-                {
-                    parsedInput.Add(GetRepeat(betaInput[1].Trim()).ToString());                 //Repetition
-                }
-                catch (Exception e)
-                {
-                    parsedInput.Add("");
+            List<string> betaParse = new List<string>(input.Split(';')), parsedInput = new List<string>();
 
-                    logger.Error("isRepeat null");
-                }
-               
-            return parsedInput;
-
-            }
-           
-
-        public List<string> InputParse(string input, List<string> labels)
-        {
-
-            Debug.Assert(input != null);
-            Debug.Assert(labels != null);   
-            Command inputCommand = ToCommand(input.Trim().Split(new char[] { ' ', ';' })[0].ToLower());
-            List<string> parsedInput = new List<string>();
-            Debug.Assert(inputCommand != null);
-            if (inputCommand == Command.add || inputCommand == Command.edit)
-            {
-                parsedInput = SymbolParse(input, labels);
-            }
-            else if (inputCommand == Command.label)
-            {
-                parsedInput = LabelParse(input, labels);
-            }
-            else
-            {
-                parsedInput = CommandParse(input);
-            }
-            Debug.Assert(parsedInput != null);
-            return parsedInput;
+            taskDetails = betaParse[0].Trim();
+            taskTime = ToDate(betaParse[1].Trim().ToLower()).ToString(Utility.SHORT_DATE_FORMAT);   //Deadline
+            taskLabels = betaParse[2].Trim().ToLower();                                             //Labels
+            taskImportance = (betaParse[3].Trim().ToLower() == "high").ToString();                  //Priority
+            taskInterval = GetRepeat(betaParse[1].Trim()).ToString();                               //Repetition
         }
-
         public string ToDayValid(string day)
         {
             Debug.Assert(day != null);
@@ -481,21 +477,19 @@ namespace F9S1.RememberMe
             else
                 return deadline - curDay + 7;
         }
-
         private DateTime updateTime(ref DateTime Template, DateTime containsTime)
         {
-           Template=Template.AddHours(containsTime.Hour);
-           Template=Template.AddMinutes(containsTime.Minute);
-           Template= Template.AddSeconds(containsTime.Second);
+            Template = Template.AddHours(containsTime.Hour);
+            Template = Template.AddMinutes(containsTime.Minute);
+            Template = Template.AddSeconds(containsTime.Second);
             return Template;
         }
-
         private string RemoveDay(string date, string day)
         {
             Debug.Assert(day != null);
             Debug.Assert(date != null);
             day = day.Substring(0, 3);
-            string[] dateParse = date.Split(new char[] {' '}, StringSplitOptions.RemoveEmptyEntries);
+            string[] dateParse = date.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
             for (int i = 0; i < dateParse.Length; i++)
                 if (dateParse[i].Contains(day))
                     dateParse[i] = "";
@@ -521,12 +515,12 @@ namespace F9S1.RememberMe
                     tempDate = updateTime(ref tempDate, tempTime);
                 }
                 catch (Exception e)
-                { 
+                {
                 }
             }
             else
-            {   
-                
+            {
+
                 try
                 {
                     tempDate = DateTime.Parse(toBeConverted);
