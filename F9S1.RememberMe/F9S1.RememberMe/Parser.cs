@@ -25,12 +25,12 @@ namespace F9S1.RememberMe
             label
         };
 
-
         private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
         public Parser()
         {
 
         }
+        
         private Command ToCommand(string input)
         {
             Debug.Assert(input != null);
@@ -67,21 +67,20 @@ namespace F9S1.RememberMe
         {
             Debug.Assert(input != null);
             int count = 0;
-                for (int i = 0; i < input.Length; i++)
+            for (int i = 0; i < input.Length; i++)
+            {
+                if (input[i] == ';')
                 {
-                    if (input[i] == ';')
-                    {
-                        count++;
-                    }
+                    count++;
                 }
-                int numOfSemi = 4;
-                for (int i = 0; i < numOfSemi - count; i++)
-                    input += ";";
-           }
+            }
+            int numOfSemi = 4;
+            for (int i = 0; i < numOfSemi - count; i++)
+                input += ";";
+        }
 
         public List<string> SymbolParse(string input, List<string> labels)
         {
-
             Debug.Assert(input != null);
             Debug.Assert(labels != null);
             List<string> parsedInput = new List<string>(), inputLabels = new List<string>(), betaParse = new List<string>(input.Split(new Char[] { ' ', ';' }, StringSplitOptions.RemoveEmptyEntries)); ;
