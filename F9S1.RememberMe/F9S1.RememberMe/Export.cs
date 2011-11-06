@@ -8,6 +8,9 @@ using Google.GData.Extensions;
 
 namespace F9S1.RememberMe
 {
+    /// <summary>
+    /// This class manages the export to the google calendar.
+    /// </summary>
     class Export
     {
         List<Task> taskList;

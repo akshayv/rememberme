@@ -6,13 +6,19 @@ using System.Text;
 
 namespace F9S1.RememberMe
 {
+    /// <summary>
+    /// This class encapsulates the task list and its associate functions. 
+    /// The tasklist's functions are called by the controller depending on the user input.
+    /// Also contains the undo and redo functions.
+    /// </summary>
     class Operations
     {
         
         private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
         List<Task> taskList;
         List<string> labels;
-
+        Stack<List<Task>> undoStack, redoStack;
+        
         public List<Task> TaskList
         {
             get
@@ -29,26 +35,29 @@ namespace F9S1.RememberMe
             }
         }
         
-        Stack<List<Task>> undoStack, redoStack;
-        
         /// <summary>
         /// Initializes the tasklist, the label list and the undo, redo stacks.
         /// </summary>
         /// <param name="stringListTasks">The list of strings to initialize tasks with</param>
         /// <param name="labelList">The list of labels</param>
-        public Operations(List<string> stringListTasks,List<string> labelList)
+        public Operations(List<string> stringListTasks, List<string> labelList)
         {
             Debug.Assert(stringListTasks != null);
-            taskList = new List<Task>();
-            labels = new List<string>();
+            Inititalize();
             for (int i = 0; i < stringListTasks.Count; i++)
             {
                 taskList.Add(new Task(stringListTasks[i]));
             }
-            for (int i = 0; i < labelList.Count;i++ )
+            for (int i = 0; i < labelList.Count; i++)
             {
                 labels.Add(labelList[i]);
             }
+        }
+
+        private void Inititalize()
+        {
+            taskList = new List<Task>();
+            labels = new List<string>();
             undoStack = new Stack<List<Task>>();
             redoStack = new Stack<List<Task>>();
             undoStack.Push(new List<Task>(taskList));
@@ -176,7 +185,7 @@ namespace F9S1.RememberMe
         /// </summary>
         /// <param name="taskDetails">The task name to be checked.</param>
         /// <returns>The duplicate name.</returns>
-        string GetDuplicate(string taskDetails)
+        private string GetDuplicate(string taskDetails)
         {
             Debug.Assert(taskDetails != null);
             int count = 0;
