@@ -26,8 +26,4 @@ set alarm @ 08-11-2020 18:23
 edit setalarm @
 edit sleep for some time #work
 undo
-
-
-
-
-
+display

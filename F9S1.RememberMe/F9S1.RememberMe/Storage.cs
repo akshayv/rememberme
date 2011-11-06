@@ -31,7 +31,7 @@ namespace F9S1.RememberMe
             }
         }
 
-        public void WriteLabels(List<string> labels)
+        private void WriteLabels(List<string> labels)
         {
             TextWriter writer = new StreamWriter(Utility.LABEL_FILE_NAME);
             for (int i = 0; i < labels.Count; i++)
