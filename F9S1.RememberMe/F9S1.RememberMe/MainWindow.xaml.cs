@@ -186,18 +186,11 @@ namespace F9S1.RememberMe
             {
                 hitcount++;
             }
-            try
+            if (check.Deadline.ToString("f").ToLower().Contains(keyword.ToLower()))
             {
-                if (check.Deadline.ToString(Utility.SHORT_DATE_FORMAT).Contains(DateTime.Parse(keyword).ToString(Utility.SHORT_DATE_FORMAT)))
-                {
-                    hitcount++;
-                }
+                hitcount++;
+            }
 
-            }
-            catch (Exception e)
-            {
-                return hitcount;
-            }
             
             return hitcount;
         }
