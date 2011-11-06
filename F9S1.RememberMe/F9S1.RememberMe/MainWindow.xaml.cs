@@ -187,19 +187,14 @@ namespace F9S1.RememberMe
             {
                 hitcount++;
             }
-            try
-            {
-                if (check.Deadline.ToString(Utility.SHORT_DATE_FORMAT).Contains(DateTime.Parse(keyword).ToString(Utility.SHORT_DATE_FORMAT)))
-                {
-                    hitcount++;
-                }
 
-            }
-            catch (Exception e)
+            if (check.Deadline.ToString("f").ToLower().Contains(keyword.ToLower()))
             {
-                return hitcount;
+                hitcount++;
             }
-            
+
+
+
             return hitcount;
         }
 
@@ -207,7 +202,7 @@ namespace F9S1.RememberMe
         int findHits(string keywords, Task findHits, string command)
         {
             int hitcount = 0;
-            if (findHits.ToString().Contains(keywords) && findHits.IsArchived == false)
+            if ((findHits.ToString().Contains(keywords) || (findHits.Deadline.ToString("f").ToLower().Contains(keywords.ToLower()))) && findHits.IsArchived == false)
             {
                 hitcount = findNumHits(findHits, keywords);
             }
@@ -226,8 +221,6 @@ namespace F9S1.RememberMe
 
             }
             return hitcount;
-
-
         }
         public List<string> InstantSearch(string input, string command)
         {
