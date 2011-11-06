@@ -33,6 +33,8 @@ namespace F9S1.RememberMe
         public const string STARRED = "**";
         public const string UNSTARRED = "--";
 
+        public const string RM_TAG = "[RM!]";
+
         public static TimeSpan WEEK_INTERVAL = new TimeSpan(7, 0, 0, 0);
         public static TimeSpan MONTH_INTERVAL = new TimeSpan(30, 0, 0, 0);
         public static TimeSpan NO_INTERVAL = new TimeSpan(0, 0, 0, 0);

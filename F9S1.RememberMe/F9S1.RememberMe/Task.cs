@@ -107,7 +107,7 @@ namespace F9S1.RememberMe
             set
             {
                 if (value == null)
-                    labels = new string[]{"#others"};
+                    labels = new string[]{""};
                 else
                     labels = ConvertStringToLabels(value);
             }

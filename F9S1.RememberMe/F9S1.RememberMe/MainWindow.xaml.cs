@@ -46,7 +46,7 @@ namespace F9S1.RememberMe
         {
             Tester fileTest = new Tester();
             //fileTest.GetOutputFile();
-            //fileTest.Test();
+            fileTest.Test();
             initialiseNotificationIcon();
             dispatch = new Controller(this);
             taskInfo = dispatch.GetTasks();

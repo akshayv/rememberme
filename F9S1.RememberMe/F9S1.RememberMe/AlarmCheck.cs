@@ -19,7 +19,7 @@ namespace F9S1.RememberMe
             this.dispatch = dispatch;
             newAlarm.Dispatcher.BeginInvoke(DispatcherPriority.SystemIdle, new timeCheck(SetAlarm));
         }
-        public void SetAlarm()
+        private void SetAlarm()
         {
             taskInfo = dispatch.GetTasks();
             bool isLabelNotArchive;
