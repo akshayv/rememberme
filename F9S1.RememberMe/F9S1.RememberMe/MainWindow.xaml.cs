@@ -694,6 +694,12 @@ namespace F9S1.RememberMe
             SetDisplay();
         }
 
+        private void settingsButton_Click(object sender, RoutedEventArgs e)
+        {
+            int i =0;
+            i++;
+        }
+
     }
 }
 

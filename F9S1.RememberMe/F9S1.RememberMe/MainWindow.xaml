@@ -110,7 +110,7 @@
                 <ImageBrush ImageSource="/F9S1.RememberMe;component/Images/help.png" />
             </Button.Background>
         </Button>
-        <Button Style="{StaticResource NoMouseOverNoBorder}" Height="40" HorizontalAlignment="Right" Margin="0,5,106,0" Name="settingsButton" VerticalAlignment="Top" Width="40" Foreground="#FF3AAB25" FontWeight="Bold" Visibility="Visible">
+        <Button Style="{StaticResource NoMouseOverNoBorder}" Height="40" HorizontalAlignment="Right" Margin="0,5,106,0" Name="settingsButton" VerticalAlignment="Top" Width="40" Foreground="#FF3AAB25" FontWeight="Bold" Visibility="Visible" Click="settingsButton_Click">
             <Button.Background>
                 <ImageBrush ImageSource="/F9S1.RememberMe;component/Images/settings.png" />
             </Button.Background>
