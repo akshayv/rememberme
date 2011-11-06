@@ -1,4 +1,7 @@
-﻿using System;
+﻿//Inian Parameshwaran
+//Akshay Viswanathan
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -45,7 +48,6 @@ namespace F9S1.RememberMe
         public MainWindow()
         {
             Tester fileTest = new Tester();
-            fileTest.Test();
             initialiseNotificationIcon();
             dispatch = new Controller(this);
             taskInfo = dispatch.GetTasks();
