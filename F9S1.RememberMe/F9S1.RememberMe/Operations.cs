@@ -312,12 +312,12 @@ namespace F9S1.RememberMe
         /// <param name="foundTask">The task to be edited.</param>
         private void CheckEdit(ref List<string> editInput, string input, Task foundTask)
         {
-            if (!(input.Contains('@')))
+            if (!(input.Contains('@'))&&!input.Contains(';'))
             {
                 editInput[1] = foundTask.Deadline.ToString(Utility.SHORT_DATE_FORMAT);
                 editInput[4] = foundTask.Interval.ToString();
             }
-            if (!(input.Contains('#')))
+            if (!(input.Contains('#'))&&!input.Contains(';'))
                 editInput[2] = foundTask.Labels.ToString();
         }
 

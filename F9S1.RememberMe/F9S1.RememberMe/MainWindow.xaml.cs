@@ -48,6 +48,7 @@ namespace F9S1.RememberMe
         public MainWindow()
         {
             Tester fileTest = new Tester();
+            //fileTest.Test();
             initialiseNotificationIcon();
             dispatch = new Controller(this);
             taskInfo = dispatch.GetTasks();
@@ -393,8 +394,7 @@ namespace F9S1.RememberMe
             }
             if (e.Key == Key.Escape)
             {
-                if (displayBox.Content.ToString() == "edit: ")
-                    dispatch.UserDispatch("");
+                dispatch.UserDispatch("");
                 inputBox.Text = "";
             }
         }
