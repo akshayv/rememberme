@@ -25,8 +25,9 @@ namespace F9S1.RememberMe
         /// <param name="username">Given by user.</param>
         /// <param name="password">Given by user.</param>
         /// <param name="taskList">Obtained from controlle.r</param>
-        public void Synchronize(string username, string password, List<Task> taskList)
+        public void Synchronize(string username, string password, List<Task> listOfTasks)
         {
+            taskList = listOfTasks;
             GoogleGetTasks(username, password);
             GoogleDelete();
             GoogleAdd();
@@ -64,7 +65,6 @@ namespace F9S1.RememberMe
         /// </summary>
         private void GoogleAdd()
         {
-            taskList = new List<Task>();
             for (int i = 0; i < taskList.Count; i++)
             {
                 EventEntry entry = new EventEntry();
