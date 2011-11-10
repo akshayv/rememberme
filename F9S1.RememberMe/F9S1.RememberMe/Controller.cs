@@ -56,7 +56,7 @@ namespace F9S1.RememberMe
         /// <returns>The output to be displayed.</returns>
         public List<string> UserDispatch(string userInput)
         {
-            Debug.Assert(userInput != null && userInput != "");
+            //Debug.Assert(userInput != null && userInput != "");
             input = userInput;
             
             output = new List<string>();

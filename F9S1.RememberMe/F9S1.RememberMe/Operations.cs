@@ -49,7 +49,14 @@ namespace F9S1.RememberMe
             Inititalize();
             for (int i = 0; i < stringListTasks.Count; i++)
             {
-                taskList.Add(new Task(stringListTasks[i]));
+                try
+                {
+                    taskList.Add(new Task(stringListTasks[i]));
+                }
+                catch (Exception e)
+                {
+                    //do nothing
+                }
             }
             for (int i = 0; i < labelList.Count; i++)
             {
