@@ -201,8 +201,9 @@ namespace F9S1.RememberMe
 
         int findHits(string keywords, Task findHits, string command)
         {
+            keywords = keywords.ToLower();
             int hitcount = 0;
-            if (findHits.ToString().Contains(keywords) && findHits.IsArchived == false)
+            if ((findHits.ToString().Contains(keywords) || (findHits.Deadline.ToString("f").ToLower().Contains(keywords) && !findHits.Deadline.Year.Equals(9999)) && findHits.IsArchived == false))
             {
                 hitcount = findNumHits(findHits, keywords);
             }
@@ -218,11 +219,8 @@ namespace F9S1.RememberMe
             if ("highstar".Contains(keywords) && findHits.IsStarred == true && findHits.IsArchived == true && command == FIND_COMMAND)
             {
                 hitcount++;
-
             }
             return hitcount;
-
-
         }
         public List<string> InstantSearch(string input, string command)
         {
@@ -257,22 +255,17 @@ namespace F9S1.RememberMe
         private void inputBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             string passToRelegator = inputBox.Text;
-
             if (Keyboard.IsKeyDown(Key.Back))
                 numberBackSpace = 1;
-            /* if (numberBackSpace == 0 && inputBox.Text.StartsWith(SORT_COMMAND + ';') && !inputBox.Text.EndsWith(";"))
-                 sortAutoComplete(inputBox.Text.Substring(inputBox.Text.IndexOf(';') + 1));*/
             numberBackSpace = 0;
             if (Keyboard.IsKeyDown(Key.Back))
                 numberBackSpace = 1;
             if (numberBackSpace == 0 && !inputBox.Text.Contains(' ') && !inputBox.Text.Contains(";"))
                 AutoComplete(inputBox.Text);
             numberBackSpace = 0;
-
             string getCommand = "";
             if (inputBox.Text.Contains(";"))
             {
-
                 getCommand = inputBox.Text.Substring(0, inputBox.Text.IndexOf(';')).ToLower().Trim();
                 int count = numberOfSemiColon(inputBox.Text);
                 if (inputBox.Text[inputBox.Text.Length - 1] == ';' && (getCommand.Equals("add") || getCommand.Equals("edit")) && numberBackSpace == 0)
@@ -388,13 +381,11 @@ namespace F9S1.RememberMe
                         inputBox.Text = "";
 
                 }
-                /*  inputBox.Focus();
-                   inputBox.SelectionStart = inputBox.Text.Length;*/
                 e.Handled = true;
             }
             if (e.Key == Key.Escape)
             {
-                dispatch.UserDispatch("");
+                dispatch.UserDispatch("display");
                 inputBox.Text = "";
             }
         }
