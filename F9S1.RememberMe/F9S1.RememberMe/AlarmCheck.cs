@@ -36,7 +36,6 @@ namespace F9S1.RememberMe
                     time = showAlarm.getTimeArray();
                     if (time == null)
                     {
-                        taskInfo[i].IsArchived = true;
                         string command = "archive;" + taskInfo[i].Details;
                         dispatch.UserDispatch(command);
                         dispatch.UpdateDisplay();
@@ -45,20 +44,27 @@ namespace F9S1.RememberMe
                     {
                         //Debug.Assert(taskInfo != null);
                         updateDeadline(ref taskInfo, time, i);
-                        string command = "edit " + taskInfo[i].Details + " @" + taskInfo[i].Deadline;
-                        dispatch.UserDispatch(command);
                         dispatch.UpdateDisplay();
                     }
                  }
             }
             newAlarm.Dispatcher.BeginInvoke(DispatcherPriority.SystemIdle, new timeCheck(SetAlarm));
         }
+        char getInterval(TimeSpan interval)
+        {
+            if (interval.ToString() == "7.00:00:00")
+                return 'w';
+            else if (interval.ToString() == "30.00:00:00")
+                return 'm';
+            else
+                return interval.ToString()[0];
+        }
         void updateDeadline(ref List<Task> taskList, int[] time, int i)
         {
             TimeSpan difference = new TimeSpan(time[0], time[1], time[2], 0);
             DateTime updatedDate = DateTime.Now.Add(difference);
             taskList[i].Deadline = updatedDate;
-            string command = "edit " + taskList[i].Details + " @" + updatedDate;
+            string command = "edit " + taskList[i].Details + " @" + updatedDate+"%"+getInterval(taskList[i].Interval);
             dispatch.UserDispatch(command);
             dispatch.UserDispatch("display");
         }
